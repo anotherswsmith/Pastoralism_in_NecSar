@@ -1,0 +1,379 @@
+Season/Year	Transect	Treatment	Livestock density	Quadrats	Replicate	Date	Abutilon figarianum webb	Acacia mellifera (Vahl) Benth.	Aerva lanata (L.) Juss. Ex Schultes	Alysicarpus glumaceus (Vahl) DC.	Aristida kenyensis Henr.	Aspilia mossambicensis (Oliv.) Wild	Barleria homoiotricha C B. Clarke	Bothriochloa insculpta (Hochst. Ex A. Rich.) A. Camus	Brachiaria deflexa (Schumach. ) Robyns	Cenchrus ciliaris L.	Chamaecrista mimosoides (L.) Greene	Chloris virgata Sw.	Chrysopogon plumulosus Hochst.	Commelina forskaolii Vahl	Commelina schweinfurthii C.B. Clarke	Commicarpus pedunculosus (A. Rich.) Cufod.	Convolvulus sp.	Corchorus tridens L.	Corchorus trilocularis L.	Crotolaria sp.	Cyathula orthacantha (Aschers.) Schin	Cynodon nlemfuensis Vanderyst	Cyperus bulbosus Vahl	Dichrostachys cinerea Wight et Arn	Digitaria macroblephara (Hack.) Stapf	Digixa like	Dyschoriste radicans Nees	Eragrostis tremula Hochst. Ex Steud.	Flueggea virosa (Wild.) Voigt	Fuerstia africana TCF. Fr. 	Heteropogon contortus (L.) Roem. & Schult.	Hybanthus enneaspermus (L.) F. Muell.	Hyperhenia sp.	Hypoestes forskaolii (Vahl) R. Br.	Indigofera sp.	Ischaemum afrum (JF. GmeL.) Dandy	Justicia matammensis (Schweinf) Oliv.	Lintonia nutans Stapf	Monechma debile (Forssk.) Nees	Oxygonum sinuatum (Meisn.) Dammer	Panicum porphyrrhizos Steud.	Pentanisia ouranogyne S. Moore	Phyllanthus maderaspatensis L.	Phyllanthus pseudoniruri Muell. Arg.	Plectranthus punctatus (L.f.) LHer.	Polygala erioptera DC.	Polygala sphenoptera Fresen	Portulaca quadrifida L.	Rhynchosia minima (L.) DC.	Rosett	Ruellia linearibracteolata Lindau	Scrambling herb	Sehima nervosum (Rottler) Stapf	Setaria incrassata (Hochst.) Wild	Sida alba L. 	Solanum sp.	Sporobolus pyramidalis P. Beauv.	Tephrosia sp.	Tetrapogon villosus Desj	Themeda triandra Forssk.	Thunbergia ruspolii Lindau	Triumfetta flavescens Hochst.	unidentified herb	Vigna membranaceae A. Rich.	Ximenia americana L.
+Season I	1	Control triangle	High	B1C1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	40	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Control triangle	High	B1C1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	1	0	0	60	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Control triangle	High	B1C1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	1	0	0	0	0.5	0	40	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	7	0	0	0
+Season I	1	Control triangle	High	B1C1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	4	0	0	0	0	40	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Control triangle	High	B1C1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season I	1	Control	High	B1Ex1Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	1	35	0	1	0	0	25	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Control	High	B1EX1Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	5	1	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0
+Season I	1	Control	High	B1Ex1Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	1	25	0	0	1	0	30	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0.5	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Control	High	B1Ex1Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	1	80	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Control	High	B1Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	1	0	0	30	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Enclosure	High	B1En1t1Q1	1	Oct.21-25/2012	0	0	0	0	1	0	2	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	5	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season I	1	Enclosure	High	B1En1t1Q2	2	Oct.21-25/2012	0	0	0	0	5	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	1	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0.5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Enclosure	High	B1En1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	5	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	15	0	1	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	3	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Enclosure	High	B1En1t2Q1	4	Oct.21-25/2012	2	0	0	0	5	0	2	0	0	0	1	0	1	1	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	3	0	0	0	0	0	0	1	0.5	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Enclosure	High	B1En1t2Q2	5	Oct.21-25/2012	1	0	0	0	5	0	0	35	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	1	0	0	0	1	0	0	0
+Season I	1	Rodent Exclosure	High	B1Ex1CEx01	6	Oct.21-25/2012	0	0	0	0	0	0	1	40	0	0	0	0	65	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	10	0	0	0.5	0	0	0	0	0.5	0	0	0	0	0	0	1	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Rodent Exclosure	High	B1Ex1CEx02	7	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	1	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season I	1	Exclosure	High	B1Ex1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	7	5	0	0	0	0	15	0	0	0	0	0	0	0	0	0	1	0	20	0	0.5	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	1.5	0	0
+Season I	1	Exclosure	High	B1Ex1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Exclosure	High	B1Ex1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	55	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	10	0	10	0.5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0
+Season I	1	Exclosure	High	B1Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	1	0	0	0	0.5	0	0	0	0	0.5	0	0	0	10	0	0	0
+Season I	1	Exclosure	High	B1Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	2	10	0	5	0	0	10	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	65	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+Season I	1	Control	Medium	B1Ex2Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season I	1	Control	Medium	B1Ex2Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season I	1	Control	Medium	B1Ex2Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	75	0	0	0	0	10	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	0	0	0
+Season I	1	Control	Medium	B1Ex2Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	20	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2.5	0	0	0
+Season I	1	Control	Medium	B1Ex2Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0.5	0	5	0	0	0	0	0.5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season I	1	Exclosure	Medium	B1Ex2t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Exclosure	Medium	B1Ex2t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	1	Exclosure	Medium	B1Ex2t1Q3	3	Oct.21-25/2012	0	2	0	0	0	0	0	5	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Exclosure	Medium	B1Ex2t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Exclosure	Medium	B1Ex2t2Q2	5	Oct.21-25/2012	1	0	0	0	0	0	0	25	0	0	0	0	65	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season I	2	Control triangle	Medium	B2C1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	75	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Control triangle	Medium	B2C1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	10	0	0	0.5	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season I	2	Control triangle	Medium	B2C1t1Q3	3	Oct.21-25/2012	0	0	0	0	1	0	0	45	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0	0	0	5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Control triangle	Medium	B2C1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	30	0	0	5	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+Season I	2	Control triangle	Medium	B2C1t2Q2	5	Oct.21-25/2012	0	0	0	0	1	0	0	45	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season I	2	Enclosure	Medium	B2En1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	90	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season I	2	Enclosure	Medium	B2En1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	40	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season I	2	Enclosure	Medium	B2En1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	55	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season I	2	Enclosure	Medium	B2En1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0
+Season I	2	Enclosure	Medium	B2En1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	40	1	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0.5	0	0
+Season I	2	Rodent Exclosure	High	B2Ex1CEx01	6	Oct.21-25/2012	0	0	0	0	0	0	0.5	90	1	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Rodent Exclosure	High	B2Ex1CEx02	7	Oct.21-25/2012	0	0	0	0	0	0	0	70	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season I	2	Control	High	B2Ex1Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0.5	25	1	0	1	0	1	0	0	0	0	0	0	0	0	1	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0.5	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Control	High	B2Ex1Cp1t1Q2	2	Oct.21-25/2012	1	0	0	0	1	0	1	10	1	0	0.5	0	10	0.5	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0.5	0	0	0.5	0	0	0	0.5	0	0	0
+Season I	2	Control	High	B2Ex1Cp1t1Q3	3	Oct.21-25/2012	5	0	0	0	0	0	0	5	5	0	0	0	5	1	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Control	High	B2Ex1Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	10	1	0	0	0	5	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0.5	0	0	0	0	0	0	1	1	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Control	High	B2Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	1	0	0	0	1	30	1	0	0	0	20	0.5	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Exclosure	High	B2Ex1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	25	5	0	0.5	0	10	0	0	0	0	0	0	0	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0.5	0	0
+Season I	2	Exclosure	High	B2Ex1t1Q2	2	Oct.21-25/2012	0	0	0.5	0	0	0	0	0	0	0	1	0	25	1	0	0	0	0	0	0	5	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season I	2	Exclosure	High	B2Ex1t1Q3	3	Oct.21-25/2012	1	0	0	0	0	0	0	75	10	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0.5	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	2	Exclosure	High	B2Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	0	10	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	5	0	0	0
+Season I	2	Exclosure	High	B2Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	45	0	0	1	0	5	0	0	0	0	0	0.5	0	0	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+Season I	2	Control	Medium	B2Ex2Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Control	Medium	B2Ex2Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	40	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0
+Season I	2	Control	Medium	B2Ex2Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	1	65	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Control	Medium	B2Ex2Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	80	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	2	Control	Medium	B2Ex2Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	1	0	20	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Exclosure	Medium	B2Ex2t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	25	0	0	1	0	50	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season I	2	Exclosure	Medium	B2Ex2t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	1	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season I	2	Exclosure	Medium	B2Ex2t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	1	80	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Exclosure	Medium	B2Ex2t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	80	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	2	Exclosure	Medium	B2Ex2t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	0	0	30	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0
+Season I	3	Control triangle	High	B3C1t1Q1	1	Oct.21-25/2012	0	0	0	0.5	0	0	0	60	0	0	0.5	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0.5	0	0	0
+Season I	3	Control triangle	High	B3C1t1Q2	2	Oct.21-25/2012	0	0	0	0.5	0	0	0	10	0	0	0.5	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	1	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+Season I	3	Control triangle	High	B3C1t1Q3	3	Oct.21-25/2012	5	0	0	0	0	0	0	5	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season I	3	Control triangle	High	B3C1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	10	0	0	0.5	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0.5	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0
+Season I	3	Control triangle	High	B3C1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	25	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Enclosure	High	B3En1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	5	1	0	0	0	35	1	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	5	0	0	0	0	0	0	0	10	1	0	0
+Season I	3	Enclosure	High	B3En1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	60	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0
+Season I	3	Enclosure	High	B3En1t1Q3	3	Oct.21-25/2012	1	0	0	0	0	0	1	20	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0.5	0	0.5	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season I	3	Enclosure	High	B3En1t2Q1	4	Oct.21-25/2012	1	0	0	0.5	0	0	0.5	1	20	0	0.5	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	25	0	0	0
+Season I	3	Enclosure	High	B3En1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	1	30	0	0	0	0	20	1	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	3	Rodent Exclosure	High	B3Ex1CEx01	6	Oct.21-25/2012	0	0	0	1	0	0	0	1	0	0	0	0	25	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	25	0	0	0	0	0	0	1	0	0	0	0
+Season I	3	Rodent Exclosure	High	B3Ex1CEx02	7	Oct.21-25/2012	0	0	0	0	5	0	0	10	1	5	0	0	65	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0
+Season I	3	Control	High	B3Ex1Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	1	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Control	High	B3Ex1Cp1t1Q2	2	Oct.21-25/2012	0	0	1	0	1	0	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	65	0	0	0
+Season I	3	Control	High	B3Ex1Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	5	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	20	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	1	0	0	0
+Season I	3	Control	High	B3Ex1Cp1t2Q1	4	Oct.21-25/2012	0	0	1	0	0	0	1	10	0	0	0	0	30	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	5	5	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Control	High	B3Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	25	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	3	Exclosure	High	B3Ex1t1Q1	1	Oct.21-25/2012	1.5	0	0	0.5	0	0	1	35	1	1	0	0	0	0	0	0	0	0.5	1	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Exclosure	High	B3Ex1t1Q2	2	Oct.21-25/2012	0	0	0	1	5	0	1	30	35	0	0.5	0	0	0.5	0	0	0	0.5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season I	3	Exclosure	High	B3Ex1t1Q3	3	Oct.21-25/2012	0.5	0	0	1	0	0	0.5	0	10	0	0	0	5	0	0	0	0	0	1	0	0	35	0	0	5	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Exclosure	High	B3Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	1	20	0	1	1	0	10	0	0	0	0	1	1	0	0	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Exclosure	High	B3Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0.5	0	0	0	30	25	0	0	0	0	0	0	50	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1.5	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Control	Medium	B3Ex2Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	85	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0
+Season I	3	Control	Medium	B3Ex2Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	5	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0
+Season I	3	Control	Medium	B3Ex2Cp1t1Q3	3	Oct.21-25/2012	0	0	0	1	1	0	0	20	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0
+Season I	3	Control	Medium	B3Ex2Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0.5	0	0	0	55	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	30	0	0	0	0	0	0
+Season I	3	Control	Medium	B3Ex2Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	10	0	0	0.5	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	30	0	0	0	0	0	0
+Season I	3	Exclosure	Medium	B3Ex2t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	90	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	3	Exclosure	Medium	B3Ex2t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	80	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0.5	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0
+Season I	3	Exclosure	Medium	B3Ex2t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	55	0	0	0	0	10	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0.5	0	20	0	0	0	0	0	0	0	0	0	5	0	0	1	0	0	0
+Season I	3	Exclosure	Medium	B3Ex2t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	20	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	1	6	0	0	0	0	0	0	0	0	0	0	0	0	30	0	0	1	0	0	0
+Season I	3	Exclosure	Medium	B3Ex2t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	35	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	35	0	0	0	0	0	0	0	0	0	10	0	0	1	0	0	0
+Season I	3	Control	Low	B4Ex1Cp1t1Q1	1	Oct.21-25/2012	5	0	1	0	35	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0
+Season I	3	Control	Low	B4Ex1Cp1t1Q2	2	Oct.21-25/2012	0.5	0	1	0	60	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	5	5	0.5	0	0	0	0	0	0	0.5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Control	Low	B4Ex1Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	26	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	1	15	1	0	0	0	0	0	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0
+Season I	3	Control	Low	B4Ex1Cp1t2Q1	4	Oct.21-25/2012	0.5	0	0	0	5	0	0	0	0	0	0	0	5	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	65	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0
+Season I	3	Control	Low	B4Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	5	0	1	75	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	3	Exclosure	Low	B4Ex1t1Q1	1	Oct.21-25/2012	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	50	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	1	0	0	0	0.5	0	0	0	0	0	0	0	0	1	0	0	0	20	0	0	0
+Season I	3	Exclosure	Low	B4Ex1t1Q2	2	Oct.21-25/2012	0	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0
+Season I	3	Exclosure	Low	B4Ex1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	3	Exclosure	Low	B4Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0.5	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	3	Exclosure	Low	B4Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	80	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	7	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season I	2	Control	Low	B5Ex1Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	95	0	0	0	0	0
+Season I	2	Control	Low	B5Ex1Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	70	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0
+Season I	2	Control	Low	B5Ex1Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	95	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Control	Low	B5Ex1Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	95	0	0	0	0	0	0
+Season I	2	Control	Low	B5Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	25	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Exclosure	Low	B5Ex1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	1	5	0	0	0	0	60	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	1	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Exclosure	Low	B5Ex1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	0	95	0	0	0	0	5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	2	Exclosure	Low	B5Ex1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	80	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0.5	0	0	0	15	0	1	0	0	0.5
+Season I	2	Exclosure	Low	B5Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	80	0	0.5	0	0	0
+Season I	2	Exclosure	Low	B5Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	40	0	0	0.5	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season I	1	Control	Low	B6Ex1Cp1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	1	20	0	0	0	0	10	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season I	1	Control	Low	B6Ex1Cp1t1Q2	2	Oct.21-25/2012	0	0	0	0	0	0	25	20	0	0	0	0	5	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0.5	0	0	0	0	0.5	0	0	1	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season I	1	Control	Low	B6Ex1Cp1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	0	25	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0
+Season I	1	Control	Low	B6Ex1Cp1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	1	1	0	0	0	0	5	0	0	0	0	0	0	0	0	50	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Control	Low	B6Ex1Cp1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	35	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	12	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season I	1	Exclosure	Low	B6Ex1t1Q1	1	Oct.21-25/2012	0	0	0	0	0	0	0.5	35	0	0	0.5	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	10	0	0	0
+Season I	1	Exclosure	Low	B6Ex1t1Q2	2	Oct.21-25/2012	0	5	0	0	0	0	0	10	0	0	0	0	40	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season I	1	Exclosure	Low	B6Ex1t1Q3	3	Oct.21-25/2012	0	0	0	0	0	0	1	5	0	0	0	0	5	0	0	0	0	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0
+Season I	1	Exclosure	Low	B6Ex1t2Q1	4	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	80	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0.5	0	0
+Season I	1	Exclosure	Low	B6Ex1t2Q2	5	Oct.21-25/2012	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	1	0	0	0
+Season II	1	Control triangle	High	B1C1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	1	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control triangle	High	B1C1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	20	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Control triangle	High	B1C1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0.5	0	0	0	0.5	0	45	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	1	Control triangle	High	B1C1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	2	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	1	Control triangle	High	B1C1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	High	B1Ex1Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	1	45	0	0	0	0	35	0	0	0	0	0	0	0	0	0	1	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	High	B1EX1Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	5	5	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	High	B1Ex1Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	1	22	0	0	1	0	30	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	High	B1Ex1Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	1	30	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	High	B1Ex1Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	0	0	1	0	0	40	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Enclosure	High	B1En1t1Q1	1	June21-25/2013	0	0	0	0	0	0	5	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	35	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season II	1	Enclosure	High	B1En1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	20	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	1	0	0	0.5	0	0	0	0	0	0	0	1	0	0	0	0	0	0.5	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Enclosure	High	B1En1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	5	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	8	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	1	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Enclosure	High	B1En1t2Q1	4	June21-25/2013	0	0	0	0	0	0	1.5	10	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	5	1	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Enclosure	High	B1En1t2Q2	5	June21-25/2013	0	0	0	0	5	0	0	15	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	10	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season II	1	Rodent Exclosure	High	B1Ex1CEx01	6	June21-25/2013	0	0	0	0	0	0	2	10	0	0	1	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0.5	0	5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Rodent Exclosure	High	B1Ex1CEx02	7	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0.5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	1	Exclosure	High	B1Ex1t1Q1	1	June21-25/2013	0	0	0	0	0	0	5	15	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	20	0	5	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	5	1.5	0	0
+Season II	1	Exclosure	High	B1Ex1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	5	0	0	0.5	0	65	0	0	0	0	0	0	0	0	0	0	0	5	0	5	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0
+Season II	1	Exclosure	High	B1Ex1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	50	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	5	0	5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Exclosure	High	B1Ex1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	10	0	0	1	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0.5	0	0	0	0	0.5	0	0	0	8	0	0	0
+Season II	1	Exclosure	High	B1Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	5	15	0	5	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	Medium	B1Ex2Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	30	0	0	0
+Season II	1	Control	Medium	B1Ex2Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	55	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	1	Control	Medium	B1Ex2Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	30	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Control	Medium	B1Ex2Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Control	Medium	B1Ex2Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	10	0	0	1	0	30	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	1	Exclosure	Medium	B1Ex2t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	0	0	0	1	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Exclosure	Medium	B1Ex2t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	30	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Exclosure	Medium	B1Ex2t1Q3	3	June21-25/2013	0	7	0	0	0	0	0	5	0	0	1	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season II	1	Exclosure	Medium	B1Ex2t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	40	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	5	0	0	0	0	0	5	0	0	0	0	0	0	0	0	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	1	Exclosure	Medium	B1Ex2t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	70	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season II	2	Control triangle	Medium	B2C1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	20	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Control triangle	Medium	B2C1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	13	0	0	0.5	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season II	2	Control triangle	Medium	B2C1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	30	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Control triangle	Medium	B2C1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Control triangle	Medium	B2C1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season II	2	Enclosure	Medium	B2En1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	60	0	0	1	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	5	0	0	0
+Season II	2	Enclosure	Medium	B2En1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	30	0	1	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	1	0
+Season II	2	Enclosure	Medium	B2En1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	40	0	0	1	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season II	2	Enclosure	Medium	B2En1t2Q1	4	June21-25/2013	0.5	0	0	0	0	0	0	75	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Enclosure	Medium	B2En1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	5	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0.5	0	0
+Season II	2	Rodent Exclosure	High	B2Ex1CEx01	6	June21-25/2013	0	0	0	0	0	0	0	90	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Rodent Exclosure	High	B2Ex1CEx02	7	June21-25/2013	5	0	0	0	0	0	0	55	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Control	High	B2Ex1Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0.5	10	1	0	0.5	0	0	0	0	0	0	0	0	0	0	2	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0.5	10	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season II	2	Control	High	B2Ex1Cp1t1Q2	2	June21-25/2013	2	0	0	0	0	0	0	0	0	0	0	0	10	0.5	0	0	0	0	0	0	0	0	0.5	0	5	0	0	0	0	0	0	0	0	0	0	0	0	10	0.5	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	1	0	0	0
+Season II	2	Control	High	B2Ex1Cp1t1Q3	3	June21-25/2013	20	0	0	0	0	0	0	10	0	0	0.5	0	5	1	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Control	High	B2Ex1Cp1t2Q1	4	June21-25/2013	5	0	0	0	1	0	0	20	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	1	15	0	0	0	0.5	0	0	0	1	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Control	High	B2Ex1Cp1t2Q2	5	June21-25/2013	2	0	0	0	0	0	0.5	5	0	0	1	0	15	0.5	0	0	0	0	0	0	0	0	2	0	10	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Exclosure	High	B2Ex1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	10	5	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0.5	0	0
+Season II	2	Exclosure	High	B2Ex1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0.5	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Exclosure	High	B2Ex1t1Q3	3	June21-25/2013	1	0	0	0	0	0	0	20	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0.5	5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Exclosure	High	B2Ex1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	5	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	15	0	0	0
+Season II	2	Exclosure	High	B2Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	90	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0.5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Control	Medium	B2Ex2Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	30	0	0	0.5	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Control	Medium	B2Ex2Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	30	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	1	0	0
+Season II	2	Control	Medium	B2Ex2Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	1	35	0	0	1	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season II	2	Control	Medium	B2Ex2Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	40	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Control	Medium	B2Ex2Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	40	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season II	2	Exclosure	Medium	B2Ex2t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	50	0	0	0	0	60	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season II	2	Exclosure	Medium	B2Ex2t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0.5	0	75	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	5	0	0	0
+Season II	2	Exclosure	Medium	B2Ex2t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	80	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Exclosure	Medium	B2Ex2t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	70	0	0	1	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Exclosure	Medium	B2Ex2t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	20	0	0	0	0	30	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	3	Control triangle	High	B3C1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0.5	25	0	0	0.5	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	5	0	0	0
+Season II	3	Control triangle	High	B3C1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	20	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control triangle	High	B3C1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	10	0	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0.5	0	0	0
+Season II	3	Control triangle	High	B3C1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0.5	5	0	0	0.5	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0
+Season II	3	Control triangle	High	B3C1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	10	0	0	1	0	25	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Enclosure	High	B3En1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	25	0	0	5	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	8	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season II	3	Enclosure	High	B3En1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	50	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0
+Season II	3	Enclosure	High	B3En1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season II	3	Enclosure	High	B3En1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	10	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	2	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season II	3	Enclosure	High	B3En1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	15	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	3	Rodent Exclosure	High	B3Ex1CEx01	6	June21-25/2013	0	0	0	0	0	0	0	15	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0
+Season II	3	Rodent Exclosure	High	B3Ex1CEx02	7	June21-25/2013	0	0	0	0	0	0	0	20	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	High	B3Ex1Cp1t1Q1	1	June21-25/2013	0.5	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	High	B3Ex1Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	65	0	0	0
+Season II	3	Control	High	B3Ex1Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	5	0	0	0	0	0	0	0	5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	3	Control	High	B3Ex1Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	10	5	0	0	0	0	20	5	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	High	B3Ex1Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	15	1	0	0	0	0	0	0	0	0	0.5	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0.5	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	5	0	0	0
+Season II	3	Exclosure	High	B3Ex1t1Q1	1	June21-25/2013	0	0	0	1	0	0	1	20	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	High	B3Ex1t1Q2	2	June21-25/2013	0	0	0	0	0	0	5	30	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	High	B3Ex1t1Q3	3	June21-25/2013	0	0	0	0	0	0	5	5	0	0	0	0	5	0	0	0	0	0	0.5	0	0	20	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0.5	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	High	B3Ex1t2Q1	4	June21-25/2013	0	0	0	0	0	0	5	20	0	5	1	0	10	0	0	0	0	0	0.5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	High	B3Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	5	0	0.5	0	0	0	0	0	0	5.5	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	Medium	B3Ex2Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	75	0	0	0	0	20	0	0	0	0	0	0.5	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0
+Season II	3	Control	Medium	B3Ex2Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0
+Season II	3	Control	Medium	B3Ex2Cp1t1Q3	3	June21-25/2013	0	0	0	1	0	0	0	10	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0
+Season II	3	Control	Medium	B3Ex2Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	5	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0
+Season II	3	Control	Medium	B3Ex2Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	25	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0	8	0	0	0	0	0	0
+Season II	3	Exclosure	Medium	B3Ex2t1Q1	1	June21-25/2013	0	0	0	0	0	0	5	15	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season II	3	Exclosure	Medium	B3Ex2t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	40	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	Medium	B3Ex2t1Q3	3	June21-25/2013	0.5	0	0	0	0	0	0	20	0	0	0.5	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0
+Season II	3	Exclosure	Medium	B3Ex2t2Q1	4	June21-25/2013	0	0	0	0	0	0	8	5	0	0	0.5	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season II	3	Exclosure	Medium	B3Ex2t2Q2	5	June21-25/2013	0	0	0	0	0	0	1	30	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	3	Control	Low	B4Ex1Cp1t1Q1	1	June21-25/2013	5	0	1	0	35	0	0	0	0	0	0	0	0	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	Low	B4Ex1Cp1t1Q2	2	June21-25/2013	1	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	1	10	1	0	0	0	1	0	15	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0
+Season II	3	Control	Low	B4Ex1Cp1t1Q3	3	June21-25/2013	5	0	0	0.5	0	0	0	0	0	0	0	0	25	0	0	0	0	0	3	0	0	5	0	0	0	0	0	0	0	4	0	0	0	0	0	0	0	10	0.5	0	0	0	0	0	5	0	0	0	7	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Control	Low	B4Ex1Cp1t2Q1	4	June21-25/2013	0.5	0	0	0	10	0	0	0	0	0	0	0	5	0	0	0	0	0	0	5	0	0	0	0	0	0	15	0	3	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0
+Season II	3	Control	Low	B4Ex1Cp1t2Q2	5	June21-25/2013	14	0	0	0	0	0	0	0	0	0	2	0	90	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	3	Exclosure	Low	B4Ex1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	4	0.5	0	0	1	0	0	0	0	0	0	0	0	4	0	0	0	20	0	0	0
+Season II	3	Exclosure	Low	B4Ex1t1Q2	2	June21-25/2013	0	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	35	0	0	0	0	5	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season II	3	Exclosure	Low	B4Ex1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	95	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	3	Exclosure	Low	B4Ex1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season II	3	Exclosure	Low	B4Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	98	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season II	2	Control	Low	B5Ex1Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	90	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0
+Season II	2	Control	Low	B5Ex1Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	65	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season II	2	Control	Low	B5Ex1Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	0	0	5	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Control	Low	B5Ex1Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	80	0	0	0	0	0	0
+Season II	2	Control	Low	B5Ex1Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	75	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Exclosure	Low	B5Ex1t1Q1	1	June21-25/2013	0	0	0	0	0	0	2	20	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	5	0	0	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Exclosure	Low	B5Ex1t1Q2	2	June21-25/2013	0	0	0	0	0	0	0	60	0	0	0	0	10	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	2	Exclosure	Low	B5Ex1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	25	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	25	0	0	0	0	0	0	0	0	1	0	5	0	5	0	0	0
+Season II	2	Exclosure	Low	B5Ex1t2Q1	4	June21-25/2013	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	25	0	10	0	0	0
+Season II	2	Exclosure	Low	B5Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	5	0	0	5	0	50	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0.5	0	0	0	20	0	0	0
+Season II	1	Control	Low	B6Ex1Cp1t1Q1	1	June21-25/2013	0	0	0	0	0	0	5	10	0	0	0	0	5	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	2	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	50	0	0	0
+Season II	1	Control	Low	B6Ex1Cp1t1Q2	2	June21-25/2013	0	0	0	0	0	0	8	40	0	0	0	0	5	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0.5	0	0	5	0	0	0	0	0	0	0	0	0.5	0	0	0	5	0	0	0
+Season II	1	Control	Low	B6Ex1Cp1t1Q3	3	June21-25/2013	0	0	0	0	0	0	0	10	0	0	0	0	8	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0.5	0	0.5	0	0	0	0	0	0	0	0	0.5	0	0	0	10	0	0	0
+Season II	1	Control	Low	B6Ex1Cp1t2Q1	4	June21-25/2013	0	0	0	0	0	0	2	25	0	0	0	0	5	0	0	0	0	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Control	Low	B6Ex1Cp1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	30	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0
+Season II	1	Exclosure	Low	B6Ex1t1Q1	1	June21-25/2013	0	0	0	0	0	0	0.5	20	0	0	0	0	8	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0.5	0	0	0	15	0	0	0
+Season II	1	Exclosure	Low	B6Ex1t1Q2	2	June21-25/2013	0	5	0	0	0	0	0	5	0	0	0	0	35	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.5	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season II	1	Exclosure	Low	B6Ex1t1Q3	3	June21-25/2013	0	0	0	0	0	0	5	5	0	0	0	0	5	0	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season II	1	Exclosure	Low	B6Ex1t2Q1	4	June21-25/2013	0	0	0	1	0	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0.5	0	0
+Season II	1	Exclosure	Low	B6Ex1t2Q2	5	June21-25/2013	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	55	0	0	0	0	0	0	0	10	0	0	0
+Season III	1	Control triangle	High	B1C1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	1	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season III	1	Control triangle	High	B1C1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	15	0	0	0	0	0	0	0	0	0	1	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Control triangle	High	B1C1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	1	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season III	1	Control triangle	High	B1C1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	1	5	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	1	Control triangle	High	B1C1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	20	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	1	Control	High	B1Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	2	7	0	0	0	0	15	0	0	0	0	0	0	0	0	0	1	0	5	0	1	0	0	0	1	0	0	0	0	0	1	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Control	High	B1Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	4	3	0	0	0	0	45	0	0	0	0	0	1	0	0	0	0	0	3	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Control	High	B1Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	2	20	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	1	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Control	High	B1Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	2	13	0	0	1	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Control	High	B1Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	30	0	0	0	0	0	1	0	0	0	0	0	5	0	1	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	1	Enclosure	High	B1En1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	5	0	0	20	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	2	0	0	0	0	0	0	0	5	0	0	0	1	0	0	0	0	0	0	0	0	0	20	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Enclosure	High	B1En1t1Q2	2	"Nov.21-25, 2013"	0	1	0	1	10	0	0	20	0	5	2	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	2	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Enclosure	High	B1En1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	2	0	0	5	0	0	3	0	25	0	0	0	0	0	0	0	0	0	0	0	15	0	3	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	1	0	0	1	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Enclosure	High	B1En1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	5	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	15	0	2	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Enclosure	High	B1En1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	2	0	0	15	0	0	2	3	0	0	0	0	0	0	0	0	0	0	0	0	3	0	4	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	10	0	1	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	1	Rodent Exclosure	High	B1Ex1CEx01	6	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	60	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Rodent Exclosure	High	B1Ex1CEx02	7	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	55	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	4	0	0	0
+Season III	1	Exclosure	High	B1Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	15	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	8	0	1	0	0	0	3	0	0	0	0	0	1	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	7	0	0	0
+Season III	1	Exclosure	High	B1Ex1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	1	0	0	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Exclosure	High	B1Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Exclosure	High	B1Ex1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	30	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	15	0	0	0	5	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Exclosure	High	B1Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	5	10	0	2	0	0	30	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Control	Medium	B1Ex2Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	1	0	35	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	10	0	0	0
+Season III	1	Control	Medium	B1Ex2Cp1t1Q2	2	"Nov.21-25, 2013"	1	0	0	0	0	0	0	5	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Control	Medium	B1Ex2Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	25	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season III	1	Control	Medium	B1Ex2Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	0	0	30	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Control	Medium	B1Ex2Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	1	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Exclosure	Medium	B1Ex2t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	15	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	2	0	0	0	0	1	0	0	0	10	0	0	0
+Season III	1	Exclosure	Medium	B1Ex2t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	1	Exclosure	Medium	B1Ex2t1Q3	3	"Nov.21-25, 2013"	0	10	0	0	0	0	0	10	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	1	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Exclosure	Medium	B1Ex2t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	30	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	2	0	0	0	0	0	0	0	0	1	0	0	0	3	0	0	0
+Season III	1	Exclosure	Medium	B1Ex2t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	15	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0
+Season III	2	Control triangle	Medium	B2C1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	25	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	2	Control triangle	Medium	B2C1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season III	2	Control triangle	Medium	B2C1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	20	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	5	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Control triangle	Medium	B2C1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	5	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	3	0	0	0
+Season III	2	Control triangle	Medium	B2C1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	18	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Enclosure	Medium	B2En1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	65	0	0	1	0	18	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season III	2	Enclosure	Medium	B2En1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	35	0	5	0	0	15	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0
+Season III	2	Enclosure	Medium	B2En1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	50	0	0	3	0	30	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	5	0	0	0	5	0	0	0
+Season III	2	Enclosure	Medium	B2En1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	55	0	1	1	0	5	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	2	Enclosure	Medium	B2En1t2Q2	5	"Nov.21-25, 2013"	1	0	0	0	0	0	0	10	0	0	0	0	55	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Rodent Exclosure	High	B2Ex1CEx01	6	"Nov.21-25, 2013"	0	0	0	0	0	0	0	90	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	2	Rodent Exclosure	High	B2Ex1CEx02	7	"Nov.21-25, 2013"	5	0	0	0	3	0	0	45	0	0	1	0	20	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	1	0	0	0	0	1	0	1	0	0	0	0	0	0	1	0	0	20	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	2	Control	High	B2Ex1Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	1	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	2	Control	High	B2Ex1Cp1t1Q2	2	"Nov.21-25, 2013"	2	0	0	0	0	0	1	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	2	Control	High	B2Ex1Cp1t1Q3	3	"Nov.21-25, 2013"	5	0	0	0	0	0	1	15	1	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	2	Control	High	B2Ex1Cp1t2Q1	4	"Nov.21-25, 2013"	3	0	0	0	3	0	0	5	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	2	Control	High	B2Ex1Cp1t2Q2	5	"Nov.21-25, 2013"	1	0	1	0	0	0	1	10	2	0	1	0	5	0	0	0	0	0	0	0	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	1	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	2	Exclosure	High	B2Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	1	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Exclosure	High	B2Ex1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	25	0	0	0	0	0	0	0	2	0	1	0	3	0	0	0	0	0	0	0	0	0	0	0	1	1	2	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	5	0	0	0	2	0	0	0
+Season III	2	Exclosure	High	B2Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	70	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	1	15	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	2	Exclosure	High	B2Ex1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	10	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season III	2	Exclosure	High	B2Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	59	0	0	1	0	5	0	0	0	0	0	0	0	0	5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	3	2	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Control	Medium	B2Ex2Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	35	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season III	2	Control	Medium	B2Ex2Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	0	0	0
+Season III	2	Control	Medium	B2Ex2Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	35	0	0	0	0	8	0	0	0	0	0	0	0	0	0	0	0	2	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season III	2	Control	Medium	B2Ex2Cp1t2Q1	4	"Nov.21-25, 2013"	1	0	0	0	0	0	0	25	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Control	Medium	B2Ex2Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0
+Season III	2	Exclosure	Medium	B2Ex2t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	10	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season III	2	Exclosure	Medium	B2Ex2t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	10	0	0	0	0	0	0	0	0	35	0	0	0	10	0	0	0
+Season III	2	Exclosure	Medium	B2Ex2t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	15	0	0	0
+Season III	2	Exclosure	Medium	B2Ex2t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	4	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	35	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Exclosure	Medium	B2Ex2t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	3	Control triangle	High	B3C1t1Q1	1	"Nov.21-25, 2013"	1	0	0	0	0	0	1	25	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	10	0	0	0
+Season III	3	Control triangle	High	B3C1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	15	0	0	1	0	3	0	0	0	0	1	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	3	Control triangle	High	B3C1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	15	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	3	Control triangle	High	B3C1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Control triangle	High	B3C1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	3	0	0	1	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Enclosure	High	B3En1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	5	0	0	10	0	0	1	0	60	0	0	0	0	0	0	0	0	5	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	3	Enclosure	High	B3En1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	65	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	3	Enclosure	High	B3En1t1Q3	3	"Nov.21-25, 2013"	1	0	0	0	0	0	0	50	0	0	0	0	25	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0
+Season III	3	Enclosure	High	B3En1t2Q1	4	"Nov.21-25, 2013"	1	0	0	0	0	0	0	5	0	0	1	0	25	0	0	0	0	0	0	0	0	0	1	0	0	0	10	0	0	0	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	5	0	0	0
+Season III	3	Enclosure	High	B3En1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	5	43	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	3	Rodent Exclosure	High	B3Ex1CEx01	6	"Nov.21-25, 2013"	0	0	0	0	0	0	0	20	0	3	0	0	5	0	0	0	0	0	0	0	0	5	0	0	5	0	15	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Rodent Exclosure	High	B3Ex1CEx02	7	"Nov.21-25, 2013"	0	0	0	0	5	0	0	30	1	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	3	Control	High	B3Ex1Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	2	0	0	0	1	0	0	0	0	0	0	0	0	0	1	3	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Control	High	B3Ex1Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	1	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	2	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	1	0	2	0	0	0	0	0	1	0	0	0	0	0	0	5	0	0	0
+Season III	3	Control	High	B3Ex1Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	20	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	0	0	0
+Season III	3	Control	High	B3Ex1Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	1	3	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Control	High	B3Ex1Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	40	0	0	0
+Season III	3	Exclosure	High	B3Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	45	0	0	0	0	2	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Exclosure	High	B3Ex1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	15	0	0	35	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Exclosure	High	B3Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	25	0	0	1	0	25	0	0	0	0	0	1	0	0	5	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Exclosure	High	B3Ex1t2Q1	4	"Nov.21-25, 2013"	1	0	0	0	0	0	0	40	0	0	0	0	25	0	0	0	0	0	0	0	0	3	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Exclosure	High	B3Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	5	0	0	50	5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	3	Control	Medium	B3Ex2Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	0	0	0	0	0	0
+Season III	3	Control	Medium	B3Ex2Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	5	0	0	3	0	0	0	0	10	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	10	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0
+Season III	3	Control	Medium	B3Ex2Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	1	5	0	0	5	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0
+Season III	3	Control	Medium	B3Ex2Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	1	0	3	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0
+Season III	3	Control	Medium	B3Ex2Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	20	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0
+Season III	3	Exclosure	Medium	B3Ex2t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	40	0	0	0
+Season III	3	Exclosure	Medium	B3Ex2t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	3	0	1	0	1	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	2	1	0	0	0	0	0	0	0	0	0	0	0	0	40	0	0	0	0	0	0
+Season III	3	Exclosure	Medium	B3Ex2t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	5	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	2	0	0	0	0	0	0	0	0	0	20	0	0	2	0	0	0
+Season III	3	Exclosure	Medium	B3Ex2t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	1	0	0	0	0	0	0	0	0	0	60	0	0	5	0	0	0
+Season III	3	Exclosure	Medium	B3Ex2t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	5	0	0	15	0	0	0
+Season III	3	Control	Low	B4Ex1Cp1t1Q1	1	"Nov.21-25, 2013"	1	0	0	0	10	0	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	10	0	5	2	0	0	0	0	0	0	0	2	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0
+Season III	3	Control	Low	B4Ex1Cp1t1Q2	2	"Nov.21-25, 2013"	1	0	0	0	50	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	0	0	1	0	0	1	1	0	0	0	1	0	2	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	4	0	0	0	0
+Season III	3	Control	Low	B4Ex1Cp1t1Q3	3	"Nov.21-25, 2013"	2	0	0	1	0	0	0	0	0	0	0	0	48	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	3	13	0	0	0	2	0	1	1	0	0	1	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0
+Season III	3	Control	Low	B4Ex1Cp1t2Q1	4	"Nov.21-25, 2013"	2	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	5	0	0	0	0	0	1	5	0	0	0	0	2	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0
+Season III	3	Control	Low	B4Ex1Cp1t2Q2	5	"Nov.21-25, 2013"	2	0	0	2	0	0	0	0	0	0	0	0	55	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	2	3	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	3	Exclosure	Low	B4Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	1	1	0	0	5	0	0	0	0	0	0	0	0	1	0	0	0	6	0	0	0
+Season III	3	Exclosure	Low	B4Ex1t1Q2	2	"Nov.21-25, 2013"	0	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	45	0	0	0	0	5	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	1	1	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0
+Season III	3	Exclosure	Low	B4Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	65	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	1	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	3	Exclosure	Low	B4Ex1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	65	0	0	0	0	1	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	1	0	1	0	1	0	0	0	0	0	0	0	0	1	0	0	0	2	0	0	0
+Season III	3	Exclosure	Low	B4Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	90	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	2	Control	Low	B5Ex1Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	25	0	0	0	1	0	1	0	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0
+Season III	2	Control	Low	B5Ex1Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	2	Control	Low	B5Ex1Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	10	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	1	0	0	0	0	0	0	0	0	0	0	0	1	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
+Season III	2	Control	Low	B5Ex1Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	35	0	0	1	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	2	Control	Low	B5Ex1Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	2	Exclosure	Low	B5Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	5	20	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0	0	0	2	0	0	0	0	0	0	1	1	0	0	0	0	0	1	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	2	Exclosure	Low	B5Ex1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	45	0	0	0	0	35	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	2	Exclosure	Low	B5Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	30	0	0	0	0	10	0	0	0	0	1	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	20	0	0	0	0	0	0	1	0	1	0	8	0	5	0	0	1
+Season III	2	Exclosure	Low	B5Ex1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	25	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	10	0	0	0	0	0	0	0	0	0	0	40	0	8	0	0	0
+Season III	2	Exclosure	Low	B5Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	1	0	10	0	0	0	0	1	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1	1	0	5	0	0	0	10	0	0	0	0	0	0	0	0	1	0	0	0	15	0	0	0
+Season III	1	Control	Low	B6Ex1Cp1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	1	10	5	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	0	0	0	0	0	5	2	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	10	0	0	0
+Season III	1	Control	Low	B6Ex1Cp1t1Q2	2	"Nov.21-25, 2013"	0	0	0	0	0	0	0	60	0	0	0	0	5	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0
+Season III	1	Control	Low	B6Ex1Cp1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	0	10	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	3	0	0	0	0	0	0	0	1	0	0	0	0	0	1	0	1	0	1	0	0	0	0	0	0	0	0	0	15	0	0	5	0	0	0
+Season III	1	Control	Low	B6Ex1Cp1t2Q1	4	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	56	0	0	0	0	2	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+Season III	1	Control	Low	B6Ex1Cp1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	25	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	5	0	0	0	0	0	0	0	0	0	5	0	0	5	0	0	0
+Season III	1	Exclosure	Low	B6Ex1t1Q1	1	"Nov.21-25, 2013"	0	0	0	0	0	0	0	15	0	0	0	0	10	1	0	0	0	0	0	0	0	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	20	0	0	0	1	0	0	0	1	0	0	0
+Season III	1	Exclosure	Low	B6Ex1t1Q2	2	"Nov.21-25, 2013"	0	5	0	0	0	0	0	2	0	0	1	0	30	0	0	0	0	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	0	2	0	5	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+Season III	1	Exclosure	Low	B6Ex1t1Q3	3	"Nov.21-25, 2013"	0	0	0	0	0	0	2	3	0	0	0	0	5	0	0	0	0	0	0	0	0	40	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	1	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Season III	1	Exclosure	Low	B6Ex1t2Q1	4	"Nov.21-25, 2013"	0	0	0	2	0	0	0	0	0	0	0	0	30	0	0	0	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	3	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0	0	3	0	0	0
+Season III	1	Exclosure	Low	B6Ex1t2Q2	5	"Nov.21-25, 2013"	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	5	0	0	0	0	90	0	0	0	0	0	0	0	5	0	0	0
