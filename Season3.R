@@ -1,23 +1,80 @@
+#####################################################
+# Nech Sar - Biomass regrowth and pastoralism 
 rm(list=ls())
-nsbiomass3<-read.table("M:\\Africa\\VegetationDataSeason3\\BiomassSeason3a.txt",header=T,sep="\t")
+library(MASS)
+library(vegan)
+#####################################################
+
+nsbiomass3<-read.table("BiomassSeason3a.txt",header=T,sep="")
+
+# Structure of data
+names(nsbiomass3)
 head(nsbiomass3)
+tail(nsbiomass3)
+str(nsbiomass3)
+
+# Standard error function
 sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
 
+# Factors 
 nsbiomass3$Livestock.density<-factor(nsbiomass3$Livestock.density,levels=c("Low","Medium","High"),ordered=T)
-
 nsbiomass3$HerbClimb1<-nsbiomass3$HerbNetBiomassSeason1+nsbiomass3$ClimberNetBiomassSeason1
 nsbiomass3$HerbClimb2<-nsbiomass3$HerbNetBiomassSeason2+nsbiomass3$ClimberNetBiomassSeason2
 nsbiomass3$HerbClimb3<-nsbiomass3$HerbNetBiomassSeason3+nsbiomass3$ClimberNetBiomassSeason3
-
 nsbiomass3$plotid<-paste(nsbiomass3$Treatment,nsbiomass3$Livestock.density)
 
 #Convert to gm^-2
-nsbiomass3[,6:23]<-nsbiomass3[,6:23]*4
+#nsbiomass3[,6:23]<-nsbiomass3[,6:23]*4 # Original - changed order?
+nsbiomass3[,c(6:20,23:25)]<-nsbiomass3[,c(6:20,23:25)]*4
 
+levels(nsbiomass3$Treatment)
 nsbiomass3orig<- droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass3$Treatment=="Exclosure",])
 with(nsbiomass3,tapply(TotalSeason3,list(Treatment,Livestock.density),mean))
 
-tiff("M:\\Africa\\VegetationDataSeason3\\Figs\\BiomassJune2017.tif",width=12,height=8,units="in",res=100)
+
+########################################################################
+#### Data exploration ####
+# A Missing values?
+# B Outliers in Y / Outliers in X
+# C Collinearity X
+# D Relationships Y vs X
+# E Spatial/temporal aspects of sampling design (not relevant here)
+# F Interactions (is the quality of the data good enough to include them?)
+# G Zero inflation Y
+# H Are categorical covariates balanced?
+########################################################################
+
+nsdung3<-read.table("CountAverageFeb13.txt",header=T,sep=" ")
+
+names(nsdung3)
+nsdung3$Zone # Each herbivore transect corresponds to a unique zone unique zone? 
+
+nsdung3$Cattle
+
+# Spatial correlation
+par(mfrow = c(1, 1), mar = c(4, 3, 3, 2))
+par(pty = "s", mar = c(5,5,2,2), cex.lab = 1.5)       
+plot(x =  nsdung3$Ycent,
+     y =  nsdung3$Xcent,
+     type = "p",
+     cex=(nsdung3$Burchells_Zebra/10), #nsdung3$Cattle
+     pch = 21,
+     xlab = "X-coordinates",
+     ylab = "Y-coordinates")
+
+ordihull(nsdung3[, c("Ycent", "Xcent")],
+         draw = "polygon",
+         groups = nsdung3[, "Zone"],
+         label = F,
+         col = "red")     
+# Zone = each unique herbivore transect
+
+
+
+
+
+# Raw biomass for each harvest period
+tiff("BiomassJune2017.tif",width=12,height=8,units="in",res=100)
 
 par(mfrow=c(1,3))
 meanbio<- with(droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass3$Treatment=="Exclosure",]),tapply(TotalSeason1,list(Treatment,Livestock.density),mean,na.rm=T))
@@ -36,8 +93,9 @@ meanbio<- with(droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass
 sembio<- with(droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass3$Treatment=="Exclosure",]),tapply(TotalSeason3,list(Treatment,Livestock.density),sem))
 b1<-barplot(meanbio,beside=T,legend.text=c("Grazed","Exclosure"),main="November 2013",xlab="Livestock density",ylab="",ylim=c(0,1000),las=1)
 arrows(b1,meanbio+sembio,b1,meanbio-sembio,code=3,length=0.05,angle=90)
-title(ylab=expression("Biomass gm"^"-2"),line=2)
+title(ylab=expression("Biomass g m"^"-2"),line=2)
 dev.off()
+
 
 
 lm1<-with(droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass3$Treatment=="Exclosure",]),lm(TotalSeason1~Treatment*Livestock.density))
