@@ -1,25 +1,33 @@
 #Herbivore count analysis after 3rd count
 
-herbcounts3<-read.table("M:\\Africa\\Herbivore Counts\\AllHerbivoreCounts_3.txt",header=T,sep="\t")
+herbcounts3<-read.table("AllHerbivoreCounts_3.txt",header=T,sep="\t")
 
-zonearea<-read.table("M:\\Africa\\Herbivore Counts\\CountZonePolys3.txt",header=T,sep="\t")
+zonearea<-read.table("CountZonePolys3.txt",header=T,sep="\t")
 
 
 herbcounts3<-merge(herbcounts3,zonearea,by.x="Zone1",by.y="Zone")
 Density<-with(herbcounts3,Total/Area_km2)
 herbcounts3<-cbind(herbcounts3,Density)
+names(herbcounts3)
+
+# Zone + date
+herbcounts3$zone_date<-as.factor(with(herbcounts3, paste(Zone1,date, sep="-")))
+
 
 with(herbcounts3,tapply(Density,list(Zone1,Species,Counting),mean,na.rm=T))
-meandens<-with(herbcounts3,tapply(Density,list(Zone1,Species),sum))/4
+meandens<-with(herbcounts3,tapply(Density,list(zone_date,Species),sum))/4
 meandens<-data.frame(cbind(rownames(meandens),meandens))
 names(meandens)[1]<-"Zone"
 zonearea<-zonearea[order(zonearea$Zone),]
 
 meandensdf<-merge(zonearea,meandens,by.x="Zone",by.y="Zone",all.x=T,all.y=T)
 
+dim(meandensdf)
+head(meandensdf)
 meandensdf[,2:12] <- as.numeric(as.matrix(meandensdf[,2:12]))
 meandensdf[is.na(meandensdf)]<-0
 #write.table(meandensdf,"M:\\Africa\\Herbivore Counts\\CountAverageFeb13.txt")
+#write.table(meandensdf,"CountAverageFeb13_Date.txt")
 
 
 
