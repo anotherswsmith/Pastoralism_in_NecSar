@@ -12,6 +12,7 @@ library(tidyr)
 library(lubridate)
 library(vegan)
 library(ggplot2)
+library(nlme)
 ############################################################################
 
 nsSpp<-read.csv("VegCompSeason3.csv",header=T,sep=",")
@@ -45,7 +46,70 @@ dim(nsreharvest3)
 nsreharvest3b<-nsreharvest3[c("Transect","Block","Treatment","Trt.name","Season","Replicate","plot_code","Livestock.density","GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1",
                               "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1","TotalBiomass1")]
 nsSpp3<-left_join(nsSpp2,nsreharvest3b, by=c("Transect","Treatment","Block","Trt.name","Season","Replicate","Livestock.density","plot_code"),drop=F)
-dim(nsSpp3)
+
+# Block as a factor
+nsSpp3$fBlock<-as.factor(nsSpp3$Block)
+
+#### SEPERATE PLANT FUNCTIONAL GROUP DATASETS ####
+
+# Repeat analysis - but just for grasses, woody, herbs and climbers
+nsSppFx<-read.csv("Spp.Fx.group.csv",header=T,sep=",")
+nsSppFxG<-droplevels(nsSppFx[nsSppFx$Fx.group!="Grass",])
+nsSppFxW<-droplevels(nsSppFx[nsSppFx$Fx.group!="Dwarf shrub",])
+nsSppFxC<-droplevels(nsSppFx[nsSppFx$Fx.group!="Climber",])
+
+# Remove . and spaces = same names..Grasses
+names(nsSpp3)  <- gsub("\\.", "",  names(nsSpp3))
+to.remove  <- gsub(" ", "", levels(nsSppFxG$Species))
+to.remove  <- gsub("\\.", "", to.remove )
+to.remove  <- gsub("[()]", "",to.remove)
+
+# Remove . and spaces = same names..Woody
+to.removeW  <- gsub(" ", "", levels(nsSppFxW$Species))
+to.removeW  <- gsub("\\.", "", to.removeW )
+to.removeW  <- gsub("[()]", "",to.removeW)
+
+# Remove . and spaces = same names..Climbers
+#to.removeC  <- gsub(" ", "", levels(nsSppFxC$Species))
+#to.removeC  <- gsub("\\.", "", to.removeC )
+#to.removeC  <- gsub("[()]", "",to.removeC)
+
+`%ni%` <- Negate(`%in%`)
+nsSpp3G<-nsSpp3[ , !(names(nsSpp3) %in% to.remove)]
+#nsSpp2G<-subset(nsSpp2,select = names(nsSpp2) %ni% to.remove)
+names(nsSpp3G) # Subset is now just grasses
+
+# Subset woody - dwarf shrubs
+nsSpp3W<-nsSpp3[ , !(names(nsSpp3) %in% to.removeW)]
+nsSpp3W<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeW)
+names(nsSpp3W) # Subset is now just dwarf shrubs
+
+# Subset climbers
+nsSpp3C<-nsSpp3[ , !(names(nsSpp3) %in% to.removeC)]
+nsSpp3C<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeC)
+names(nsSpp3C) # Subset is now just climber
+
+
+
+#### Species richness #### 
+#### Overall summary - species richness
+nsSpp3$Richness<-apply(nsSpp3[,10:74]>0,1,sum)
+aggregate(Richness~Livestockdensity+Treatment+Season,nsSpp3,mean)
+nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index="shannon")
+ShanD1<-lme(Shannon~Treatment+Livestockdensity+Season+
+              Treatment:Livestockdensity+Livestockdensity:Season+
+              Treatment:Season+
+            Treatment:Livestockdensity:Season,
+            random= ~ 1|fBlock,data=nsSpp3)
+summary(ShanD1)
+anova(ShanD1)
+AIC(ShanD1) #1136.222    
+aggregate(Shannon~Livestockdensity+Season,nsSpp3,mean)
+# Diversity higher in low livestock and third season
+
+# Grasses
+nsSpp3G$Richness<-apply(nsSpp3G[,10:28]>0,1,sum)
+aggregate(Richness~Season+Livestockdensity,nsSpp3G,mean)
 
 ################################################################################
 #### Non multi-dimensional scaling - explore spp data ####
@@ -74,10 +138,10 @@ plot(mdsNS$points[,1]~mdsNS$points[,2])
 
 # Enviro fit - fit season, treatment, livestock density 
 # Create a factor to combining livestock density, treatment and date
-nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestock.density,Treatment,Date, sep="-")))
+nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Date, sep="-")))
 
 # Envfit
-NS.ev <- envfit(mdsNS~Livestock.density+Treatment+ Season,data = nsSpp3, 
+NS.ev <- envfit(mdsNS~Livestockdensity+Treatment+ Season,data = nsSpp3, 
                   perm=999,strata=as.numeric(nsSpp3$Block))
 NS.ev 
 # Weak difference in season - biggest difference is livestock density - r2=0.26
@@ -88,7 +152,7 @@ NS.har
 
 # Extract centroids
 vec.sp.df<-as.data.frame(cbind(NS.har$factors$centroids*sqrt(NS.har$factors$r)))
-vec.sp.df$Livestock.density<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
+vec.sp.df$Livestockdensity<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
                                "Medium","Medium","Medium","Medium","Medium","Medium")
 vec.sp.df$Treatment<-c("Control","Control","Control","Exclosure","Exclosure","Exclosure","Control","Control","Control","Exclosure","Exclosure","Exclosure",
                        "Control","Control","Control","Exclosure","Exclosure","Exclosure")
@@ -99,58 +163,205 @@ TotBio<-aggregate(TotalBiomass1~harvest_code,nsSpp3,mean)
 vec.sp.df$TotalBiomass1<-TotBio[,2]
 vec.sp.df$TotalBiomass1<-as.numeric(vec.sp.df$TotalBiomass1)
 
-
 # Plot centroids
-CenPlot<-ggplot(vec.sp.df,aes(x=NMDS1,y=NMDS2, colour=Livestock.density,fill=Livestock.density,shape=Treatment))
+CenPlot<-ggplot(vec.sp.df,aes(x=NMDS1,y=NMDS2, colour=Livestockdensity,fill=Livestockdensity,shape=Treatment))
 CenPlot<-CenPlot+geom_point(aes(size=TotalBiomass1))
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.5)
 CenPlot<-CenPlot +ggtitle("Total biomass")
 CenPlot<-CenPlot +theme_classic()
 CenPlot
 
-# Repeat analysis - but just for grasses, woody, herbs and climbers
-nsSppFx<-read.csv("Spp.Fx.group.csv",header=T,sep=",")
-nsSppFxG<-droplevels(nsSppFx[nsSppFx$Fx.group!="Grass",])
-nsSppFxW<-droplevels(nsSppFx[nsSppFx$Fx.group!="Dwarf shrub",])
-nsSppFxC<-droplevels(nsSppFx[nsSppFx$Fx.group!="Climber",])
+# Mean distance moved by each plot - overall
+nsSpp3$NMDS1<-mdsNS$points[,1]
+nsSpp3$NMDS2<-mdsNS$points[,2]
+nsSpp31<-droplevels(nsSpp3[nsSpp3$Season=="Season I",])
+nsSpp32<-droplevels(nsSpp3[nsSpp3$Season=="Season II",])
+nsSpp33<-droplevels(nsSpp3[nsSpp3$Season=="Season III",])
 
-# Remove . and spaces = same names..Grasses
-names(nsSpp3)  <- gsub("\\.", "",  names(nsSpp3))
-to.remove  <- gsub(" ", "", levels(nsSppFxG$Species))
-to.remove  <- gsub("\\.", "", to.remove )
-to.remove  <- gsub("[()]", "",to.remove)
+nsSpp31sub<-nsSpp31[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp32sub<-nsSpp32[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp33sub<-nsSpp33[,c("Quadrats","Season","NMDS1","NMDS2")]
+dim(nsSpp32sub)
 
-# Remove . and spaces = same names..Woody
-to.removeW  <- gsub(" ", "", levels(nsSppFxW$Species))
-to.removeW  <- gsub("\\.", "", to.removeW )
-to.removeW  <- gsub("[()]", "",to.removeW)
+# First season NMDS scores
+cnt<-cbind(nsSpp31sub$NMDS1,nsSpp31sub$NMDS2)
 
-# Remove . and spaces = same names..Climbers
-to.removeC  <- gsub(" ", "", levels(nsSppFxC$Species))
-to.removeC  <- gsub("\\.", "", to.removeC )
-to.removeC  <- gsub("[()]", "",to.removeC)
+#apply(m,1,function(x,cnt) {(sqrt((x[1] - cnt[1])^2+(x[2]-cnt[2])^2))},cnt)
+euc.dist <- function(x1) sqrt(sum((x1 - cnt) ^ 2))
+NMDSdist2<-apply(cbind(nsSpp32sub$NMDS1,nsSpp32sub$NMDS2), 1, euc.dist)
+NMDSdist3<-apply(cbind(nsSpp33sub$NMDS1,nsSpp33sub$NMDS2), 1, euc.dist)
 
-`%ni%` <- Negate(`%in%`)
-nsSpp3G<-nsSpp3[ , !(names(nsSpp3) %in% to.remove)]
-#nsSpp2G<-subset(nsSpp2,select = names(nsSpp2) %ni% to.remove)
-names(nsSpp3G) # Subset is now just grasses
+nsSpp32<-cbind(nsSpp32,NMDSdist2)
+nsSpp33<-cbind(nsSpp33,NMDSdist3)
+colnames(nsSpp32)[87]<-"Eudist"
+colnames(nsSpp33)[87]<-"Eudist"
+reharv23<-rbind(nsSpp32,nsSpp33)
+names(reharv23)
 
-# Subset woody - dwarf shrubs
-nsSpp3W<-nsSpp3[ , !(names(nsSpp3) %in% to.removeW)]
-nsSpp3W<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeW)
-names(nsSpp3W) # Subset is now just dwarf shrubs
+# Large outlier - test with and without  - low livestock
+nsSpp3G23b<-nsSpp3G23[-c(90,180),]
 
-# Subset climbers
-nsSpp3C<-nsSpp3[ , !(names(nsSpp3) %in% to.removeC)]
-nsSpp3C<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeC)
-names(nsSpp3C) # Subset is now just climber
+# Mixed linear model - grass biomass and Eudist
+names(reharv23)
+min(reharv23$TotalBiomass1)
+EudistLM<-lme(Eudist~Livestockdensity+Treatment,#+Season+
+                     #Livestockdensity:Treatment+Season:Treatment+
+                     #Livestockdensity:Season+Livestockdensity:Treatment:Season,
+                   random=~1|fBlock,method="ML",data=reharv23)
+summary(EudistLM)
+AIC(EudistLM) # Imrpoves AIC 629
 
+#Checking assumptions
+E1 <- resid(EudistLM, type = "pearson") 
+F1 <- fitted(EudistLM)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1, 
+     y = E1,
+     xlab = "Fitted values",
+     ylab = "Residuals", 
+     xlim = c(min(F1), max(F1)))
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 2) # Better spread no transformation
+
+# Drop any interactions?
+drop1(EudistLM, test="Chi")
+#Livestockdensity  2 629.86 12.3071 0.002126 **
+#Treatment         1 627.80  8.2503 0.004075 **
+
+# Plot Euclidean distance vs livestock and treatment
+
+sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+x<-aggregate(Eudist~Livestockdensity+Treatment,reharv23,mean)
+xsd<-aggregate(Eudist~Livestockdensity+Treatment,reharv23,sem)
+XEU<-cbind(x,xsd[,3])
+colnames(XEU)[4]<-"sd"
+
+nsSpp3G23$Eudist
+p<-ggplot(XEU,aes(x=Livestockdensity,y=Eudist,colour=Livestockdensity,shape=Treatment))
+p<-p+geom_point(stat = "identity", size=3,position=position_dodge(width=.65))   
+p<-p+geom_errorbar(aes(ymin=Eudist-sd, ymax=Eudist+sd),position=position_dodge(width=.65),stat = "identity", width=.2)
+p<-p+ylab("Euclidean distance")
+p<-p+theme_classic()
+p
+
+Ep<-ggplot(reharv23,aes(x=Eudist,y=TotalBiomass1,colour=Season,shape=Treatment))
+Ep<-Ep+facet_wrap(~Livestockdensity)
+Ep<-Ep+geom_point(stat = "identity", size=3,position=position_dodge(width=.65))   
+Ep<-Ep+xlab("Euclidean distance")
+Ep<-Ep+theme_classic()
+Ep
+
+# Species most asscoicated with specific livestock x treatment x season combination
+nsSpp3.env<-nsSpp3[,c("fBlock","Livestockdensity","Season","Treatment")]
+sim <- with(nsSpp3.env, simper(nsSpp3[,10:74],nsSpp3$Livestockdensity),permutations=999)
+summary(sim,ordered = TRUE)
+
+#Contrast: High_Low                      average
+#BothriochloainsculptaHochstExARichACamus 1.440e-01 # 0.144
+#ChrysopogonplumulosusHochst              1.281e-01
+#CynodonnlemfuensisVanderyst              1.153e-01
+#HeteropogoncontortusLRoemSchult          7.716e-02
+# Strongest species differences in grasses
+boxplot(BothriochloainsculptaHochstExARichACamus~Livestockdensity, nsSpp3) # High in high
+boxplot(ChrysopogonplumulosusHochst~Livestockdensity, nsSpp3) # High in high
+boxplot(CynodonnlemfuensisVanderyst~Livestockdensity, nsSpp3) # High in Low livestock
+boxplot(HeteropogoncontortusLRoemSchult~Livestockdensity, nsSpp3) # Higher in Low
+
+#### Grasses ####
 # USE NMDS on Grass only
 names(nsSpp3G[,10:28]) # 
 mdsNSG<-metaMDS(nsSpp3G[,10:28], trace =F) 
 mdsNSG # 0.1550549
 
-names(nsSpp3G)
+# Mean distance moved by each plot - grasses
+nsSpp3G$NMDS1<-mdsNSG$points[,1]
+nsSpp3G$NMDS2<-mdsNSG$points[,2]
+nsSpp3G1<-droplevels(nsSpp3G[nsSpp3G$Season=="Season I",])
+nsSpp3G2<-droplevels(nsSpp3G[nsSpp3G$Season=="Season II",])
+nsSpp3G3<-droplevels(nsSpp3G[nsSpp3G$Season=="Season III",])
+
+nsSpp3G1sub<-nsSpp3G1[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp3G2sub<-nsSpp3G2[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp3G3sub<-nsSpp3G3[,c("Quadrats","Season","NMDS1","NMDS2")]
+dim(nsSpp3G2sub)
+
+#cnt = c(mean(m[,1]),mean(m[,2]))
+cnt<-cbind(nsSpp3G1sub$NMDS1,nsSpp3G1sub$NMDS2)
+
+#apply(m,1,function(x,cnt) {(sqrt((x[1] - cnt[1])^2+(x[2]-cnt[2])^2))},cnt)
+euc.dist <- function(x1) sqrt(sum((x1 - cnt) ^ 2))
+test.NMDSdist2<-apply(cbind(nsSpp3G2sub$NMDS1,nsSpp3G2sub$NMDS2), 1, euc.dist)
+test.NMDSdist3<-apply(cbind(nsSpp3G3sub$NMDS1,nsSpp3G3sub$NMDS2), 1, euc.dist)
+
+#test.NMDSdist2<-as.data.frame(apply(cnt,1,function(x,cnt) {(sqrt((nsSpp3G2sub$NMDS1 - cnt[1])^2+(nsSpp3G2sub$NMDS2-cnt[2])^2))},cnt))
+#test.NMDSdist3<-as.data.frame(apply(cnt,1,function(x,cnt) {(sqrt((nsSpp3G3sub$NMDS1 - cnt[1])^2+(nsSpp3G3sub$NMDS2-cnt[2])^2))},cnt))
+
+nsSpp3G2<-cbind(nsSpp3G2,test.NMDSdist2)
+nsSpp3G3<-cbind(nsSpp3G3,test.NMDSdist3)
+colnames(nsSpp3G2)[38]<-"Eudist"
+colnames(nsSpp3G3)[38]<-"Eudist"
+nsSpp3G23<-rbind(nsSpp3G2,nsSpp3G3)
+names(nsSpp3G23)
+
+nsSpp3G1<-cbind(nsSpp3G1,test.NMDSdist2,test.NMDSdist3)
+names(nsSpp3G1)
+#colnames(nsSpp3G1)[38]<-"V1"
+#colnames(nsSpp3G1)[39]<-"V2"
+nsSpp3G1$Eudist<-rowSums(nsSpp3G1[,c(38:39)])
+nsSpp3G1b<-nsSpp3G1[-90,]
+
+# Large outlier - test with and without  - low livestock
+nsSpp3G23b<-nsSpp3G23[-c(90,180),]
+
+# Mixed linear model - grass biomass and Eudist
+library(glmmADMB)
+names(nsSpp3G23)
+nsSpp3G23$fBlock<-as.factor(nsSpp3G23$Block)
+nsSpp3G23$GrassNetReharvestBiomass1[nsSpp3G23$GrassNetReharvestBiomass1==0]<-1
+EudistLM<-glmmadmb(GrassNetReharvestBiomass1~Livestockdensity:Treatment:Eudist
+                   +(1|fBlock),
+                   #admb.opts=admbControl(shess=FALSE,noinit=FALSE,impSamp=200,maxfn=1000,imaxfn=500,maxph=5),
+                                         family="gamma",data=nsSpp3G23)
+summary(EudistLM)
+AIC(EudistLM) # Imrpoves AIC 1595
+
+#Checking assumptions
+E1 <- resid(EudistLM, type = "pearson") 
+F1 <- fitted(EudistLM)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1, 
+     y = E1,
+     xlab = "Fitted values",
+     ylab = "Residuals", 
+     xlim = c(min(F1), max(F1)))
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 2) # Better spread no transformation
+
+drop1(EudistLM, test="Chi")
+
+
+sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+x<-aggregate(Eudist~Livestockdensity+Treatment,nsSpp3G23b,mean)
+xsd<-aggregate(Eudist~Livestockdensity+Treatment,nsSpp3G23b,sem)
+XEU<-cbind(x,xsd[,3])
+colnames(XEU)[4]<-"sd"
+
+nsSpp3G23$Eudist
+p<-ggplot(XEU,aes(x=Livestockdensity,y=Eudist,colour=Treatment))
+#p<-p+ geom_boxplot()#outlier.shape = NA)
+#p<-p+ scale_y_continuous(limits = c(4,11))
+p<-p+geom_point(stat = "identity", size=3,position=position_dodge(width=.65))   
+p<-p+geom_errorbar(aes(ymin=Eudist-sd, ymax=Eudist+sd),position=position_dodge(width=.65),stat = "identity", width=.2)
+p<-p+theme_classic()
+p
+
+p1<-ggplot(nsSpp3G1b,aes(x=Eudist,y=GrassNetReharvestBiomass1,colour=Livestockdensity,shape=Treatment))
+#p<-p+ geom_errorbar(aes(ymin=Eudist-sd,ymax=Eudist+sd), width=.2)
+p1<-p1+geom_point(stat = "identity")   
+p1
+
 NS.evG <- envfit(mdsNSG~Livestockdensity+Treatment+ Season,data = nsSpp3G, 
                 perm=999,strata=as.numeric(nsSpp3G$Block))
 NS.evG # Livestock density and treatment significant - not season
@@ -187,6 +398,7 @@ CenPlotG<-CenPlotG+geom_text(aes(label=Season),hjust=0, vjust=-.5)
 CenPlotG<-CenPlotG+ggtitle("Grass")
 CenPlotG<-CenPlotG+theme_classic()
 CenPlotG
+
 
 #### Biplot #####
 # Biplot # Species - just grasses 
@@ -259,7 +471,6 @@ nsSpp2GLex<-nsSpp2GL[nsSpp2GL$Treatment=="Exclosure",]
 
 nsSpp2GLex1<-nsSpp2GLex[nsSpp2GLex$Season=="Season I",]
 nsSpp2GLex23<-nsSpp2GLex[nsSpp2GLex$Season!="Season I",]
-
 
 colMax <- function(data) sapply(data, max, na.rm = TRUE)
 colMean<- function(data) sapply(data, mean, na.rm = TRUE)
