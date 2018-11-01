@@ -256,7 +256,6 @@ RegrowW<-RegrowW+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_c
 RegrowW<-RegrowW+ggtitle("Woody Biomass")
 RegrowW
 
-
 #### Percent difference Original biomass ####
 nsReharvestbO<-droplevels(nsReharvestb[is.na(nsReharvestb$Harvest.date),])
 nsReharvestbH1_2<-droplevels(nsReharvestb[!is.na(nsReharvestb$Harvest.date),])
@@ -275,12 +274,12 @@ nsReharvestavg<-cbind(nsReharvestavg,nsReharvestsem[6])
 colnames(nsReharvestavg)[7]<-"se"
 
 # Total biomassregrowth
-Regrow<-ggplot(nsReharvestavg, aes(x=Reharvest.date, y=Tot.Per.diff,linetype=harvest_code,shape=Treatment,colour=Harvest,fill=Harvest)) 
-Regrow<-Regrow+facet_wrap(~Livestock.density, scale="fixed")
-Regrow<-Regrow+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_classic()
-Regrow<-Regrow+geom_point(size=4)
-Regrow<-Regrow+ggtitle("Total Biomass")
-Regrow
+Regrow2<-ggplot(nsReharvestavg, aes(x=Reharvest.date, y=Tot.Per.diff,linetype=harvest_code,shape=Treatment,colour=Harvest,fill=Harvest)) 
+Regrow2<-Regrow2+facet_wrap(~Livestock.density, scale="fixed")
+Regrow2<-Regrow2+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_classic()
+Regrow2<-Regrow2+geom_point(size=4)
+Regrow2<-Regrow2+ggtitle("Total Biomass percentage")
+Regrow2
 
 ###############################################################################
 #### Mixed linear model (nlme) - auto-correlation? ####
@@ -300,21 +299,22 @@ nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
 #corMatrix(cs1AR1.)
 nsReharvestH1T<- nsReharvestH1[is.finite(nsReharvestH1$Tot.Per.diff),]
 
-Tot1<-lme(Tot.Per.diff~Livestock.density+Treatment+
-            Treatment:Livestock.density:Harvest.date,
-         # Livestock.density:Harvest.date+
-         # Livestock.density:Harvest+
-         #Livestock.density:Harvest.date:Treatment, #TotalBiomass0,
-          random= ~ 1|fBlock, method="ML",data=nsReharvestH1T)
+Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+
+            Harvest.date:Treatment+
+         Livestock.density:Harvest.date+
+         Livestock.density:Treatment+
+         Treatment:Livestock.density:Harvest.date, #TotalBiomass0,
+          random= ~ 1|fBlock, method="ML",data=nsReharvestH1)
           #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
 summary(Tot1)
 anova(Tot1)
 AIC(Tot1) #2610.436
-plot(ACF(Tot1),alpha=0.05) # Nothing systematic # But inital break of 1.0?
+plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
 
-plot(Tot1) #OK
-drop1(Tot1,test="Chisq") # 0.05717 . marginal
-#Livestock.density:Treatment  2 727.16 5.6331  0.05981. marginal
+plot(Tot1) 
+
+drop1(Tot1,test="Chisq")
+#Livestock.density:Treatment:Harvest.date 8.8967   0.0117
 
 # Explore different grazers
 
@@ -329,7 +329,6 @@ AIC(Tot1) #2622.329
 plot(Tot1) #OK
 plot(ACF(Tot1),alpha=0.05) 
 drop1(Tot1,test="Chisq") # Burchells_ZebraMetBio  1 1750.1 8.1234  0.00437 **
-
 
 # 1. Get the betas and gammas
 #beta.mcmc <- outB$sims.list$beta 
@@ -365,10 +364,8 @@ MyData5$SE <- sqrt(  diag(Xp %*% vcov(Tot2) %*% t(Xp))  )
 #a 95% confidence interval
 MyData5$SeUp <- MyData5$Pred + 1.96 * MyData5$SE
 MyData5$SeLo <- MyData5$Pred - 1.96 * MyData5$SE
-
 names(MyData5)
 colnames(MyData5)[3]<-"TotalBiomass1"
-
 
 # Averages for difference herbivores
 aggregate(TotalBiomass1~ Burchells_ZebraMetBio + CattleMetBio + Grants_GazelleMetBio + Greater_KuduMetBio+Treatment,nsReharvestH1,mean)
