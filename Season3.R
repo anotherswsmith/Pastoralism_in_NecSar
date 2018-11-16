@@ -13,6 +13,7 @@ library(rgdal)
 #####################################################
 #### Exclosure biomass ####
 #####################################################
+
 nsbiomass3<-read.table("BiomassSeason3a.txt",header=T,sep="\t")
 
 # Structure of data
@@ -33,76 +34,14 @@ nsbiomass3$plotid<-paste(nsbiomass3$Treatment,nsbiomass3$Livestock.density)
 
 #Convert to gm^-2
 #nsbiomass3[,6:23]<-nsbiomass3[,6:23]*4 # Original - changed order?
-nsbiomass3[,c(6:20,23:25)]<-nsbiomass3[,c(6:20,23:25)]*4
-
+nsbiomass3[,c(7:21,24:26)]<-nsbiomass3[,c(7:21,24:26)]*4
 levels(nsbiomass3$Treatment)
 nsbiomass3orig<- droplevels(nsbiomass3[nsbiomass3$Treatment=="Control" | nsbiomass3$Treatment=="Exclosure",])
-with(nsbiomass3,tapply(TotalSeason3,list(Treatment,Livestock.density),mean))
+with(nsbiomass3orig,tapply(TotalSeason3,list(Treatment,Livestock.density),mean))
 
 ########################################################################
-#### Herbivore count observations ####
+##### Combine dung and biomass regrowth exclosure xy coordinates ####
 ########################################################################
-
-nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
-
-names(nsherb3)
-nsherb3$Zone # Each herbivore transect corresponds to a unique zone unique zone? 
-
-# Spatial correlation
-par(mfrow = c(2, 2), mar = c(4, 3, 3, 2))
-par(pty = "s", mar = c(5,5,2,2), cex.lab = 1.5)       
-plot(x =  nsherb3$Xcent,
-     y =  nsherb3$Ycent,
-     type = "p",
-     main="GazelleMetBio",
-     cex=(nsherb3$Grants_GazelleMetBio/40), #nsdung3$Cattle #Burchells_Zebra # Grants_GazelleMetBio
-     pch = 21,
-     xlab = "X-coordinates",
-     ylab = "Y-coordinates")
-
-plot(x =  nsherb3$Xcent,
-     y =  nsherb3$Ycent,
-     type = "p",
-     main="Burchells_Zebra",
-     cex=(nsherb3$Burchells_Zebra/40), 
-     pch = 21,
-     xlab = "X-coordinates",
-     ylab = "Y-coordinates")
-
-plot(x =  nsherb3$Xcent,
-     y =  nsherb3$Ycent,
-     type = "p",
-     main="Greater_KuduMetBio",
-     cex=(nsherb3$Greater_KuduMetBio/40), 
-     pch = 21,
-     xlab = "X-coordinates",
-     ylab = "Y-coordinates")
-
-plot(x =  nsherb3$Xcent,
-     y =  nsherb3$Ycent,
-     type = "p",
-     main="CattleMetBio",
-     cex=(nsherb3$CattleMetBio/40), 
-     pch = 21,
-     xlab = "X-coordinates",
-     ylab = "Y-coordinates")
-
-# Explore structure of data - but this is transect...
-#ordihull(nsherb3[, c("Xcent", "Ycent")],
-#         draw = "polygon",
-#         groups = nsherb3[, "Zone"],
-#         label = F,
-#         col = "red")     
-# Zone = each unique herbivore transect
-
-# Need Zuur's functional crib sheet for this
-# Collinearity amongst MEtBio
-#names(nsherb3)
-#MyVar<-c("Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
-#pairs(nsherb3[,MyVar],lower.panel = panel.cor)
-# Zebra and gazelle are positively related...0.7
-
-##### Combine dung and productivity exclosure xy coordinates ####
 
 Ex_location<-read.csv(file="PlotNames.csv", sep=",",header=TRUE)
 names(Ex_location)
@@ -114,15 +53,9 @@ colnames(Ex_location)[7]<-"Trt.name"
 nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
 names(nsreharvest3)
 
-# Check level names
-levels(nsreharvest3$Trt.name)
-levels(Ex_location$Trt.name)
-
-dim(nsreharvest3)
 myvars <- c("Trt.name", "X", "Y")
 Ex_location1<-Ex_location[myvars]
 nsreharvest3loc<-left_join(nsreharvest3,Ex_location1, by=c("Trt.name"),drop=F)
-dim(nsreharvest3loc)
 
 # Spatial join - herbivore observations and regrowth
 utmproj<-"+proj=utm +north +zone=37 +init=EPSG:32637" # central-ethiopia-37n
@@ -133,31 +66,25 @@ Biosp<-SpatialPointsDataFrame(wp222loc,nsreharvest3loc, proj4string=CRS(utmproj)
 Herbloc<-cbind(nsherb3$Xcent,nsherb3$Ycent)# get geographical location
 Herbsp<-SpatialPointsDataFrame(Herbloc,nsherb3, proj4string=CRS(utmproj),match.ID = TRUE)
 
-
 # Nearest number code
 nsreharvest3loc$nearest_in_set2 <- apply(gDistance(Herbsp,Biosp, byid=TRUE), 1, which.min)
 nsherb3$nearest_in_set2<-seq(1:17)
 
-dim(nsherb3)
 # Join herbivore biomass
 MyHerb<-c("nearest_in_set2","Date","Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
 nsherb3sub<-nsherb3[MyHerb]
 
 # Regrowth and herbivore metabolic biomass
 levels(nsreharvest3loc$Reharvest.date) #"21.11.2013" "21.6.2013"  "25.11.2012"
-#25.3.2012 26.10.2012 8.2.2013 9.2.2013
+levels(nsherb3sub$Date)#25.3.2012 26.10.2012 8.2.2013 9.2.2013
 levels(nsherb3sub$Date)<-c("21.6.2013","21.6.2013" ,"21.11.2013", "21.11.2013")
 nsherb3sub$Reharvest.date<-nsherb3sub$Date
 nsherb3sub<-aggregate(.~Reharvest.date+nearest_in_set2,nsherb3sub,mean)
 
+library(dplyr)
 nsreharvest3locHerb<-left_join(nsreharvest3loc,nsherb3sub, by=c("Reharvest.date","nearest_in_set2"),drop=F)
 nsReharvest<-nsreharvest3locHerb
 
-nsreharvest3locHerb$Reharvest.date
-nsReharvest$Reharvest.date
-
-nsherb3sub$Burchells_ZebraMetBio
-nsreharvest3locHerb$Burchells_ZebraMetBio
 #### Alternative - create krigging maps of herbivores ####
 #### Create krigging maps of herbivore metabolic biomass ####
 #coordinates(nsherb3) <- ~ Xcent + Ycent
@@ -184,7 +111,7 @@ nsreharvest3locHerb$Burchells_ZebraMetBio
 # No much difference here # Krig = lower estimate of cattle 
 
 ########################################################################
-#### Productivity - regrowth ####
+#### Biomass regrowth - plotting data ####
 ########################################################################
 
 # What is the spatial distribution of regrowth measurements
@@ -198,63 +125,262 @@ nsReharvest$Reharvest.date<-as.Date(nsReharvest$Reharvest.date,"%d.%m.%Y")
 
 # Only need exclosure and control
 nsReharvestb<-droplevels(nsReharvest[nsReharvest$Treatment=="Control" | nsReharvest$Treatment=="Exclosure",])
-
-# Livestock density and regrowth
+nsReharvestDUP<-nsReharvestb
+# Livestock density and regrowth only - not the original biomass - average seperately
 nsReharvestb<- droplevels(nsReharvestb[nsReharvestb$Harvest!="original",])
 nsReharvestb$harvest_code<-as.factor(with(nsReharvestb, paste(Livestock.density,Treatment, sep="-")))
 levels(nsReharvestb$harvest_code) # 18
 
+# Regrowth - Total Biomass
 nsReharvestavg<-aggregate(TotalBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
 nsReharvestsem<-aggregate(TotalBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
 nsReharvestavg<-cbind(nsReharvestavg,nsReharvestsem[6])
+colnames(nsReharvestavg)[6]<-"Biomass"
 colnames(nsReharvestavg)[7]<-"se"
+nsReharvestavg$fxgroup<-"Total"
 
-nsReharvestavg0<-aggregate(TotalBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
-nsReharvestsem0<-aggregate(TotalBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
-nsReharvestavg0<-cbind(nsReharvestavg0,nsReharvestsem0[6])
-colnames(nsReharvestavg0)[7]<-"se"
-colnames(nsReharvestavg0)[6]<-"TotalBiomass1"
-
-# Total biomassregrowth
-Regrow<-ggplot(nsReharvestavg, aes(x=Reharvest.date, y=TotalBiomass1,linetype=harvest_code,shape=Treatment,colour=Harvest,fill=Harvest)) 
-Regrow<-Regrow+geom_errorbar(aes(x = Reharvest.date, ymin=TotalBiomass1-se,ymax=TotalBiomass1+se),width=.2,show.legend=F)
-Regrow<-Regrow+geom_point(size=3)
-Regrow<-Regrow+facet_wrap(~Treatment+Livestock.density, scale="fixed")
-Regrow<-Regrow+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_classic()
-Regrow<-Regrow+geom_errorbar(data=nsReharvestavg0,aes(x = Reharvest.date, ymin=TotalBiomass1-se,ymax=TotalBiomass1+se),width=.2, colour="green4",show.legend=F)
-Regrow<-Regrow+geom_point(data=nsReharvestavg0,size=3, colour="green4",show.legend=F)
-Regrow<-Regrow+ggtitle("Total Biomass")
-Regrow
-
-# Grass biomass - Create a plot code + harvest - single or double code
+# Regrowth - Grass Biomass
 nsreharvest3Gavg<-aggregate(GrassNetReharvestBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
 nsreharvest3Gsem<-aggregate(GrassNetReharvestBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
 nsReharvestGavg<-cbind(nsreharvest3Gavg,nsreharvest3Gsem[6])
+colnames(nsReharvestGavg)[6]<-"Biomass"
 colnames(nsReharvestGavg)[7]<-"se"
+nsReharvestGavg$fxgroup<-"Grass"
 
-# Grass biomass regrowth through time
-RegrowG<-ggplot(nsReharvestGavg, aes(x=Reharvest.date, y=GrassNetReharvestBiomass1,shape=Treatment,colour=Harvest,fill=Harvest)) 
-RegrowG<-RegrowG+geom_errorbar(aes(x = Reharvest.date, ymin=GrassNetReharvestBiomass1-se,ymax=GrassNetReharvestBiomass1+se),width=.2,show.legend=F)
-RegrowG<-RegrowG+geom_point(size=3)
-RegrowG<-RegrowG+facet_wrap(~Livestock.density, scale="fixed")
-RegrowG<-RegrowG+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_classic()
-RegrowG<-RegrowG+ggtitle("Grass Biomass")
-RegrowG
-
-# Woody biomass - Create a plot code + harvest - single or double code
+# Regrowth - Woody Biomass
 nsreharvest3Wavg<-aggregate(DwarfShrubNetReharvestBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
 nsreharvest3Wsem<-aggregate(DwarfShrubNetReharvestBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
 nsReharvestWavg<-cbind(nsreharvest3Wavg,nsreharvest3Wsem[6])
+colnames(nsReharvestWavg)[6]<-"Biomass"
 colnames(nsReharvestWavg)[7]<-"se"
+nsReharvestWavg$fxgroup<-"Woody"
 
-# Woody biomass regrowth through time
-RegrowW<-ggplot(nsReharvestGavg, aes(x=Reharvest.date, y=DwarfShrubNetReharvestBiomass1,shape=Treatment,colour=Harvest,fill=Harvest)) 
-RegrowW<-RegrowW+geom_errorbar(aes(x = Reharvest.date, ymin=DwarfShrubNetReharvestBiomass1-se,ymax=DwarfShrubNetReharvestBiomass1+se),width=.2,show.legend=F)
-RegrowW<-RegrowW+geom_point(size=3)
-RegrowW<-RegrowW+facet_wrap(~Livestock.density, scale="fixed")
-RegrowW<-RegrowW+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_classic()
-RegrowW<-RegrowW+ggtitle("Woody Biomass")
-RegrowW
+# Regrowth - Herb + Climbers
+nsReharvestb$HerbClimber1<-nsReharvestb$HerbNetReharvestBiomass1+nsReharvestb$ClimberNetReharvestBiomass1
+nsreharvest3Havg<-aggregate(HerbClimber1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
+nsreharvest3Hsem<-aggregate(HerbClimber1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
+nsReharvestHavg<-cbind(nsreharvest3Havg,nsreharvest3Hsem[6])
+colnames(nsReharvestHavg)[6]<-"Biomass"
+colnames(nsReharvestHavg)[7]<-"se"
+nsReharvestHavg$fxgroup<-"Herb & Climber"
+
+# Combine Total, Grass, Woody and Herb layers
+nsReharvestAll<-rbind(nsReharvestavg,nsReharvestGavg,nsReharvestWavg,nsReharvestHavg)
+
+# Original biomass - Total biomass
+#nsReharvestb0<- droplevels(nsReharvestb[is.na(nsReharvestb$Harvest.date),])
+nsReharvestb0<- nsReharvestb
+nsReharvestavg0<-aggregate(TotalBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0, mean)
+nsReharvestsem0<-aggregate(TotalBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0,sem)
+nsReharvestavg0<-cbind(nsReharvestavg0,nsReharvestsem0[6])
+colnames(nsReharvestavg0)[6]<-"Biomass"
+colnames(nsReharvestavg0)[7]<-"se"
+nsReharvestavg0$fxgroup<-"Total"
+
+# Original biomass - Grass biomass
+nsReharvestavgG0<-aggregate(GrassNetReharvestBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0, mean)
+nsReharvestsemG0<-aggregate(GrassNetReharvestBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0,sem)
+nsReharvestavgG0<-cbind(nsReharvestavgG0,nsReharvestsemG0[6])
+colnames(nsReharvestavgG0)[6]<-"Biomass"
+colnames(nsReharvestavgG0)[7]<-"se"
+nsReharvestavgG0$fxgroup<-"Grass"
+
+# Original biomass - Woody biomass
+nsReharvestavgW0<-aggregate(DwarfShrubNetReharvestBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0, mean)
+nsReharvestsemW0<-aggregate(DwarfShrubNetReharvestBiomass0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0,sem)
+nsReharvestavgW0<-cbind(nsReharvestavgW0,nsReharvestsemW0[6])
+colnames(nsReharvestavgW0)[6]<-"Biomass"
+colnames(nsReharvestavgW0)[7]<-"se"
+nsReharvestavgW0$fxgroup<-"Woody"
+
+# Original biomass - Herb biomass
+nsReharvestb0$HerbClimber0<-nsReharvestb0$HerbNetReharvestBiomass0+nsReharvestb0$ClimberNetReharvestBiomass0
+nsReharvestavgH0<-aggregate(HerbClimber0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0, mean)
+nsReharvestsemH0<-aggregate(HerbClimber0~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb0,sem)
+nsReharvestavgH0<-cbind(nsReharvestavgH0,nsReharvestsemH0[6])
+colnames(nsReharvestavgH0)[6]<-"Biomass"
+colnames(nsReharvestavgH0)[7]<-"se"
+nsReharvestavgH0$fxgroup<-"Herb & Climber"
+
+# Combine Total, Grass, Woody and Herb layers and 
+nsReharvestAll0<-rbind(nsReharvestavg0,nsReharvestavgG0,nsReharvestavgW0,nsReharvestavgH0)
+
+#aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
+
+
+# Relevel factors
+# Plant groups
+nsReharvestAll$fxgroup<-as.factor(nsReharvestAll$fxgroup)
+nsReharvestAll0$fxgroup<-as.factor(nsReharvestAll0$fxgroup)
+nsReharvestAll$fxgroup<- factor(nsReharvestAll$fxgroup, levels = c("Total","Grass","Herb & Climber","Woody"))
+nsReharvestAll0$fxgroup<- factor(nsReharvestAll0$fxgroup, levels = c("Total","Grass","Herb & Climber","Woody"))
+
+# Livestock.density
+nsReharvestAll$Livestock.density<-as.factor(nsReharvestAll$Livestock.density)
+nsReharvestAll0$Livestock.density<-as.factor(nsReharvestAll0$Livestock.density)
+nsReharvestAll$Livestock.density<- factor(nsReharvestAll$Livestock.density, levels = c("Low","Medium","High"))
+nsReharvestAll0$Livestock.density<- factor(nsReharvestAll0$Livestock.density, levels = c("Low","Medium","High"))
+
+aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
+
+
+# Convert date to season
+nsReharvestAll$Reharvest.date2<-as.factor(nsReharvestAll$Reharvest.date)
+nsReharvestAll0$Reharvest.date2<-as.factor(nsReharvestAll0$Reharvest.date)
+levels(nsReharvestAll$Reharvest.date2)<-c("Short I", "Long", "Short II")
+levels(nsReharvestAll0$Reharvest.date2)<-c("Short I", "Long", "Short II")
+
+aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
+
+# Harvest treatment code
+nsReharvestAll$harvest_trt<-as.factor(with(nsReharvestAll, paste(Harvest,Treatment,Livestock.density, sep="-")))
+nsReharvestAll0$harvest_trt<-as.factor(with(nsReharvestAll0, paste(Harvest,Treatment,Livestock.density, sep="-")))
+
+# Total Biomass
+ReHavTot<-nsReharvestAll[nsReharvestAll$fxgroup=="Total",]
+ReHavTot0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Total",]
+
+levels(ReHavTot$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavTot0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+
+levels(ReHavTot$Treatment)<-c("Herbivory","No herbivory")  
+levels(ReHavTot0$Treatment)<-c("Herbivory","No herbivory") 
+
+# Position dodge
+pd <- position_dodge(0.5)
+
+# Total Biomass Only 
+Regrow<-ggplot(ReHavTot, aes(x=Reharvest.date2, y=Biomass,
+          group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+Regrow<-Regrow+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+Regrow<-Regrow+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+Regrow<-Regrow+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+Regrow<-Regrow+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
+Regrow<-Regrow+scale_colour_manual(values=c("grey20","grey30"))
+Regrow<-Regrow+scale_fill_manual(values=c("grey60","white"))
+Regrow<-Regrow+scale_shape_manual(values=c(21,22))
+Regrow<-Regrow+geom_errorbar(data=ReHavTot0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
+Regrow<-Regrow+geom_point(data=ReHavTot0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
+Regrow<-Regrow+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+Regrow<-Regrow+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")")))
+Regrow<-Regrow+ #theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+Regrow<- Regrow+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
+Regrow<- Regrow+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
+
+Regrow<- Regrow+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
+                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,22), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+ReHavTot2<-ReHavTot
+ReHavTot2$Sampling<-as.factor(ReHavTot2$Livestock.density)
+levels(ReHavTot2$Sampling)<-c("One harvest","Two Harvests","Three Harvests")
+Regrow2 <-  Regrow+ geom_point(data = ReHavTot2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
+Regrow2 <-  Regrow2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","dotted","solid"), size=1,fill=c("black","white","grey60"),col=c("black","grey30","grey20"), stroke=1)))
+Regrow2
+
+# Enlarge symbol around line manually
+grid.ls(grid.force()) 
+grid.gedit("key-3-1-1.4-2-4-2", size = unit(4, "mm")) 
+grid.gedit("key-3-1-2.4-2-4-2", size = unit(4, "mm")) 
+grid.gedit("key-4-1-1.5-2-5-2", size = unit(4, "mm")) 
+grid.gedit("key-4-1-2.5-2-5-2", size = unit(4, "mm")) 
+grid.gedit("key-5-1-1.6-2-6-2", size = unit(4, "mm")) 
+grid.gedit("key-5-1-2.6-2-6-2", size = unit(4, "mm")) 
+
+Regrow2b <- grid.grab()
+is.grob(Regrow2b)
+
+# Export graph
+filename <- paste0("TotBioRegrowth_NecSar", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=22, height=12, res=400, unit="cm")
+ggarrange(Regrow2b, ncol=1)
+dev.off()
+
+
+# All other functional groups - Grass, Woody and Herbs - supporting info
+
+# Grasses
+Regrow2<-ggplot(TGexcl, aes(x=Reharvest.date2, y=Biomass,
+                           group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+Regrow2<-Regrow2+geom_line(position=pd,stat = "identity",size=.75,show.legend = F) 
+Regrow2<-Regrow2+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+Regrow2<-Regrow2+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+Regrow2<-Regrow2+facet_wrap(~fxgroup+Livestock.density, scale="fixed", ncol=3)
+Regrow2<-Regrow2+scale_colour_manual(values=c("grey20","grey30"))
+Regrow2<-Regrow2+scale_fill_manual(values=c("grey60","white"))
+Regrow2<-Regrow2+scale_shape_manual(values=c(22,21))
+Regrow2<-Regrow2+geom_errorbar(data=TG0excl,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
+Regrow2<-Regrow2+geom_point(data=TG0excl,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
+Regrow2<-Regrow2+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+Regrow2<-Regrow2+xlab("Season") + ylab(expression(paste("Biomass (g ",m^-2,")")))
+Regrow2<-Regrow2+ #theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_blank()
+        ,axis.text.x=element_blank()
+        ,axis.ticks.x=element_blank()
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_blank()
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_blank()
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.position = "top"
+        ,legend.justification = "center"
+        ,legend.direction="horizontal"
+        ,legend.key.width = unit(1.2,"cm"))
+Regrow2
+
+# Combine graphs
+library(grid)
+library(gridExtra)
+library(egg)
+library(ggpubr)
+
+egg::ggarrange(Regrow+ theme(legend.position="none"),Regrow2+ theme(legend.position="none"), ncol=1) #common.legend = T)
+
+########################################################################
+#### Percentage difference ####
+########################################################################
 
 #### Percent difference Original biomass ####
 nsReharvestbO<-droplevels(nsReharvestb[is.na(nsReharvestb$Harvest.date),])
@@ -281,44 +407,159 @@ Regrow2<-Regrow2+geom_point(size=4)
 Regrow2<-Regrow2+ggtitle("Total Biomass percentage")
 Regrow2
 
-###############################################################################
-#### Mixed linear model (nlme) - auto-correlation? ####
+########################################################################
+#### Biomass regrowth - data analysis ####
+library(nlme)
+library(lme4)
+########################################################################
 
-# Only one harvest per time
+# Only need exclosure and control
+nsReharvestb<-droplevels(nsReharvest[nsReharvest$Treatment=="Control" | nsReharvest$Treatment=="Exclosure",])
+
+# Livestock density and regrowth
+nsReharvestb$harvest_code<-as.factor(with(nsReharvestb, paste(Livestock.density,Treatment, sep="-")))
+levels(nsReharvestb$harvest_code) # 6
+
+#### Only reharvest ####
+nsReharvestbO<-droplevels(nsReharvestb[is.na(nsReharvestb$Harvest.date),])
+nsReharvestbH1_2<-droplevels(nsReharvestb[!is.na(nsReharvestb$Harvest.date),])
+
 nsReharvestbH1_2$Plot.ID<-as.numeric(nsReharvestbH1_2$Plot.name)
-nsReharvestbH1_2$YrMonth<-format(as.Date(nsReharvestbH1_2$Reharvest.date), "%Y-%m")
+Rdate2<-strptime(as.character(nsReharvestbH1_2$Reharvest.date),format="%d.%m.%Y",tz="Africa/Nairobi" )
+nsReharvestbH1_2$YrMonth<-format(Rdate2, "%Y-%m")
+
+# ONLY double harvest...
 nsReharvestH1<- droplevels(nsReharvestbH1_2[nsReharvestbH1_2$Harvest=="double",])
 #nsReharvestH1<-nsReharvestbH1_2
+nsReharvestH1$Harvest
 
+# Block as factor
 nsReharvestH1$fBlock<-as.factor(nsReharvestH1$Block)
 nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
 
+# Testing whether auto-correlation structure is necessary
 # Auto correlation structure - unneccessary
 #cs1AR1 <- corAR1(0.2, form = ~Reharvest.date|fBlock/fPlot.ID)
 #cs1AR1. <- Initialize(cs1AR1, data =nsReharvestH1) 
 #corMatrix(cs1AR1.)
 nsReharvestH1T<- nsReharvestH1[is.finite(nsReharvestH1$Tot.Per.diff),]
 
-Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+
-            Harvest.date:Treatment+
-         Livestock.density:Harvest.date+
-         Livestock.density:Treatment+
-         Treatment:Livestock.density:Harvest.date, #TotalBiomass0,
+#### TOTAL BIOMASS REGROWTH MODEL ####
+# Regrowth  - only double harvest
+Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+
+            Harvest.date:Treatment+Livestock.density:Harvest.date+
+            Livestock.density:Treatment+rain.mm:Harvest.date+
+            rain.mm:Livestock.density+rain.mm:Treatment+
+            Treatment:Livestock.density:Harvest.date+
+            Treatment:Livestock.density:rain.mm+, #TotalBiomass0,
           random= ~ 1|fBlock, method="ML",data=nsReharvestH1)
           #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
 summary(Tot1)
 anova(Tot1)
-AIC(Tot1) #2610.436
+AIC(Tot1) #2806.535
 plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
 
-plot(Tot1) 
+plot(Tot1) # Potential issue very small residuals at low fitted values
 
 drop1(Tot1,test="Chisq")
-#Livestock.density:Treatment:Harvest.date 8.8967   0.0117
+#Livestock.density:Treatment:Harvest.date 11.614  0.02046 *
 
+#### Double harvest versus single harvest analysis ####
+# Use lme4 rather nlme package - more maintained...
+
+# TOTAL BIOMASS Regrowth only double harvest
+Tot1<-lmer(TotalBiomass1~Livestock.density+Treatment+Harvest.date+#rain.mm+
+            Harvest.date:Treatment+Livestock.density:Harvest.date+
+            Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
+             #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
+            Treatment:Livestock.density:Harvest.date+
+             #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+          (1|fBlock), REML=F,data=nsReharvestH1)
+summary(Tot1)
+anova(Tot1)
+AIC(Tot1) #2811.925
+
+# Simplfy model using LRT
+drop1(Tot1,test="Chisq")
+
+# Update and remove factors # issues with interactions
+Tot2<-lmer(TotalBiomass1~Livestock.density+Treatment+Harvest.date+(1|fBlock), REML=F,data=nsReharvestH1)
+Tot1a <- update(Tot1, .~. -Treatment:Livestock.density:Harvest.date)
+Tot1a2 <- update(Tot1a, .~. -Livestock.density:Treatment)
+Tot1a3 <- update(Tot1a, .~. -Livestock.density:Harvest.date)
+Tot1a4 <- update(Tot1a, .~. -Harvest.date:Treatment)
+Tot2a <- update(Tot2, .~. -Harvest.date)
+Tot2b <- update(Tot2, .~. -Treatment)
+Tot2c <- update(Tot2, .~. -Livestock.density)
+
+anova(Tot1,Tot1a)
+anova(Tot1a,Tot1a2)
+anova(Tot1a,Tot1a3)
+anova(Tot1a,Tot1a4)
+anova(Tot2,Tot2a)
+anova(Tot2,Tot2b)
+anova(Tot2,Tot2c)
+
+#      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#Tot1  20 2806.5 2878.5 -1383.3   2766.5 11.614      4    0.02046 * #Treatment:Livestock.density:Harvest.date
+#Tot1a  16 2810.2 2867.7 -1389.1   2778.2 2.2671      2     0.3219 # Livestock.density:Treatment
+#Tot1a  16 2810.2 2867.7 -1389.1   2778.2 26.996      4  1.992e-05 *** #Livestock.density:Harvest.date
+# Tot1a  16 2810.2 2867.7 -1389.1   2778.2 5.6364      2    0.05971 .# Harvest.date:Treatment
+#Tot2   8 2828.2 2857.0 -1406.1   2812.2 205.38      2  < 2.2e-16 *** # Harvest.date
+#Tot2   8 2828.2 2857.0 -1406.1   2812.2 27.396      1  1.658e-07 *** # Treatment
+#Tot2   8 2828.2 2857 -1406.1   2812.2 22.159      2  1.543e-05 *** # Livestock.density
+
+# GRASS BIOMASS Regrowth only double harvest
+Grass1<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+
+             Harvest.date:Treatment+Livestock.density:Harvest.date+
+             Livestock.density:Treatment+rain.mm:Harvest.date+ # Simplified via LRT
+             #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
+             Treatment:Livestock.density:Harvest.date+
+             #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+             (1|fBlock), REML=F,data=nsReharvestH1)
+summary(Grass1)
+anova(Grass1)
+AIC(Tot1) #2806.535
+
+# Simplfy model using LRT
+drop1(Grass1,test="Chisq")
+
+# Update and remove factors # issues with interactions
+Grass2<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+(1|fBlock), REML=F,data=nsReharvestH1)
+Grass1a <- update(Grass1, .~. -Treatment:Livestock.density:Harvest.date)
+Grass1a2 <- update(Grass1a, .~. -Livestock.density:Treatment)
+Grass1a3 <- update(Grass1a, .~. -Livestock.density:Harvest.date)
+Grass1a4 <- update(Grass1a, .~. -Harvest.date:Treatment)
+Grass1a5 <- update(Grass1a, .~. -Harvest.date:rain.mm)
+Grass2a <- update(Grass2, .~. -Harvest.date)
+Grass2b <- update(Grass2, .~. -Treatment)
+Grass2c <- update(Grass2, .~. -Livestock.density)
+Grass2d <- update(Grass2, .~. -rain.mm)
+
+anova(Grass1,Grass1a)
+anova(Grass1a,Grass1a2)
+anova(Grass1a,Grass1a3)
+anova(Grass1a,Grass1a4)
+anova(Grass1a,Grass1a5)
+anova(Grass2,Grass2a)
+anova(Grass2,Grass2b)
+anova(Grass2,Grass2c)
+anova(Grass2,Grass2d)
+
+#      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#Grass1  23 2808.8 2891.6 -1381.4   2762.8 10.446      4    0.03355 * #Treatment:Livestock.density:Harvest.date
+#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 0.1897      2     0.9095 # Livestock.density:Treatment
+#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 34.265      4  6.574e-07 *** #Livestock.density:Harvest.date
+#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 5.8647      2    0.05327 .# Harvest.date:Treatment
+#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 7.6338      2      0.022 *#Harvest.date:rain.mm
+#Grass2   9 2831.3 2863.7 -1406.7   2813.3 169.74      2  < 2.2e-16 ***# Harvest.date
+#Grass2   9 2831.3 2863.7 -1406.7   2813.3 29.236      1  6.409e-08 *** # Treatment
+#Grass2   9 2831.3 2863.7 -1406.7   2813.3 18.194      2   0.000112 *** # Livestock.density
+#Grass2   9 2831.3 2863.7 -1406.7   2813.3 1.5132      1     0.2187 # Rainfall
+
+###########################
 # Explore different grazers
-
-Tot1<-lme(Tot.Per.diff~Treatment+Burchells_ZebraMetBio,
+Tot1<-lmer(Tot.Per.diff~Treatment+Burchells_ZebraMetBio,
            #Burchells_ZebraMetBio:Reharvest.date,#CattleMetBio+Grants_GazelleMetBio+Treatment:Burchells_ZebraMetBio
         random= ~ 1|fBlock,na.action=na.pass, method="ML",data=nsReharvestH1)
         #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
@@ -443,7 +684,73 @@ plot(W1) #OK
 drop1(W1,test="Chisq") # 0.08311 . marginal
 
 
+###############################################################################
+#### OLD SCRIPT ####
+###############################################################################
 
+########################################################################
+#### Herbivore count observations ####
+########################################################################
+
+nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
+
+names(nsherb3)
+nsherb3$Zone # Each herbivore transect corresponds to a unique zone unique zone? 
+
+# Spatial correlation
+par(mfrow = c(2, 2), mar = c(4, 3, 3, 2))
+par(pty = "s", mar = c(5,5,2,2), cex.lab = 1.5)       
+plot(x =  nsherb3$Xcent,
+     y =  nsherb3$Ycent,
+     type = "p",
+     main="GazelleMetBio",
+     cex=(nsherb3$Grants_GazelleMetBio/40), #nsdung3$Cattle #Burchells_Zebra # Grants_GazelleMetBio
+     pch = 21,
+     xlab = "X-coordinates",
+     ylab = "Y-coordinates")
+
+plot(x =  nsherb3$Xcent,
+     y =  nsherb3$Ycent,
+     type = "p",
+     main="Burchells_Zebra",
+     cex=(nsherb3$Burchells_Zebra/40), 
+     pch = 21,
+     xlab = "X-coordinates",
+     ylab = "Y-coordinates")
+
+plot(x =  nsherb3$Xcent,
+     y =  nsherb3$Ycent,
+     type = "p",
+     main="Greater_KuduMetBio",
+     cex=(nsherb3$Greater_KuduMetBio/40), 
+     pch = 21,
+     xlab = "X-coordinates",
+     ylab = "Y-coordinates")
+
+plot(x =  nsherb3$Xcent,
+     y =  nsherb3$Ycent,
+     type = "p",
+     main="CattleMetBio",
+     cex=(nsherb3$CattleMetBio/40), 
+     pch = 21,
+     xlab = "X-coordinates",
+     ylab = "Y-coordinates")
+
+# Explore structure of data - but this is transect...
+#ordihull(nsherb3[, c("Xcent", "Ycent")],
+#         draw = "polygon",
+#         groups = nsherb3[, "Zone"],
+#         label = F,
+#         col = "red")     
+# Zone = each unique herbivore transect
+
+# Need Zuur's functional crib sheet for this
+# Collinearity amongst MEtBio
+#names(nsherb3)
+#MyVar<-c("Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
+#pairs(nsherb3[,MyVar],lower.panel = panel.cor)
+# Zebra and gazelle are positively related...0.7
+###############################################################################
 
 
 

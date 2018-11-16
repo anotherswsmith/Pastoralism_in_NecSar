@@ -1,9 +1,9 @@
 Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	Harvest.date	Reharvest.date	GrassNetReharvestBiomass1	DwarfShrubNetReharvestBiomass1	HerbNetReharvestBiomass1	ClimberNetReharvestBiomass1	TotalBiomass1	GrassNetReharvestBiomass0	DwarfShrubNetReharvestBiomass0	HerbNetReharvestBiomass0	ClimberNetReharvestBiomass0	TotalBiomass0	rain.mm
-1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	double		25.11.2012	86.6	16.7	0	0	103.3	86.6	16.7	0	0	103.3	
-1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	double		25.11.2012	56.6	24.7	4	0	85.3	56.6	24.7	4	0	85.3	
-1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	double		25.11.2012	74.6	3.4	24	0	102	74.6	3.4	24	0	102	
-1	Exclosure	High	B1Ex1P4	B1	B1Ex1	4	double		25.11.2012	157.6	0	1.7	0.1	159.4	157.6	0	1.7	0.1	159.4	
-1	Exclosure	High	B1Ex1P5	B1	B1Ex1	5	double		25.11.2012	63.6	0	0.3	0.6	64.5	63.6	0	0.3	0.6	64.5	
+1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	double		25.11.2012	86.6	16.7	0	0	103.3	86.6	16.7	0	0	103.3	81.00000072
+1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	double		25.11.2012	56.6	24.7	4	0	85.3	56.6	24.7	4	0	85.3	81.00000072
+1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	double		25.11.2012	74.6	3.4	24	0	102	74.6	3.4	24	0	102	81.00000072
+1	Exclosure	High	B1Ex1P4	B1	B1Ex1	4	double		25.11.2012	157.6	0	1.7	0.1	159.4	157.6	0	1.7	0.1	159.4	81.00000072
+1	Exclosure	High	B1Ex1P5	B1	B1Ex1	5	double		25.11.2012	63.6	0	0.3	0.6	64.5	63.6	0	0.3	0.6	64.5	81.00000072
 1	Rodent Exclosure	High	B1Ex1CEx01	B1	B1Ex1	6	double		25.11.2012	117.2	0	8.2	1.7	127.1	117.2	0	8.2	1.7	127.1	
 1	Rodent Exclosure	High	B1Ex1CEx02	B1	B1Ex1	7	double		25.11.2012	78.2	4.3	2.6	0	85.1	78.2	4.3	2.6	0	85.1	
 1	Enclosure	High	B1En1P1	B1	B1En1	1	double		25.11.2012	84.8	0	0	0	84.8	84.8	0	0	0	84.8	
@@ -16,26 +16,26 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 1	Control triangle	High	B1C1P3	B1	B1C1	3	double		25.11.2012	202.6	5.3	0	1.7	209.6	202.6	5.3	0	1.7	209.6	
 1	Control triangle	High	B1C1P4	B1	B1C1	4	double		25.11.2012	321.1	4.1	0	5	330.2	321.1	4.1	0	5	330.2	
 1	Control triangle	High	B1C1P5	B1	B1C1	5	double		25.11.2012	81.6	1.9	0	0	83.5	81.6	1.9	0	0	83.5	
-1	Control	High	B1Ex1Cp1P1	B1	B1Ex1	1	double		25.11.2012	128.1	7.1	0	0	135.2	128.1	7.1	0	0	135.2	
-1	Control	High	B1Ex1Cp1P2	B1	B1Ex1	2	double		25.11.2012	91.6	7	0	0	98.6	91.6	7	0	0	98.6	
-1	Control	High	B1Ex1Cp1P3	B1	B1Ex1	3	double		25.11.2012	86.1	0	0	0	86.1	86.1	0	0	0	86.1	
-1	Control	High	B1Ex1Cp1P4	B1	B1Ex1	4	double		25.11.2012	94.6	16.5	2.1	0	113.2	94.6	16.5	2.1	0	113.2	
-1	Control	High	B1Ex1Cp1P5	B1	B1Ex1	5	double		25.11.2012	61.7	5.3	2.8	0	69.8	61.7	5.3	2.8	0	69.8	
-1	Exclosure	Medium	B1Ex2P1	B1	B1Ex2	1	double		25.11.2012	175.6	0	0	0	175.6	175.6	0	0	0	175.6	
-1	Exclosure	Medium	B1Ex2P2	B1	B1Ex2	2	double		25.11.2012	194.6	0	0	0	194.6	194.6	0	0	0	194.6	
-1	Exclosure	Medium	B1Ex2P3	B1	B1Ex2	3	double		25.11.2012	267.1	12.2	1.1	0	280.4	267.1	12.2	1.1	0	280.4	
-1	Exclosure	Medium	B1Ex2P4	B1	B1Ex2	4	double		25.11.2012	231.2	3.4	1.2	0	235.8	231.2	3.4	1.2	0	235.8	
-1	Exclosure	Medium	B1Ex2P5	B1	B1Ex2	5	double		25.11.2012	215.8	0	0	0	215.8	215.8	0	0	0	215.8	
-1	Control	Medium	B1Ex2Cp1P1	B1	B1Ex2	1	double		25.11.2012	171.7	5.7	0	0	177.4	171.7	5.7	0	0	177.4	
-1	Control	Medium	B1Ex2Cp1P2	B1	B1Ex2	2	double		25.11.2012	101.1	5.9	0	0	107	101.1	5.9	0	0	107	
-1	Control	Medium	B1Ex2Cp1P3	B1	B1Ex2	3	double		25.11.2012	113.7	0	9.4	0	123.1	113.7	0	9.4	0	123.1	
-1	Control	Medium	B1Ex2Cp1P4	B1	B1Ex2	4	double		25.11.2012	125.6	0	0	0	125.6	125.6	0	0	0	125.6	
-1	Control	Medium	B1Ex2Cp1P5	B1	B1Ex2	5	double		25.11.2012	21.2	17.9	0.6	0	39.7	21.2	17.9	0.6	0	39.7	
-2	Exclosure	High	B2Ex1P1	B2	B2Ex1	1	double		25.11.2012	181.7	0	3.4	0	185.1	181.7	0	3.4	0	185.1	
-2	Exclosure	High	B2Ex1P2	B2	B2Ex1	2	double		25.11.2012	46.3	0	10.6	0	56.9	46.3	0	10.6	0	56.9	
-2	Exclosure	High	B2Ex1P3	B2	B2Ex1	3	double		25.11.2012	64.3	6.3	13.3	0	83.9	64.3	6.3	13.3	0	83.9	
-2	Exclosure	High	B2Ex1P4	B2	B2Ex1	4	double		25.11.2012	116.9	0	14.3	0	131.2	116.9	0	14.3	0	131.2	
-2	Exclosure	High	B2Ex1P5	B2	B2Ex1	5	double		25.11.2012	207.4	0	0	0	207.4	207.4	0	0	0	207.4	
+1	Control	High	B1Ex1Cp1P1	B1	B1Ex1	1	double		25.11.2012	128.1	7.1	0	0	135.2	128.1	7.1	0	0	135.2	81.00000072
+1	Control	High	B1Ex1Cp1P2	B1	B1Ex1	2	double		25.11.2012	91.6	7	0	0	98.6	91.6	7	0	0	98.6	81.00000072
+1	Control	High	B1Ex1Cp1P3	B1	B1Ex1	3	double		25.11.2012	86.1	0	0	0	86.1	86.1	0	0	0	86.1	81.00000072
+1	Control	High	B1Ex1Cp1P4	B1	B1Ex1	4	double		25.11.2012	94.6	16.5	2.1	0	113.2	94.6	16.5	2.1	0	113.2	81.00000072
+1	Control	High	B1Ex1Cp1P5	B1	B1Ex1	5	double		25.11.2012	61.7	5.3	2.8	0	69.8	61.7	5.3	2.8	0	69.8	81.00000072
+1	Exclosure	Medium	B1Ex2P1	B1	B1Ex2	1	double		25.11.2012	175.6	0	0	0	175.6	175.6	0	0	0	175.6	81.00000072
+1	Exclosure	Medium	B1Ex2P2	B1	B1Ex2	2	double		25.11.2012	194.6	0	0	0	194.6	194.6	0	0	0	194.6	81.00000072
+1	Exclosure	Medium	B1Ex2P3	B1	B1Ex2	3	double		25.11.2012	267.1	12.2	1.1	0	280.4	267.1	12.2	1.1	0	280.4	81.00000072
+1	Exclosure	Medium	B1Ex2P4	B1	B1Ex2	4	double		25.11.2012	231.2	3.4	1.2	0	235.8	231.2	3.4	1.2	0	235.8	81.00000072
+1	Exclosure	Medium	B1Ex2P5	B1	B1Ex2	5	double		25.11.2012	215.8	0	0	0	215.8	215.8	0	0	0	215.8	81.00000072
+1	Control	Medium	B1Ex2Cp1P1	B1	B1Ex2	1	double		25.11.2012	171.7	5.7	0	0	177.4	171.7	5.7	0	0	177.4	81.00000072
+1	Control	Medium	B1Ex2Cp1P2	B1	B1Ex2	2	double		25.11.2012	101.1	5.9	0	0	107	101.1	5.9	0	0	107	81.00000072
+1	Control	Medium	B1Ex2Cp1P3	B1	B1Ex2	3	double		25.11.2012	113.7	0	9.4	0	123.1	113.7	0	9.4	0	123.1	81.00000072
+1	Control	Medium	B1Ex2Cp1P4	B1	B1Ex2	4	double		25.11.2012	125.6	0	0	0	125.6	125.6	0	0	0	125.6	81.00000072
+1	Control	Medium	B1Ex2Cp1P5	B1	B1Ex2	5	double		25.11.2012	21.2	17.9	0.6	0	39.7	21.2	17.9	0.6	0	39.7	81.00000072
+2	Exclosure	High	B2Ex1P1	B2	B2Ex1	1	double		25.11.2012	181.7	0	3.4	0	185.1	181.7	0	3.4	0	185.1	81.00000072
+2	Exclosure	High	B2Ex1P2	B2	B2Ex1	2	double		25.11.2012	46.3	0	10.6	0	56.9	46.3	0	10.6	0	56.9	81.00000072
+2	Exclosure	High	B2Ex1P3	B2	B2Ex1	3	double		25.11.2012	64.3	6.3	13.3	0	83.9	64.3	6.3	13.3	0	83.9	81.00000072
+2	Exclosure	High	B2Ex1P4	B2	B2Ex1	4	double		25.11.2012	116.9	0	14.3	0	131.2	116.9	0	14.3	0	131.2	81.00000072
+2	Exclosure	High	B2Ex1P5	B2	B2Ex1	5	double		25.11.2012	207.4	0	0	0	207.4	207.4	0	0	0	207.4	81.00000072
 2	Rodent Exclosure	High	B2Ex1CEx01	B2	B2Ex1	6	double		25.11.2012	201.1	2	2.9	0	206	201.1	2	2.9	0	206	
 2	Rodent Exclosure	High	B2Ex1CEx02	B2	B2Ex1	7	double		25.11.2012	96.8	12.1	0	1.9	110.8	96.8	12.1	0	1.9	110.8	
 2	Enclosure	Medium	B2En1P1	B2	B2En1	1	double		25.11.2012	155.3	3.5	0	0	158.8	155.3	3.5	0	0	158.8	
@@ -48,33 +48,33 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 2	Control triangle	Medium	B2C1P3	B2	B2C1	3	double		25.11.2012	81.5	0	0	0	81.5	81.5	0	0	0	81.5	
 2	Control triangle	Medium	B2C1P4	B2	B2C1	4	double		25.11.2012	64	0	0	0	64	64	0	0	0	64	
 2	Control triangle	Medium	B2C1P5	B2	B2C1	5	double		25.11.2012	41.1	28.4	0	0	69.5	41.1	28.4	0	0	69.5	
-2	Control	High	B2Ex1Cp1P1	B2	B2Ex1	1	double		25.11.2012	16.9	0	0.7	0	17.6	16.9	0	0.7	0	17.6	
-2	Control	High	B2Ex1Cp1P2	B2	B2Ex1	2	double		25.11.2012	40	7.4	2.1	0	49.5	40	7.4	2.1	0	49.5	
-2	Control	High	B2Ex1Cp1P3	B2	B2Ex1	3	double		25.11.2012	38.2	0	0	0	38.2	38.2	0	0	0	38.2	
-2	Control	High	B2Ex1Cp1P4	B2	B2Ex1	4	double		25.11.2012	57	0	0	0	57	57	0	0	0	57	
-2	Control	High	B2Ex1Cp1P5	B2	B2Ex1	5	double		25.11.2012	24.7	0	0	0	24.7	24.7	0	0	0	24.7	
-2	Exclosure	Medium	B2Ex2P1	B2	B2Ex2	1	double		25.11.2012	130.2	0	7.9	0	138.1	130.2	0	7.9	0	138.1	
-2	Exclosure	Medium	B2Ex2P2	B2	B2Ex2	2	double		25.11.2012	129.7	11.9	0	0	141.6	129.7	11.9	0	0	141.6	
-2	Exclosure	Medium	B2Ex2P3	B2	B2Ex2	3	double		25.11.2012	207.2	0	0	0	207.2	207.2	0	0	0	207.2	
-2	Exclosure	Medium	B2Ex2P4	B2	B2Ex2	4	double		25.11.2012	133.5	0.9	0	0	134.4	133.5	0.9	0	0	134.4	
-2	Exclosure	Medium	B2Ex2P5	B2	B2Ex2	5	double		25.11.2012	82.6	2.2	1	3.7	89.5	82.6	2.2	1	3.7	89.5	
-2	Control	Medium	B2Ex2Cp1P1	B2	B2Ex2	1	double		25.11.2012	181.4	3.2	3.9	8.8	197.3	181.4	3.2	3.9	8.8	197.3	
-2	Control	Medium	B2Ex2Cp1P2	B2	B2Ex2	2	double		25.11.2012	103	11.3	0	0	114.3	103	11.3	0	0	114.3	
-2	Control	Medium	B2Ex2Cp1P3	B2	B2Ex2	3	double		25.11.2012	167.9	0	0.6	0	168.5	167.9	0	0.6	0	168.5	
-2	Control	Medium	B2Ex2Cp1P4	B2	B2Ex2	4	double		25.11.2012	98.2	0	0	0	98.2	98.2	0	0	0	98.2	
-2	Control	Medium	B2Ex2Cp1P5	B2	B2Ex2	5	double		25.11.2012	162.5	0	0	0	162.5	162.5	0	0	0	162.5	
-3	Exclosure	High	B3Ex1P1	B3	B3Ex1	1	double		25.11.2012	173.5	0	95.6	0	269.1	173.5	0	95.6	0	269.1	
-3	Exclosure	High	B3Ex1P2	B3	B3Ex1	2	double		25.11.2012	128.4	0	0	0	128.4	128.4	0	0	0	128.4	
-3	Exclosure	High	B3Ex1P3	B3	B3Ex1	3	double		25.11.2012	110.3	0	0	0	110.3	110.3	0	0	0	110.3	
-3	Exclosure	High	B3Ex1P4	B3	B3Ex1	4	double		25.11.2012	106.9	0	0	0	106.9	106.9	0	0	0	106.9	
-3	Exclosure	High	B3Ex1P5	B3	B3Ex1	5	double		25.11.2012	133.1	0	0	0	133.1	133.1	0	0	0	133.1	
+2	Control	High	B2Ex1Cp1P1	B2	B2Ex1	1	double		25.11.2012	16.9	0	0.7	0	17.6	16.9	0	0.7	0	17.6	81.00000072
+2	Control	High	B2Ex1Cp1P2	B2	B2Ex1	2	double		25.11.2012	40	7.4	2.1	0	49.5	40	7.4	2.1	0	49.5	81.00000072
+2	Control	High	B2Ex1Cp1P3	B2	B2Ex1	3	double		25.11.2012	38.2	0	0	0	38.2	38.2	0	0	0	38.2	81.00000072
+2	Control	High	B2Ex1Cp1P4	B2	B2Ex1	4	double		25.11.2012	57	0	0	0	57	57	0	0	0	57	81.00000072
+2	Control	High	B2Ex1Cp1P5	B2	B2Ex1	5	double		25.11.2012	24.7	0	0	0	24.7	24.7	0	0	0	24.7	81.00000072
+2	Exclosure	Medium	B2Ex2P1	B2	B2Ex2	1	double		25.11.2012	130.2	0	7.9	0	138.1	130.2	0	7.9	0	138.1	81.00000072
+2	Exclosure	Medium	B2Ex2P2	B2	B2Ex2	2	double		25.11.2012	129.7	11.9	0	0	141.6	129.7	11.9	0	0	141.6	81.00000072
+2	Exclosure	Medium	B2Ex2P3	B2	B2Ex2	3	double		25.11.2012	207.2	0	0	0	207.2	207.2	0	0	0	207.2	81.00000072
+2	Exclosure	Medium	B2Ex2P4	B2	B2Ex2	4	double		25.11.2012	133.5	0.9	0	0	134.4	133.5	0.9	0	0	134.4	81.00000072
+2	Exclosure	Medium	B2Ex2P5	B2	B2Ex2	5	double		25.11.2012	82.6	2.2	1	3.7	89.5	82.6	2.2	1	3.7	89.5	81.00000072
+2	Control	Medium	B2Ex2Cp1P1	B2	B2Ex2	1	double		25.11.2012	181.4	3.2	3.9	8.8	197.3	181.4	3.2	3.9	8.8	197.3	81.00000072
+2	Control	Medium	B2Ex2Cp1P2	B2	B2Ex2	2	double		25.11.2012	103	11.3	0	0	114.3	103	11.3	0	0	114.3	81.00000072
+2	Control	Medium	B2Ex2Cp1P3	B2	B2Ex2	3	double		25.11.2012	167.9	0	0.6	0	168.5	167.9	0	0.6	0	168.5	81.00000072
+2	Control	Medium	B2Ex2Cp1P4	B2	B2Ex2	4	double		25.11.2012	98.2	0	0	0	98.2	98.2	0	0	0	98.2	81.00000072
+2	Control	Medium	B2Ex2Cp1P5	B2	B2Ex2	5	double		25.11.2012	162.5	0	0	0	162.5	162.5	0	0	0	162.5	81.00000072
+3	Exclosure	High	B3Ex1P1	B3	B3Ex1	1	double		25.11.2012	173.5	0	95.6	0	269.1	173.5	0	95.6	0	269.1	78.30000034
+3	Exclosure	High	B3Ex1P2	B3	B3Ex1	2	double		25.11.2012	128.4	0	0	0	128.4	128.4	0	0	0	128.4	78.30000034
+3	Exclosure	High	B3Ex1P3	B3	B3Ex1	3	double		25.11.2012	110.3	0	0	0	110.3	110.3	0	0	0	110.3	78.30000034
+3	Exclosure	High	B3Ex1P4	B3	B3Ex1	4	double		25.11.2012	106.9	0	0	0	106.9	106.9	0	0	0	106.9	78.30000034
+3	Exclosure	High	B3Ex1P5	B3	B3Ex1	5	double		25.11.2012	133.1	0	0	0	133.1	133.1	0	0	0	133.1	78.30000034
 3	Rodent Exclosure	High	B3Ex1Cex01	B3	B3Ex1	6	double		25.11.2012	74.2	0	1.5	0	75.7	74.2	0	1.5	0	75.7	
 3	Rodent Exclosure	High	B3Ex1Cex02	B3	B3Ex1	7	double		25.11.2012	142.3	0	0	0	142.3	142.3	0	0	0	142.3	
-3	Control	High	B3Ex1Cp1p1	B3	B3Ex1	1	double		25.11.2012	116.3	0	43.7	0	160	116.3	0	43.7	0	160	
-3	Control	High	B3Ex1Cp1p2	B3	B3Ex1	2	double		25.11.2012	4.7	29.7	1.3	0	35.7	4.7	29.7	1.3	0	35.7	
-3	Control	High	B3Ex1Cp1p3	B3	B3Ex1	3	double		25.11.2012	25.3	16.5	0	0	41.8	25.3	16.5	0	0	41.8	
-3	Control	High	B3Ex1Cp1p4	B3	B3Ex1	4	double		25.11.2012	23.5	0	14.4	0	37.9	23.5	0	14.4	0	37.9	
-3	Control	High	B3Ex1Cp1p5	B3	B3Ex1	5	double		25.11.2012	26.3	20.5	16.8	0	63.6	26.3	20.5	16.8	0	63.6	
+3	Control	High	B3Ex1Cp1p1	B3	B3Ex1	1	double		25.11.2012	116.3	0	43.7	0	160	116.3	0	43.7	0	160	78.30000034
+3	Control	High	B3Ex1Cp1p2	B3	B3Ex1	2	double		25.11.2012	4.7	29.7	1.3	0	35.7	4.7	29.7	1.3	0	35.7	78.30000034
+3	Control	High	B3Ex1Cp1p3	B3	B3Ex1	3	double		25.11.2012	25.3	16.5	0	0	41.8	25.3	16.5	0	0	41.8	78.30000034
+3	Control	High	B3Ex1Cp1p4	B3	B3Ex1	4	double		25.11.2012	23.5	0	14.4	0	37.9	23.5	0	14.4	0	37.9	78.30000034
+3	Control	High	B3Ex1Cp1p5	B3	B3Ex1	5	double		25.11.2012	26.3	20.5	16.8	0	63.6	26.3	20.5	16.8	0	63.6	78.30000034
 3	Control triangle	High	B3C1P1	B3	B3C1	1	double		25.11.2012	100.4	0	15	0	115.4	100.4	0	15	0	115.4	
 3	Control triangle	High	B3C1P2	B3	B3C1	2	double		25.11.2012	22.7	0	27.1	0	49.8	22.7	0	27.1	0	49.8	
 3	Control triangle	High	B3C1P3	B3	B3C1	3	double		25.11.2012	30.8	0	18.2	2.4	51.4	30.8	0	18.2	2.4	51.4	
@@ -85,46 +85,46 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 3	Enclosure	High	B3En1P3	B3	B3En1	3	double		25.11.2012	190.1	0	18.1	0	208.2	190.1	0	18.1	0	208.2	
 3	Enclosure	High	B3En1P4	B3	B3En1	4	double		25.11.2012	96.6	17.2	20.2	0	134	96.6	17.2	20.2	0	134	
 3	Enclosure	High	B3En1P5	B3	B3En1	5	double		25.11.2012	191.4	7.6	41.6	0	240.6	191.4	7.6	41.6	0	240.6	
-3	Exclosure	Medium	B3Ex2P1	B3	B3Ex2	1	double		25.11.2012	181	2.4	0	0	183.4	181	2.4	0	0	183.4	
-3	Exclosure	Medium	B3Ex2P2	B3	B3Ex2	2	double		25.11.2012	83.3	0	0	2.5	85.8	83.3	0	0	2.5	85.8	
-3	Exclosure	Medium	B3Ex2P3	B3	B3Ex2	3	double		25.11.2012	225.3	0	10.7	14.4	250.4	225.3	0	10.7	14.4	250.4	
-3	Exclosure	Medium	B3Ex2P4	B3	B3Ex2	4	double		25.11.2012	152.7	53.6	0	0	206.3	152.7	53.6	0	0	206.3	
-3	Exclosure	Medium	B3Ex2P5	B3	B3Ex2	5	double		25.11.2012	113	0	0	0	113	113	0	0	0	113	
-3	Control	Medium	B3Ex2Cp1P1	B3	B3Ex2	1	double		25.11.2012	89.1	0	0	0	89.1	89.1	0	0	0	89.1	
-3	Control	Medium	B3Ex2Cp1P2	B3	B3Ex2	2	double		25.11.2012	90.3	0	0	0	90.3	90.3	0	0	0	90.3	
-3	Control	Medium	B3Ex2Cp1P3	B3	B3Ex2	3	double		25.11.2012	99.1	0	0	0	99.1	99.1	0	0	0	99.1	
-3	Control	Medium	B3Ex2Cp1P4	B3	B3Ex2	4	double		25.11.2012	33.6	0	20.6	0	54.2	33.6	0	20.6	0	54.2	
-3	Control	Medium	B3Ex2Cp1P5	B3	B3Ex2	5	double		25.11.2012	69	0	0	0	69	69	0	0	0	69	
-3	Exclosure	Low	B4Ex1P1	B4	B4Ex1	1	double		25.11.2012	143.2	41.4	19.8	0	204.4	143.2	41.4	19.8	0	204.4	
-3	Exclosure	Low	B4Ex1P2	B4	B4Ex1	2	double		25.11.2012	150.4	39.7	15.1	0	205.2	150.4	39.7	15.1	0	205.2	
-3	Exclosure	Low	B4Ex1P3	B4	B4Ex1	3	double		25.11.2012	158.5	7.5	20.5	0	186.5	158.5	7.5	20.5	0	186.5	
-3	Exclosure	Low	B4Ex1P4	B4	B4Ex1	4	double		25.11.2012	258.1	0	15.2	0	273.3	258.1	0	15.2	0	273.3	
-3	Exclosure	Low	B4Ex1P5	B4	B4Ex1	5	double		25.11.2012	198.8	0	1.5	10.8	211.1	198.8	0	1.5	10.8	211.1	
-3	Control	Low	B4Ex1Cp1P1	B4	B4Ex1	1	double		25.11.2012	69	1.9	26.3	21.4	118.6	69	1.9	26.3	21.4	118.6	
-3	Control	Low	B4Ex1Cp1P2	B4	B4Ex1	2	double		25.11.2012	262.1	0	12	28.9	303	262.1	0	12	28.9	303	
-3	Control	Low	B4Ex1Cp1P3	B4	B4Ex1	3	double		25.11.2012	60.1	35.3	20.8	68.4	184.6	60.1	35.3	20.8	68.4	184.6	
-3	Control	Low	B4Ex1Cp1P4	B4	B4Ex1	4	double		25.11.2012	109.1	3.2	5.8	35.9	154	109.1	3.2	5.8	35.9	154	
-3	Control	Low	B4Ex1Cp1P5	B4	B4Ex1	5	double		25.11.2012	129.2	13	2.1	0	144.3	129.2	13	2.1	0	144.3	
-2	Exclosure	Low	B5Ex1P1	B5	B5Ex1	1	double		25.11.2012	289.3	0	0	0	289.3	289.3	0	0	0	289.3	
-2	Exclosure	Low	B5Ex1P2	B5	B5Ex1	2	double		25.11.2012	203.1	0	0	0	203.1	203.1	0	0	0	203.1	
-2	Exclosure	Low	B5Ex1P3	B5	B5Ex1	3	double		25.11.2012	217.8	0	1.3	0.6	219.7	217.8	0	1.3	0.6	219.7	
-2	Exclosure	Low	B5Ex1P4	B5	B5Ex1	4	double		25.11.2012	252.6	0	0	0	252.6	252.6	0	0	0	252.6	
-2	Exclosure	Low	B5Ex1P5	B5	B5Ex1	5	double		25.11.2012	174.9	0	2.7	0	177.6	174.9	0	2.7	0	177.6	
-2	Control	Low	B5Ex1Cp1P1	B5	B5Ex1	1	double		25.11.2012	169.2	3.7	1.8	0.1	174.8	169.2	3.7	1.8	0.1	174.8	
-2	Control	Low	B5Ex1Cp1P2	B5	B5Ex1	2	double		25.11.2012	242.7	0	0	0	242.7	242.7	0	0	0	242.7	
-2	Control	Low	B5Ex1Cp1P3	B5	B5Ex1	3	double		25.11.2012	298.8	0	0	0	298.8	298.8	0	0	0	298.8	
-2	Control	Low	B5Ex1Cp1P4	B5	B5Ex1	4	double		25.11.2012	232.1	0	0	9.7	241.8	232.1	0	0	9.7	241.8	
-2	Control	Low	B5Ex1Cp1P5	B5	B5Ex1	5	double		25.11.2012	392.1	0	5.4	6.2	403.7	392.1	0	5.4	6.2	403.7	
-1	Exclosure	Low	B6Ex1P1	B6	B6Ex1	1	double		25.11.2012	134.3	0	8.7	0	143	134.3	0	8.7	0	143	
-1	Exclosure	Low	B6Ex1P2	B6	B6Ex1	2	double		25.11.2012	178.2	8.7	57.7	0	244.6	178.2	8.7	57.7	0	244.6	
-1	Exclosure	Low	B6Ex1P3	B6	B6Ex1	3	double		25.11.2012	165.4	0	0.4	0	165.8	165.4	0	0.4	0	165.8	
-1	Exclosure	Low	B6Ex1P4	B6	B6Ex1	4	double		25.11.2012	165.3	0	0	0	165.3	165.3	0	0	0	165.3	
-1	Exclosure	Low	B6Ex1P5	B6	B6Ex1	5	double		25.11.2012	125	0	5.7	0	130.7	125	0	5.7	0	130.7	
-1	Control	Low	B6Ex1Cp1P1	B6	B6Ex1	1	double		25.11.2012	90.2	48.6	0.3	0	139.1	90.2	48.6	0.3	0	139.1	
-1	Control	Low	B6Ex1Cp1P2	B6	B6Ex1	2	double		25.11.2012	114.7	30.8	0.3	0	145.8	114.7	30.8	0.3	0	145.8	
-1	Control	Low	B6Ex1Cp1P3	B6	B6Ex1	3	double		25.11.2012	53.8	5.1	5	0	63.9	53.8	5.1	5	0	63.9	
-1	Control	Low	B6Ex1Cp1P4	B6	B6Ex1	4	double		25.11.2012	292.5	2	0	0	294.5	292.5	2	0	0	294.5	
-1	Control	Low	B6Ex1Cp1P5	B6	B6Ex1	5	double		25.11.2012	45.8	18.2	0	0.3	64.3	45.8	18.2	0	0.3	64.3	
+3	Exclosure	Medium	B3Ex2P1	B3	B3Ex2	1	double		25.11.2012	181	2.4	0	0	183.4	181	2.4	0	0	183.4	78.30000034
+3	Exclosure	Medium	B3Ex2P2	B3	B3Ex2	2	double		25.11.2012	83.3	0	0	2.5	85.8	83.3	0	0	2.5	85.8	78.30000034
+3	Exclosure	Medium	B3Ex2P3	B3	B3Ex2	3	double		25.11.2012	225.3	0	10.7	14.4	250.4	225.3	0	10.7	14.4	250.4	78.30000034
+3	Exclosure	Medium	B3Ex2P4	B3	B3Ex2	4	double		25.11.2012	152.7	53.6	0	0	206.3	152.7	53.6	0	0	206.3	78.30000034
+3	Exclosure	Medium	B3Ex2P5	B3	B3Ex2	5	double		25.11.2012	113	0	0	0	113	113	0	0	0	113	78.30000034
+3	Control	Medium	B3Ex2Cp1P1	B3	B3Ex2	1	double		25.11.2012	89.1	0	0	0	89.1	89.1	0	0	0	89.1	78.30000034
+3	Control	Medium	B3Ex2Cp1P2	B3	B3Ex2	2	double		25.11.2012	90.3	0	0	0	90.3	90.3	0	0	0	90.3	78.30000034
+3	Control	Medium	B3Ex2Cp1P3	B3	B3Ex2	3	double		25.11.2012	99.1	0	0	0	99.1	99.1	0	0	0	99.1	78.30000034
+3	Control	Medium	B3Ex2Cp1P4	B3	B3Ex2	4	double		25.11.2012	33.6	0	20.6	0	54.2	33.6	0	20.6	0	54.2	78.30000034
+3	Control	Medium	B3Ex2Cp1P5	B3	B3Ex2	5	double		25.11.2012	69	0	0	0	69	69	0	0	0	69	78.30000034
+3	Exclosure	Low	B4Ex1P1	B4	B4Ex1	1	double		25.11.2012	143.2	41.4	19.8	0	204.4	143.2	41.4	19.8	0	204.4	77.90000033
+3	Exclosure	Low	B4Ex1P2	B4	B4Ex1	2	double		25.11.2012	150.4	39.7	15.1	0	205.2	150.4	39.7	15.1	0	205.2	77.90000033
+3	Exclosure	Low	B4Ex1P3	B4	B4Ex1	3	double		25.11.2012	158.5	7.5	20.5	0	186.5	158.5	7.5	20.5	0	186.5	77.90000033
+3	Exclosure	Low	B4Ex1P4	B4	B4Ex1	4	double		25.11.2012	258.1	0	15.2	0	273.3	258.1	0	15.2	0	273.3	77.90000033
+3	Exclosure	Low	B4Ex1P5	B4	B4Ex1	5	double		25.11.2012	198.8	0	1.5	10.8	211.1	198.8	0	1.5	10.8	211.1	77.90000033
+3	Control	Low	B4Ex1Cp1P1	B4	B4Ex1	1	double		25.11.2012	69	1.9	26.3	21.4	118.6	69	1.9	26.3	21.4	118.6	77.90000033
+3	Control	Low	B4Ex1Cp1P2	B4	B4Ex1	2	double		25.11.2012	262.1	0	12	28.9	303	262.1	0	12	28.9	303	77.90000033
+3	Control	Low	B4Ex1Cp1P3	B4	B4Ex1	3	double		25.11.2012	60.1	35.3	20.8	68.4	184.6	60.1	35.3	20.8	68.4	184.6	77.90000033
+3	Control	Low	B4Ex1Cp1P4	B4	B4Ex1	4	double		25.11.2012	109.1	3.2	5.8	35.9	154	109.1	3.2	5.8	35.9	154	77.90000033
+3	Control	Low	B4Ex1Cp1P5	B4	B4Ex1	5	double		25.11.2012	129.2	13	2.1	0	144.3	129.2	13	2.1	0	144.3	77.90000033
+2	Exclosure	Low	B5Ex1P1	B5	B5Ex1	1	double		25.11.2012	289.3	0	0	0	289.3	289.3	0	0	0	289.3	77.90000033
+2	Exclosure	Low	B5Ex1P2	B5	B5Ex1	2	double		25.11.2012	203.1	0	0	0	203.1	203.1	0	0	0	203.1	77.90000033
+2	Exclosure	Low	B5Ex1P3	B5	B5Ex1	3	double		25.11.2012	217.8	0	1.3	0.6	219.7	217.8	0	1.3	0.6	219.7	77.90000033
+2	Exclosure	Low	B5Ex1P4	B5	B5Ex1	4	double		25.11.2012	252.6	0	0	0	252.6	252.6	0	0	0	252.6	77.90000033
+2	Exclosure	Low	B5Ex1P5	B5	B5Ex1	5	double		25.11.2012	174.9	0	2.7	0	177.6	174.9	0	2.7	0	177.6	77.90000033
+2	Control	Low	B5Ex1Cp1P1	B5	B5Ex1	1	double		25.11.2012	169.2	3.7	1.8	0.1	174.8	169.2	3.7	1.8	0.1	174.8	77.90000033
+2	Control	Low	B5Ex1Cp1P2	B5	B5Ex1	2	double		25.11.2012	242.7	0	0	0	242.7	242.7	0	0	0	242.7	77.90000033
+2	Control	Low	B5Ex1Cp1P3	B5	B5Ex1	3	double		25.11.2012	298.8	0	0	0	298.8	298.8	0	0	0	298.8	77.90000033
+2	Control	Low	B5Ex1Cp1P4	B5	B5Ex1	4	double		25.11.2012	232.1	0	0	9.7	241.8	232.1	0	0	9.7	241.8	77.90000033
+2	Control	Low	B5Ex1Cp1P5	B5	B5Ex1	5	double		25.11.2012	392.1	0	5.4	6.2	403.7	392.1	0	5.4	6.2	403.7	77.90000033
+1	Exclosure	Low	B6Ex1P1	B6	B6Ex1	1	double		25.11.2012	134.3	0	8.7	0	143	134.3	0	8.7	0	143	76.40000105
+1	Exclosure	Low	B6Ex1P2	B6	B6Ex1	2	double		25.11.2012	178.2	8.7	57.7	0	244.6	178.2	8.7	57.7	0	244.6	76.40000105
+1	Exclosure	Low	B6Ex1P3	B6	B6Ex1	3	double		25.11.2012	165.4	0	0.4	0	165.8	165.4	0	0.4	0	165.8	76.40000105
+1	Exclosure	Low	B6Ex1P4	B6	B6Ex1	4	double		25.11.2012	165.3	0	0	0	165.3	165.3	0	0	0	165.3	76.40000105
+1	Exclosure	Low	B6Ex1P5	B6	B6Ex1	5	double		25.11.2012	125	0	5.7	0	130.7	125	0	5.7	0	130.7	76.40000105
+1	Control	Low	B6Ex1Cp1P1	B6	B6Ex1	1	double		25.11.2012	90.2	48.6	0.3	0	139.1	90.2	48.6	0.3	0	139.1	76.40000105
+1	Control	Low	B6Ex1Cp1P2	B6	B6Ex1	2	double		25.11.2012	114.7	30.8	0.3	0	145.8	114.7	30.8	0.3	0	145.8	76.40000105
+1	Control	Low	B6Ex1Cp1P3	B6	B6Ex1	3	double		25.11.2012	53.8	5.1	5	0	63.9	53.8	5.1	5	0	63.9	76.40000105
+1	Control	Low	B6Ex1Cp1P4	B6	B6Ex1	4	double		25.11.2012	292.5	2	0	0	294.5	292.5	2	0	0	294.5	76.40000105
+1	Control	Low	B6Ex1Cp1P5	B6	B6Ex1	5	double		25.11.2012	45.8	18.2	0	0.3	64.3	45.8	18.2	0	0.3	64.3	76.40000105
 1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	double	25.11.2012	21.6.2013	31.3	0	2.7	0	34	136.2	1.4	0	0	137.6	256.2999961
 1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	double	25.11.2012	21.6.2013	35.1	0	0	0	35.1	81.3	0	0	0	81.3	256.2999961
 1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	double	25.11.2012	21.6.2013	60.1	14	0	0	74.1	181.7	0	1.5	0	183.2	256.2999961
@@ -377,11 +377,11 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 1	Control	Low	B6Ex1Cp1P3	B6	B6Ex1	3	double	21.6.2013	21.11.2013	58.7	6.9	0	3.9	69.5	104.3	0	0	0	104.3	34.29999971
 1	Control	Low	B6Ex1Cp1P4	B6	B6Ex1	4	double	21.6.2013	21.11.2013	40.6	7.2	0	0	47.8	55.8	7	56.3	3	122.1	34.29999971
 1	Control	Low	B6Ex1Cp1P5	B6	B6Ex1	5	double	21.6.2013	21.11.2013	35.2	3.2	0	8	46.4		10.1	39.9	3.1	104.1	34.29999971
-1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	single		21.6.2013	136.2	1.4	0	0	137.6	136.2	1.4	0	0	137.6	
-1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	single		21.6.2013	81.3	0	0	0	81.3	81.3	0	0	0	81.3	
-1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	single		21.6.2013	181.7	0	1.5	0	183.2	181.7	0	1.5	0	183.2	
-1	Exclosure	High	B1Ex1P4	B1	B1Ex1	4	single		21.6.2013	64.3	0	0	0	64.3	64.3	0	0	0	64.3	
-1	Exclosure	High	B1Ex1P5	B1	B1Ex1	5	single		21.6.2013	64.5	5.5	0	0	70	64.5	5.5	0	0	70	
+1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	single		21.6.2013	136.2	1.4	0	0	137.6	136.2	1.4	0	0	137.6	0
+1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	single		21.6.2013	81.3	0	0	0	81.3	81.3	0	0	0	81.3	0
+1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	single		21.6.2013	181.7	0	1.5	0	183.2	181.7	0	1.5	0	183.2	0
+1	Exclosure	High	B1Ex1P4	B1	B1Ex1	4	single		21.6.2013	64.3	0	0	0	64.3	64.3	0	0	0	64.3	0
+1	Exclosure	High	B1Ex1P5	B1	B1Ex1	5	single		21.6.2013	64.5	5.5	0	0	70	64.5	5.5	0	0	70	0
 1	Rodent Exclosure	High	B1Ex1CEx01	B1	B1Ex1	6	single		21.6.2013	1.7	74.1	0	1.1	76.9	1.7	74.1	0	1.1	76.9	
 1	Rodent Exclosure	High	B1Ex1CEx02	B1	B1Ex1	7	single		21.6.2013	0	82.1	0	1.1	83.2	0	82.1	0	1.1	83.2	
 1	Enclosure	High	B1En1P1	B1	B1En1	1	single		21.6.2013	81.5	0	16	0	97.5	81.5	0	16	0	97.5	
@@ -394,26 +394,26 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 1	Control triangle	High	B1C1P3	B1	B1C1	3	single		21.6.2013	1.7	22	3.7	0	27.4	1.7	22	3.7	0	27.4	
 1	Control triangle	High	B1C1P4	B1	B1C1	4	single		21.6.2013	5	13	2.9	0	20.9	5	13	2.9	0	20.9	
 1	Control triangle	High	B1C1P5	B1	B1C1	5	single		21.6.2013	0	56.4	0	0	56.4	0	56.4	0	0	56.4	
-1	Control	High	B1Ex1Cp1P1	B1	B1Ex1	1	single		21.6.2013	81.9	0	0	0	81.9	81.9	0	0	0	81.9	
-1	Control	High	B1Ex1Cp1P2	B1	B1Ex1	2	single		21.6.2013	111.3	1.9	0.7	0	113.9	111.3	1.9	0.7	0	113.9	
-1	Control	High	B1Ex1Cp1P3	B1	B1Ex1	3	single		21.6.2013	48.7	10.4	0	0	59.1	48.7	10.4	0	0	59.1	
-1	Control	High	B1Ex1Cp1P4	B1	B1Ex1	4	single		21.6.2013	100	0	0	1.2	101.2	100	0	0	1.2	101.2	
-1	Control	High	B1Ex1Cp1P5	B1	B1Ex1	5	single		21.6.2013	150.1	0	1.7	0	151.8	150.1	0	1.7	0	151.8	
-1	Exclosure	Medium	B1Ex2P1	B1	B1Ex2	1	single		21.6.2013	110.8	0	0	0	110.8	110.8	0	0	0	110.8	
-1	Exclosure	Medium	B1Ex2P2	B1	B1Ex2	2	single		21.6.2013	66.5	0	0	23.5	90	66.5	0	0	23.5	90	
-1	Exclosure	Medium	B1Ex2P3	B1	B1Ex2	3	single		21.6.2013	208.1	0	0	0	208.1	208.1	0	0	0	208.1	
-1	Exclosure	Medium	B1Ex2P4	B1	B1Ex2	4	single		21.6.2013	147.9	0	0	0	147.9	147.9	0	0	0	147.9	
-1	Exclosure	Medium	B1Ex2P5	B1	B1Ex2	5	single		21.6.2013	63.8	0	1.8	0	65.6	63.8	0	1.8	0	65.6	
-1	Control	Medium	B1Ex2Cp1P1	B1	B1Ex2	1	single		21.6.2013	69.5	5.2	0	0	74.7	69.5	5.2	0	0	74.7	
-1	Control	Medium	B1Ex2Cp1P2	B1	B1Ex2	2	single		21.6.2013	48.6	1.4	0	0	50	48.6	1.4	0	0	50	
-1	Control	Medium	B1Ex2Cp1P3	B1	B1Ex2	3	single		21.6.2013	66.9	0	0	0	66.9	66.9	0	0	0	66.9	
-1	Control	Medium	B1Ex2Cp1P4	B1	B1Ex2	4	single		21.6.2013	98.8	2.2	0	0	101	98.8	2.2	0	0	101	
-1	Control	Medium	B1Ex2Cp1P5	B1	B1Ex2	5	single		21.6.2013	6.2	9.7	0	1.3	17.2	6.2	9.7	0	1.3	17.2	
-2	Exclosure	High	B2Ex1P1	B2	B2Ex1	1	single		21.6.2013	38.7	14.4	0	0	53.1	38.7	14.4	0	0	53.1	
-2	Exclosure	High	B2Ex1P2	B2	B2Ex1	2	single		21.6.2013	131.7	0	0.5	0	132.2	131.7	0	0.5	0	132.2	
-2	Exclosure	High	B2Ex1P3	B2	B2Ex1	3	single		21.6.2013	128	0	0	0	128	128	0	0	0	128	
-2	Exclosure	High	B2Ex1P4	B2	B2Ex1	4	single		21.6.2013	70.6	0	0	0	70.6	70.6	0	0	0	70.6	
-2	Exclosure	High	B2Ex1P5	B2	B2Ex1	5	single		21.6.2013	90.5	0	0	0	90.5	90.5	0	0	0	90.5	
+1	Control	High	B1Ex1Cp1P1	B1	B1Ex1	1	single		21.6.2013	81.9	0	0	0	81.9	81.9	0	0	0	81.9	0
+1	Control	High	B1Ex1Cp1P2	B1	B1Ex1	2	single		21.6.2013	111.3	1.9	0.7	0	113.9	111.3	1.9	0.7	0	113.9	0
+1	Control	High	B1Ex1Cp1P3	B1	B1Ex1	3	single		21.6.2013	48.7	10.4	0	0	59.1	48.7	10.4	0	0	59.1	0
+1	Control	High	B1Ex1Cp1P4	B1	B1Ex1	4	single		21.6.2013	100	0	0	1.2	101.2	100	0	0	1.2	101.2	0
+1	Control	High	B1Ex1Cp1P5	B1	B1Ex1	5	single		21.6.2013	150.1	0	1.7	0	151.8	150.1	0	1.7	0	151.8	0
+1	Exclosure	Medium	B1Ex2P1	B1	B1Ex2	1	single		21.6.2013	110.8	0	0	0	110.8	110.8	0	0	0	110.8	0
+1	Exclosure	Medium	B1Ex2P2	B1	B1Ex2	2	single		21.6.2013	66.5	0	0	23.5	90	66.5	0	0	23.5	90	0
+1	Exclosure	Medium	B1Ex2P3	B1	B1Ex2	3	single		21.6.2013	208.1	0	0	0	208.1	208.1	0	0	0	208.1	0
+1	Exclosure	Medium	B1Ex2P4	B1	B1Ex2	4	single		21.6.2013	147.9	0	0	0	147.9	147.9	0	0	0	147.9	0
+1	Exclosure	Medium	B1Ex2P5	B1	B1Ex2	5	single		21.6.2013	63.8	0	1.8	0	65.6	63.8	0	1.8	0	65.6	0
+1	Control	Medium	B1Ex2Cp1P1	B1	B1Ex2	1	single		21.6.2013	69.5	5.2	0	0	74.7	69.5	5.2	0	0	74.7	0
+1	Control	Medium	B1Ex2Cp1P2	B1	B1Ex2	2	single		21.6.2013	48.6	1.4	0	0	50	48.6	1.4	0	0	50	0
+1	Control	Medium	B1Ex2Cp1P3	B1	B1Ex2	3	single		21.6.2013	66.9	0	0	0	66.9	66.9	0	0	0	66.9	0
+1	Control	Medium	B1Ex2Cp1P4	B1	B1Ex2	4	single		21.6.2013	98.8	2.2	0	0	101	98.8	2.2	0	0	101	0
+1	Control	Medium	B1Ex2Cp1P5	B1	B1Ex2	5	single		21.6.2013	6.2	9.7	0	1.3	17.2	6.2	9.7	0	1.3	17.2	0
+2	Exclosure	High	B2Ex1P1	B2	B2Ex1	1	single		21.6.2013	38.7	14.4	0	0	53.1	38.7	14.4	0	0	53.1	0
+2	Exclosure	High	B2Ex1P2	B2	B2Ex1	2	single		21.6.2013	131.7	0	0.5	0	132.2	131.7	0	0.5	0	132.2	0
+2	Exclosure	High	B2Ex1P3	B2	B2Ex1	3	single		21.6.2013	128	0	0	0	128	128	0	0	0	128	0
+2	Exclosure	High	B2Ex1P4	B2	B2Ex1	4	single		21.6.2013	70.6	0	0	0	70.6	70.6	0	0	0	70.6	0
+2	Exclosure	High	B2Ex1P5	B2	B2Ex1	5	single		21.6.2013	90.5	0	0	0	90.5	90.5	0	0	0	90.5	0
 2	Rodent Exclosure	High	B2Ex1CEx01	B2	B2Ex1	6	single		21.6.2013	0	215.2	0	0	215.2	0	215.2	0	0	215.2	
 2	Rodent Exclosure	High	B2Ex1CEx02	B2	B2Ex1	7	single		21.6.2013	1.9	111.1	0	3	116	1.9	111.1	0	3	116	
 2	Enclosure	Medium	B2En1P1	B2	B2En1	1	single		21.6.2013	206.4	1.6	0	0	208	206.4	1.6	0	0	208	
@@ -426,33 +426,33 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 2	Control triangle	Medium	B2C1P3	B2	B2C1	3	single		21.6.2013	0	198.5	3.7	0	202.2	0	198.5	3.7	0	202.2	
 2	Control triangle	Medium	B2C1P4	B2	B2C1	4	single		21.6.2013	0	38.7	0	2.9	41.6	0	38.7	0	2.9	41.6	
 2	Control triangle	Medium	B2C1P5	B2	B2C1	5	single		21.6.2013	0	62.9	0	0	62.9	0	62.9	0	0	62.9	
-2	Control	High	B2Ex1Cp1P1	B2	B2Ex1	1	single		21.6.2013	38.6	21.2	0	0	59.8	38.6	21.2	0	0	59.8	
-2	Control	High	B2Ex1Cp1P2	B2	B2Ex1	2	single		21.6.2013	136.9	0	0	0	136.9	136.9	0	0	0	136.9	
-2	Control	High	B2Ex1Cp1P3	B2	B2Ex1	3	single		21.6.2013	14.2	0	0	0	14.2	14.2	0	0	0	14.2	
-2	Control	High	B2Ex1Cp1P4	B2	B2Ex1	4	single		21.6.2013	16.6	4.9	0	0	21.5	16.6	4.9	0	0	21.5	
-2	Control	High	B2Ex1Cp1P5	B2	B2Ex1	5	single		21.6.2013	14.8	103.2	0	0	118	14.8	103.2	0	0	118	
-2	Exclosure	Medium	B2Ex2P1	B2	B2Ex2	1	single		21.6.2013	130.3	4.6	0	0	134.9	130.3	4.6	0	0	134.9	
-2	Exclosure	Medium	B2Ex2P2	B2	B2Ex2	2	single		21.6.2013	181.1	0	0	0	181.1	181.1	0	0	0	181.1	
-2	Exclosure	Medium	B2Ex2P3	B2	B2Ex2	3	single		21.6.2013	61.7	1.8	0	0	63.5	61.7	1.8	0	0	63.5	
-2	Exclosure	Medium	B2Ex2P4	B2	B2Ex2	4	single		21.6.2013	122.8	0.4	0	21.7	144.9	122.8	0.4	0	21.7	144.9	
-2	Exclosure	Medium	B2Ex2P5	B2	B2Ex2	5	single		21.6.2013	80.4	7	0	19.6	107	80.4	7	0	19.6	107	
-2	Control	Medium	B2Ex2Cp1P1	B2	B2Ex2	1	single		21.6.2013	19.7	14.7	0	0	34.4	19.7	14.7	0	0	34.4	
-2	Control	Medium	B2Ex2Cp1P2	B2	B2Ex2	2	single		21.6.2013	92	10.9	0	0	102.9	92	10.9	0	0	102.9	
-2	Control	Medium	B2Ex2Cp1P3	B2	B2Ex2	3	single		21.6.2013	75.3	0	0	0	75.3	75.3	0	0	0	75.3	
-2	Control	Medium	B2Ex2Cp1P4	B2	B2Ex2	4	single		21.6.2013	90.6	18.9	0	0	109.5	90.6	18.9	0	0	109.5	
-2	Control	Medium	B2Ex2Cp1P5	B2	B2Ex2	5	single		21.6.2013	93.5	1.1	0	0	94.6	93.5	1.1	0	0	94.6	
-3	Exclosure	High	B3Ex1P1	B3	B3Ex1	1	single		21.6.2013	53.9	0	1.7	0	55.6	53.9	0	1.7	0	55.6	
-3	Exclosure	High	B3Ex1P2	B3	B3Ex1	2	single		21.6.2013	83.6	0	0	0	83.6	83.6	0	0	0	83.6	
-3	Exclosure	High	B3Ex1P3	B3	B3Ex1	3	single		21.6.2013	104.3	0	0	0	104.3	104.3	0	0	0	104.3	
-3	Exclosure	High	B3Ex1P4	B3	B3Ex1	4	single		21.6.2013	94.6	0	0	0	94.6	94.6	0	0	0	94.6	
-3	Exclosure	High	B3Ex1P5	B3	B3Ex1	5	single		21.6.2013	117.3	0	25.3	0	142.6	117.3	0	25.3	0	142.6	
+2	Control	High	B2Ex1Cp1P1	B2	B2Ex1	1	single		21.6.2013	38.6	21.2	0	0	59.8	38.6	21.2	0	0	59.8	0
+2	Control	High	B2Ex1Cp1P2	B2	B2Ex1	2	single		21.6.2013	136.9	0	0	0	136.9	136.9	0	0	0	136.9	0
+2	Control	High	B2Ex1Cp1P3	B2	B2Ex1	3	single		21.6.2013	14.2	0	0	0	14.2	14.2	0	0	0	14.2	0
+2	Control	High	B2Ex1Cp1P4	B2	B2Ex1	4	single		21.6.2013	16.6	4.9	0	0	21.5	16.6	4.9	0	0	21.5	0
+2	Control	High	B2Ex1Cp1P5	B2	B2Ex1	5	single		21.6.2013	14.8	103.2	0	0	118	14.8	103.2	0	0	118	0
+2	Exclosure	Medium	B2Ex2P1	B2	B2Ex2	1	single		21.6.2013	130.3	4.6	0	0	134.9	130.3	4.6	0	0	134.9	0
+2	Exclosure	Medium	B2Ex2P2	B2	B2Ex2	2	single		21.6.2013	181.1	0	0	0	181.1	181.1	0	0	0	181.1	0
+2	Exclosure	Medium	B2Ex2P3	B2	B2Ex2	3	single		21.6.2013	61.7	1.8	0	0	63.5	61.7	1.8	0	0	63.5	0
+2	Exclosure	Medium	B2Ex2P4	B2	B2Ex2	4	single		21.6.2013	122.8	0.4	0	21.7	144.9	122.8	0.4	0	21.7	144.9	0
+2	Exclosure	Medium	B2Ex2P5	B2	B2Ex2	5	single		21.6.2013	80.4	7	0	19.6	107	80.4	7	0	19.6	107	0
+2	Control	Medium	B2Ex2Cp1P1	B2	B2Ex2	1	single		21.6.2013	19.7	14.7	0	0	34.4	19.7	14.7	0	0	34.4	0
+2	Control	Medium	B2Ex2Cp1P2	B2	B2Ex2	2	single		21.6.2013	92	10.9	0	0	102.9	92	10.9	0	0	102.9	0
+2	Control	Medium	B2Ex2Cp1P3	B2	B2Ex2	3	single		21.6.2013	75.3	0	0	0	75.3	75.3	0	0	0	75.3	0
+2	Control	Medium	B2Ex2Cp1P4	B2	B2Ex2	4	single		21.6.2013	90.6	18.9	0	0	109.5	90.6	18.9	0	0	109.5	0
+2	Control	Medium	B2Ex2Cp1P5	B2	B2Ex2	5	single		21.6.2013	93.5	1.1	0	0	94.6	93.5	1.1	0	0	94.6	0
+3	Exclosure	High	B3Ex1P1	B3	B3Ex1	1	single		21.6.2013	53.9	0	1.7	0	55.6	53.9	0	1.7	0	55.6	0
+3	Exclosure	High	B3Ex1P2	B3	B3Ex1	2	single		21.6.2013	83.6	0	0	0	83.6	83.6	0	0	0	83.6	0
+3	Exclosure	High	B3Ex1P3	B3	B3Ex1	3	single		21.6.2013	104.3	0	0	0	104.3	104.3	0	0	0	104.3	0
+3	Exclosure	High	B3Ex1P4	B3	B3Ex1	4	single		21.6.2013	94.6	0	0	0	94.6	94.6	0	0	0	94.6	0
+3	Exclosure	High	B3Ex1P5	B3	B3Ex1	5	single		21.6.2013	117.3	0	25.3	0	142.6	117.3	0	25.3	0	142.6	0
 3	Rodent Exclosure	High	B3Ex1Cex01	B3	B3Ex1	6	single		21.6.2013	0	76.4	0	6.3	82.7	0	76.4	0	6.3	82.7	
 3	Rodent Exclosure	High	B3Ex1Cex02	B3	B3Ex1	7	single		21.6.2013	0	83.3	1.7	0	85	0	83.3	1.7	0	85	
-3	Control	High	B3Ex1Cp1p1	B3	B3Ex1	1	single		21.6.2013	48.1	0	4.2	0	52.3	48.1	0	4.2	0	52.3	
-3	Control	High	B3Ex1Cp1p2	B3	B3Ex1	2	single		21.6.2013	14.6	0	0	0	14.6	14.6	0	0	0	14.6	
-3	Control	High	B3Ex1Cp1p3	B3	B3Ex1	3	single		21.6.2013	3	0	0	0	3	3	0	0	0	3	
-3	Control	High	B3Ex1Cp1p4	B3	B3Ex1	4	single		21.6.2013	35	0	4.6	0	39.6	35	0	4.6	0	39.6	
-3	Control	High	B3Ex1Cp1p5	B3	B3Ex1	5	single		21.6.2013	0	30.6	30.2	6.9	67.7	0	30.6	30.2	6.9	67.7	
+3	Control	High	B3Ex1Cp1p1	B3	B3Ex1	1	single		21.6.2013	48.1	0	4.2	0	52.3	48.1	0	4.2	0	52.3	0
+3	Control	High	B3Ex1Cp1p2	B3	B3Ex1	2	single		21.6.2013	14.6	0	0	0	14.6	14.6	0	0	0	14.6	0
+3	Control	High	B3Ex1Cp1p3	B3	B3Ex1	3	single		21.6.2013	3	0	0	0	3	3	0	0	0	3	0
+3	Control	High	B3Ex1Cp1p4	B3	B3Ex1	4	single		21.6.2013	35	0	4.6	0	39.6	35	0	4.6	0	39.6	0
+3	Control	High	B3Ex1Cp1p5	B3	B3Ex1	5	single		21.6.2013	0	30.6	30.2	6.9	67.7	0	30.6	30.2	6.9	67.7	0
 3	Control triangle	High	B3C1P1	B3	B3C1	1	single		21.6.2013	0	20.1	12.5	0	32.6	0	20.1	12.5	0	32.6	
 3	Control triangle	High	B3C1P2	B3	B3C1	2	single		21.6.2013	0	92.9	0	0	92.9	0	92.9	0	0	92.9	
 3	Control triangle	High	B3C1P3	B3	B3C1	3	single		21.6.2013	2.4	11.9	0	4.4	18.7	2.4	11.9	0	4.4	18.7	
@@ -463,46 +463,46 @@ Transect	Treatment	Livestock density	Plot name	Block	Trt.name	Replicate	Harvest	
 3	Enclosure	High	B3En1P3	B3	B3En1	3	single		21.6.2013	88.7	0	7.5	0	96.2	88.7	0	7.5	0	96.2	
 3	Enclosure	High	B3En1P4	B3	B3En1	4	single		21.6.2013	61.9	17.7	0	0	79.6	61.9	17.7	0	0	79.6	
 3	Enclosure	High	B3En1P5	B3	B3En1	5	single		21.6.2013	108.3	0	22	0	130.3	108.3	0	22	0	130.3	
-3	Exclosure	Medium	B3Ex2P1	B3	B3Ex2	1	single		21.6.2013	20.7	24.8	0	0	45.5	20.7	24.8	0	0	45.5	
-3	Exclosure	Medium	B3Ex2P2	B3	B3Ex2	2	single		21.6.2013	97.6	1.5	0	0	99.1	97.6	1.5	0	0	99.1	
-3	Exclosure	Medium	B3Ex2P3	B3	B3Ex2	3	single		21.6.2013	31.9	0	0	11.3	43.2	31.9	0	0	11.3	43.2	
-3	Exclosure	Medium	B3Ex2P4	B3	B3Ex2	4	single		21.6.2013	51.1	40.1	0	0	91.2	51.1	40.1	0	0	91.2	
-3	Exclosure	Medium	B3Ex2P5	B3	B3Ex2	5	single		21.6.2013	78	0	0	0	78	78	0	0	0	78	
-3	Control	Medium	B3Ex2Cp1P1	B3	B3Ex2	1	single		21.6.2013	0	0	0	0	0	0	0	0	0	0	
-3	Control	Medium	B3Ex2Cp1P2	B3	B3Ex2	2	single		21.6.2013	22.3	0	0	0	22.3	22.3	0	0	0	22.3	
-3	Control	Medium	B3Ex2Cp1P3	B3	B3Ex2	3	single		21.6.2013	7.1	0	0	0	7.1	7.1	0	0	0	7.1	
-3	Control	Medium	B3Ex2Cp1P4	B3	B3Ex2	4	single		21.6.2013	7.3	0	0	0	7.3	7.3	0	0	0	7.3	
-3	Control	Medium	B3Ex2Cp1P5	B3	B3Ex2	5	single		21.6.2013	16.1	14.7	6.5	0	37.3	16.1	14.7	6.5	0	37.3	
-3	Exclosure	Low	B4Ex1P1	B4	B4Ex1	1	single		21.6.2013	53.6	0	19.9	0	73.5	53.6	0	19.9	0	73.5	
-3	Exclosure	Low	B4Ex1P2	B4	B4Ex1	2	single		21.6.2013	21.2	7.9	0	0	29.1	21.2	7.9	0	0	29.1	
-3	Exclosure	Low	B4Ex1P3	B4	B4Ex1	3	single		21.6.2013	58.2	7.6	2	0	67.8	58.2	7.6	2	0	67.8	
-3	Exclosure	Low	B4Ex1P4	B4	B4Ex1	4	single		21.6.2013	144.8	0	0	0	144.8	144.8	0	0	0	144.8	
-3	Exclosure	Low	B4Ex1P5	B4	B4Ex1	5	single		21.6.2013	103.7	0	0	15.2	118.9	103.7	0	0	15.2	118.9	
-3	Control	Low	B4Ex1Cp1P1	B4	B4Ex1	1	single		21.6.2013	70.4	0	19.9	0	90.3	70.4	0	19.9	0	90.3	
-3	Control	Low	B4Ex1Cp1P2	B4	B4Ex1	2	single		21.6.2013	25.9	0	16.2	0	42.1	25.9	0	16.2	0	42.1	
-3	Control	Low	B4Ex1Cp1P3	B4	B4Ex1	3	single		21.6.2013	34.9	0	33.4	0	68.3	34.9	0	33.4	0	68.3	
-3	Control	Low	B4Ex1Cp1P4	B4	B4Ex1	4	single		21.6.2013	78.8	15.3	0	6.8	100.9	78.8	15.3	0	6.8	100.9	
-3	Control	Low	B4Ex1Cp1P5	B4	B4Ex1	5	single		21.6.2013	25.2	0	14.7	6.3	46.2	25.2	0	14.7	6.3	46.2	
-2	Exclosure	Low	B5Ex1P1	B5	B5Ex1	1	single		21.6.2013	190	0	0	0	190	190	0	0	0	190	
-2	Exclosure	Low	B5Ex1P2	B5	B5Ex1	2	single		21.6.2013	437.8	0	0	0	437.8	437.8	0	0	0	437.8	
-2	Exclosure	Low	B5Ex1P3	B5	B5Ex1	3	single		21.6.2013	151.5	0	0	0	151.5	151.5	0	0	0	151.5	
-2	Exclosure	Low	B5Ex1P4	B5	B5Ex1	4	single		21.6.2013	113.3	0	0	0	113.3	113.3	0	0	0	113.3	
-2	Exclosure	Low	B5Ex1P5	B5	B5Ex1	5	single		21.6.2013	217.2	0	0	0	217.2	217.2	0	0	0	217.2	
-2	Control	Low	B5Ex1Cp1P1	B5	B5Ex1	1	single		21.6.2013	54.8	0	0	0	54.8	54.8	0	0	0	54.8	
-2	Control	Low	B5Ex1Cp1P2	B5	B5Ex1	2	single		21.6.2013	37.4	0	0	10	47.4	37.4	0	0	10	47.4	
-2	Control	Low	B5Ex1Cp1P3	B5	B5Ex1	3	single		21.6.2013	23.4	0	0	5.3	28.7	23.4	0	0	5.3	28.7	
-2	Control	Low	B5Ex1Cp1P4	B5	B5Ex1	4	single		21.6.2013	47.1	0	0	0	47.1	47.1	0	0	0	47.1	
-2	Control	Low	B5Ex1Cp1P5	B5	B5Ex1	5	single		21.6.2013	76.9	0	0	2.9	79.8	76.9	0	0	2.9	79.8	
-1	Exclosure	Low	B6Ex1P1	B6	B6Ex1	1	single		21.6.2013	124.5	0	0	0	124.5	124.5	0	0	0	124.5	
-1	Exclosure	Low	B6Ex1P2	B6	B6Ex1	2	single		21.6.2013	24.8	66.8	0	0	91.6	24.8	66.8	0	0	91.6	
-1	Exclosure	Low	B6Ex1P3	B6	B6Ex1	3	single		21.6.2013	48.8	24.3	0	0	73.1	48.8	24.3	0	0	73.1	
-1	Exclosure	Low	B6Ex1P4	B6	B6Ex1	4	single		21.6.2013	118.7	0	0	0	118.7	118.7	0	0	0	118.7	
-1	Exclosure	Low	B6Ex1P5	B6	B6Ex1	5	single		21.6.2013	90.8	0	0	24.8	115.6	90.8	0	0	24.8	115.6	
-1	Control	Low	B6Ex1Cp1P1	B6	B6Ex1	1	single		21.6.2013	46.4	26	0	13.3	85.7	46.4	26	0	13.3	85.7	
-1	Control	Low	B6Ex1Cp1P2	B6	B6Ex1	2	single		21.6.2013	63.2	19.6	8.2	0	91	63.2	19.6	8.2	0	91	
-1	Control	Low	B6Ex1Cp1P3	B6	B6Ex1	3	single		21.6.2013	108.6	6	0	0	114.6	108.6	6	0	0	114.6	
-1	Control	Low	B6Ex1Cp1P4	B6	B6Ex1	4	single		21.6.2013	90.3	15.9	2.3	0	108.5	90.3	15.9	2.3	0	108.5	
-1	Control	Low	B6Ex1Cp1P5	B6	B6Ex1	5	single		21.6.2013	44.8	20.1	0	0	64.9	44.8	20.1	0	0	64.9	
+3	Exclosure	Medium	B3Ex2P1	B3	B3Ex2	1	single		21.6.2013	20.7	24.8	0	0	45.5	20.7	24.8	0	0	45.5	0
+3	Exclosure	Medium	B3Ex2P2	B3	B3Ex2	2	single		21.6.2013	97.6	1.5	0	0	99.1	97.6	1.5	0	0	99.1	0
+3	Exclosure	Medium	B3Ex2P3	B3	B3Ex2	3	single		21.6.2013	31.9	0	0	11.3	43.2	31.9	0	0	11.3	43.2	0
+3	Exclosure	Medium	B3Ex2P4	B3	B3Ex2	4	single		21.6.2013	51.1	40.1	0	0	91.2	51.1	40.1	0	0	91.2	0
+3	Exclosure	Medium	B3Ex2P5	B3	B3Ex2	5	single		21.6.2013	78	0	0	0	78	78	0	0	0	78	0
+3	Control	Medium	B3Ex2Cp1P1	B3	B3Ex2	1	single		21.6.2013	0	0	0	0	0	0	0	0	0	0	0
+3	Control	Medium	B3Ex2Cp1P2	B3	B3Ex2	2	single		21.6.2013	22.3	0	0	0	22.3	22.3	0	0	0	22.3	0
+3	Control	Medium	B3Ex2Cp1P3	B3	B3Ex2	3	single		21.6.2013	7.1	0	0	0	7.1	7.1	0	0	0	7.1	0
+3	Control	Medium	B3Ex2Cp1P4	B3	B3Ex2	4	single		21.6.2013	7.3	0	0	0	7.3	7.3	0	0	0	7.3	0
+3	Control	Medium	B3Ex2Cp1P5	B3	B3Ex2	5	single		21.6.2013	16.1	14.7	6.5	0	37.3	16.1	14.7	6.5	0	37.3	0
+3	Exclosure	Low	B4Ex1P1	B4	B4Ex1	1	single		21.6.2013	53.6	0	19.9	0	73.5	53.6	0	19.9	0	73.5	0
+3	Exclosure	Low	B4Ex1P2	B4	B4Ex1	2	single		21.6.2013	21.2	7.9	0	0	29.1	21.2	7.9	0	0	29.1	0
+3	Exclosure	Low	B4Ex1P3	B4	B4Ex1	3	single		21.6.2013	58.2	7.6	2	0	67.8	58.2	7.6	2	0	67.8	0
+3	Exclosure	Low	B4Ex1P4	B4	B4Ex1	4	single		21.6.2013	144.8	0	0	0	144.8	144.8	0	0	0	144.8	0
+3	Exclosure	Low	B4Ex1P5	B4	B4Ex1	5	single		21.6.2013	103.7	0	0	15.2	118.9	103.7	0	0	15.2	118.9	0
+3	Control	Low	B4Ex1Cp1P1	B4	B4Ex1	1	single		21.6.2013	70.4	0	19.9	0	90.3	70.4	0	19.9	0	90.3	0
+3	Control	Low	B4Ex1Cp1P2	B4	B4Ex1	2	single		21.6.2013	25.9	0	16.2	0	42.1	25.9	0	16.2	0	42.1	0
+3	Control	Low	B4Ex1Cp1P3	B4	B4Ex1	3	single		21.6.2013	34.9	0	33.4	0	68.3	34.9	0	33.4	0	68.3	0
+3	Control	Low	B4Ex1Cp1P4	B4	B4Ex1	4	single		21.6.2013	78.8	15.3	0	6.8	100.9	78.8	15.3	0	6.8	100.9	0
+3	Control	Low	B4Ex1Cp1P5	B4	B4Ex1	5	single		21.6.2013	25.2	0	14.7	6.3	46.2	25.2	0	14.7	6.3	46.2	0
+2	Exclosure	Low	B5Ex1P1	B5	B5Ex1	1	single		21.6.2013	190	0	0	0	190	190	0	0	0	190	0
+2	Exclosure	Low	B5Ex1P2	B5	B5Ex1	2	single		21.6.2013	437.8	0	0	0	437.8	437.8	0	0	0	437.8	0
+2	Exclosure	Low	B5Ex1P3	B5	B5Ex1	3	single		21.6.2013	151.5	0	0	0	151.5	151.5	0	0	0	151.5	0
+2	Exclosure	Low	B5Ex1P4	B5	B5Ex1	4	single		21.6.2013	113.3	0	0	0	113.3	113.3	0	0	0	113.3	0
+2	Exclosure	Low	B5Ex1P5	B5	B5Ex1	5	single		21.6.2013	217.2	0	0	0	217.2	217.2	0	0	0	217.2	0
+2	Control	Low	B5Ex1Cp1P1	B5	B5Ex1	1	single		21.6.2013	54.8	0	0	0	54.8	54.8	0	0	0	54.8	0
+2	Control	Low	B5Ex1Cp1P2	B5	B5Ex1	2	single		21.6.2013	37.4	0	0	10	47.4	37.4	0	0	10	47.4	0
+2	Control	Low	B5Ex1Cp1P3	B5	B5Ex1	3	single		21.6.2013	23.4	0	0	5.3	28.7	23.4	0	0	5.3	28.7	0
+2	Control	Low	B5Ex1Cp1P4	B5	B5Ex1	4	single		21.6.2013	47.1	0	0	0	47.1	47.1	0	0	0	47.1	0
+2	Control	Low	B5Ex1Cp1P5	B5	B5Ex1	5	single		21.6.2013	76.9	0	0	2.9	79.8	76.9	0	0	2.9	79.8	0
+1	Exclosure	Low	B6Ex1P1	B6	B6Ex1	1	single		21.6.2013	124.5	0	0	0	124.5	124.5	0	0	0	124.5	0
+1	Exclosure	Low	B6Ex1P2	B6	B6Ex1	2	single		21.6.2013	24.8	66.8	0	0	91.6	24.8	66.8	0	0	91.6	0
+1	Exclosure	Low	B6Ex1P3	B6	B6Ex1	3	single		21.6.2013	48.8	24.3	0	0	73.1	48.8	24.3	0	0	73.1	0
+1	Exclosure	Low	B6Ex1P4	B6	B6Ex1	4	single		21.6.2013	118.7	0	0	0	118.7	118.7	0	0	0	118.7	0
+1	Exclosure	Low	B6Ex1P5	B6	B6Ex1	5	single		21.6.2013	90.8	0	0	24.8	115.6	90.8	0	0	24.8	115.6	0
+1	Control	Low	B6Ex1Cp1P1	B6	B6Ex1	1	single		21.6.2013	46.4	26	0	13.3	85.7	46.4	26	0	13.3	85.7	0
+1	Control	Low	B6Ex1Cp1P2	B6	B6Ex1	2	single		21.6.2013	63.2	19.6	8.2	0	91	63.2	19.6	8.2	0	91	0
+1	Control	Low	B6Ex1Cp1P3	B6	B6Ex1	3	single		21.6.2013	108.6	6	0	0	114.6	108.6	6	0	0	114.6	0
+1	Control	Low	B6Ex1Cp1P4	B6	B6Ex1	4	single		21.6.2013	90.3	15.9	2.3	0	108.5	90.3	15.9	2.3	0	108.5	0
+1	Control	Low	B6Ex1Cp1P5	B6	B6Ex1	5	single		21.6.2013	44.8	20.1	0	0	64.9	44.8	20.1	0	0	64.9	0
 1	Exclosure	High	B1Ex1P1	B1	B1Ex1	1	single	21.6.2013	21.11.2013	29.3	0.5	0	0	29.8	75.1	0	0	0	75.1	35.69999981
 1	Exclosure	High	B1Ex1P2	B1	B1Ex1	2	single	21.6.2013	21.11.2013	23.9	0	0	0	23.9	79.3	0	2.9	3.5	85.7	35.69999981
 1	Exclosure	High	B1Ex1P3	B1	B1Ex1	3	single	21.6.2013	21.11.2013	15.9	0	0	1.1	17	73.7	62.5	0	0	136.2	35.69999981
