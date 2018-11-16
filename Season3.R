@@ -205,9 +205,6 @@ nsReharvestavgH0$fxgroup<-"Herb & Climber"
 # Combine Total, Grass, Woody and Herb layers and 
 nsReharvestAll0<-rbind(nsReharvestavg0,nsReharvestavgG0,nsReharvestavgW0,nsReharvestavgH0)
 
-#aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
-
-
 # Relevel factors
 # Plant groups
 nsReharvestAll$fxgroup<-as.factor(nsReharvestAll$fxgroup)
@@ -519,7 +516,7 @@ Grass1<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+
              (1|fBlock), REML=F,data=nsReharvestH1)
 summary(Grass1)
 anova(Grass1)
-AIC(Tot1) #2806.535
+AIC(Grass1) #2808.792
 
 # Simplfy model using LRT
 drop1(Grass1,test="Chisq")
@@ -556,6 +553,62 @@ anova(Grass2,Grass2d)
 #Grass2   9 2831.3 2863.7 -1406.7   2813.3 29.236      1  6.409e-08 *** # Treatment
 #Grass2   9 2831.3 2863.7 -1406.7   2813.3 18.194      2   0.000112 *** # Livestock.density
 #Grass2   9 2831.3 2863.7 -1406.7   2813.3 1.5132      1     0.2187 # Rainfall
+
+# Herbs and Climbers BIOMASS Regrowth only double harvest
+nsReharvestH1$HerbClimber1<-nsReharvestH1$HerbNetReharvestBiomass1+nsReharvestH1$ClimberNetReharvestBiomass1
+
+Herb1<-lmer(HerbClimber1~Livestock.density+Treatment+Harvest.date+rain.mm+
+               #Harvest.date:Treatment+Livestock.density:Harvest.date+
+               #Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
+               #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
+               #Treatment:Livestock.density:Harvest.date+
+               #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+               (1|fBlock), REML=F,data=nsReharvestH1)
+summary(Herb1)
+anova(Herb1)
+AIC(Herb1) #2134.931
+
+# Simplfy model using LRT
+drop1(Herb1,test="Chisq") # Nothing singificant....
+
+# Woody BIOMASS Regrowth only double harvest
+Woody1<-lmer(DwarfShrubNetReharvestBiomass1~Livestock.density+Treatment+#Harvest.date+rain.mm+
+               #Harvest.date:Treatment+#Livestock.density:Harvest.date+
+               Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
+               #rain.mm:Treatment+#rain.mm:Livestock.density+ # Simplified via LRT
+               #Treatment:Livestock.density:Harvest.date+
+               #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+               (1|fBlock), REML=F,data=nsReharvestH1)
+summary(Woody1)
+anova(Woody1)
+AIC(Woody1) #1967.998
+
+# Simplfy model using LRT
+drop1(Woody1,test="Chisq")
+
+# Update and remove factors # issues with interactions
+Woody1a <- update(Woody1, .~. -Livestock.density:Treatment)
+Woody1a2 <- update(Woody1a, .~. -Livestock.density)
+Woody1a3 <- update(Woody1a, .~. -Treatment)
+
+anova(Woody1,Woody1a)
+anova(Woody1a,Woody1a2)
+anova(Woody1a,Woody1a3)
+
+#      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#Woody1   8 1968.0 1996.8 -976.00   1952.0 11.113      2   0.003861 ** # Livestock.density:Treatment
+#Woody1a   6 1975.1 1996.7 -981.56   1963.1 0.8933      2     0.6398 # Livestock density
+#Woody1a   6 1975.1 1996.7 -981.56   1963.1 0.5437      1     0.4609 # Treatment
+
+# Interaction plot most significant - not 
+par(mfrow=c(1,1))
+with(nsReharvestH1, {interaction.plot(Treatment,Livestock.density,DwarfShrubNetReharvestBiomass1,
+                            xlab = "Treatment",
+                            ylab = "Livestock",
+                            fun=mean) })
+
+# Medium - woody biomass increases in exclosures
+# Low and High livestock - exclosures woody biomass lower in exclosures
 
 ###########################
 # Explore different grazers
