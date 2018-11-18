@@ -381,9 +381,6 @@ CenPlotG<-CenPlotG+ #theme_bw() +
         ,legend.key.width = unit(1.2,"cm"))
 CenPlotG
 
-
-
-
 # Mean distance moved by each plot - grasses
 nsSpp3G$NMDS1<-mdsNSG$points[,1]
 nsSpp3G$NMDS2<-mdsNSG$points[,2]
@@ -444,7 +441,6 @@ BcdistLMG<-glmmadmb(Bcdist~Livestockdensity+Treatment+Season+
                    family="gamma",data=nsSpp3G23)
 summary(BcdistLMG)
 AIC(BcdistLMG) # Imrpoves AIC 754.038
-
 
 #Checking assumptions
 E1G <- resid(BcdistLMG, type = "pearson") 
