@@ -250,6 +250,7 @@ PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Date+
 PermT$aov.tab
 PermT$aov.tab$R2
 str(PermT)
+install.packages("Rcmdr")
 library(BiodiversityR)
 Ordination.model1 <- CAPdiscrim(nsSpp3[,10:74]~Treatment:Livestockdensity:Date, data=nsSpp,
                                 dist="bray", axes=2, m=0, add=FALSE)
