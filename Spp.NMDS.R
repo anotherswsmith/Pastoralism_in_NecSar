@@ -33,7 +33,7 @@ nsreharvest3<-droplevels(nsreharvest3[nsreharvest3$Treatment=="Control" | nsreha
 nsreharvest3<-droplevels(nsreharvest3[!is.na(nsreharvest3$Harvest.date),])
 nsreharvest3<-droplevels(nsreharvest3[nsreharvest3$Harvest=="double",])
 nsreharvest3$Season<-nsreharvest3$Reharvest.date
-levels(nsreharvest3$Season)<-c("Short I" ,  "Long" , "Short II")
+levels(nsreharvest3$Season)<-c("Short II" ,  "Long" , "Short I")
 levels(nsSpp2$Season)<-c("Short I" ,  "Long" , "Short II")
 nsSpp2$Trt.name<-as.factor(nsSpp2$Trt.name)
 nsSpp2$Season<-as.factor(nsSpp2$Season)
@@ -45,11 +45,13 @@ dim(nsSpp2)
 dim(nsreharvest3)
 
 nsreharvest3b<-nsreharvest3[c("Transect","Block","Treatment","Trt.name","Season","Replicate","plot_code","Livestock.density","GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1",
-                              "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1","TotalBiomass1")]
+                              "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1","TotalBiomass1","rain.mm")]
 nsSpp3<-left_join(nsSpp2,nsreharvest3b, by=c("Transect","Treatment","Block","Trt.name","Season","Replicate","Livestock.density","plot_code"),drop=F)
 
 # Block as a factor
 nsSpp3$fBlock<-as.factor(nsSpp3$Block)
+
+names(nsSpp3)
 
 #### SEPERATE PLANT FUNCTIONAL GROUP DATASETS ####
 
@@ -119,7 +121,7 @@ plot(mdsNS$points[,1]~mdsNS$points[,2])
 
 # Enviro fit - fit season, treatment, livestock density 
 # Create a factor to combining livestock density, treatment and date
-nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Date, sep="-")))
+nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="-")))
 
 # Envfit
 NS.ev <- envfit(mdsNS~Livestockdensity+Treatment+ Season,data = nsSpp3, 
@@ -131,21 +133,50 @@ NS.har <- envfit(mdsNS~ harvest_code,data = nsSpp3,
                 perm=999,strata=as.numeric(nsSpp3$Block))
 NS.har
 
-# Extract centroids
-vec.sp.df<-as.data.frame(cbind(NS.har$factors$centroids*sqrt(NS.har$factors$r)))
+# PERMANOVA/ADONIS - Total 
+# Distance matrix
+vare.dis<-vegdist(nsSpp3[,10:74],"bray") 
+vare.dis2<-as.matrix(vare.dis)
+
+# Beta Dispersion
+modTLiv <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("centroid"))
+modTLiv
+
+# PERMANOVA total biomass
+nsSpp3$time_code<-as.factor(with(nsSpp3, paste(Transect,Block,Treatment,Replicate, sep="-")))
+PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+rainmm+
+                Season:Treatment+Livestockdensity:Season+
+                Livestockdensity:Treatment+rainmm:Season+
+                rainmm:Livestockdensity+rainmm:Treatment+
+                Treatment:Livestockdensity:Season+
+              Treatment:Livestockdensity:rainmm,
+              strata=as.numeric(nsSpp3$Block),#/as.numeric(nsSpp3$time_code),
+              method = "bray",perm=999, data=nsSpp3)
+PermT$aov.tab
+#PermT$aov.tab$R2
+
+# Extract centroids 
+#vec.sp.df<-as.data.frame(cbind(NS.har$factors$centroids*sqrt(NS.har$factors$r)))
+vec.sp.df<-data.frame(cbind(modTLiv$centroids[,1],modTLiv$centroids[,2]))
+vec.sp.df
+colnames(vec.sp.df)[1]<-"NMDS1"
+colnames(vec.sp.df)[2]<-"NMDS2"
+data.frame(cbind(modTLiv$centroids[,1],modTLiv$centroids[,2]))
+centroids<-data.frame(grps=rownames(mod$centroids),data.frame(mod$centroids))
 vec.sp.df$Livestockdensity<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
                                "Medium","Medium","Medium","Medium","Medium","Medium")
 vec.sp.df$Treatment<-c("Control","Control","Control","Exclosure","Exclosure","Exclosure","Control","Control","Control","Exclosure","Exclosure","Exclosure",
                        "Control","Control","Control","Exclosure","Exclosure","Exclosure")
-vec.sp.df$Season<-rep(c(1,3,2))
+vec.sp.df$Season<-rep(c("Long","Short I","Short II"))
+vec.sp.df$harvest_code<-as.factor(with(vec.sp.df, paste(Livestockdensity,Treatment,Season, sep="-")))
 
-names(nsSpp3)
 TotBio<-aggregate(TotalBiomass1~harvest_code,nsSpp3,mean)
-vec.sp.df$TotalBiomass1<-TotBio[,2]
+vec.sp.df<-merge(vec.sp.df, TotBio, by.x = "harvest_code")
 vec.sp.df$TotalBiomass1<-as.numeric(vec.sp.df$TotalBiomass1)
 
 # Reorder by season and Harvest code
-vec.sp.df$Season2<- factor(vec.sp.df$Season, levels = c("1","2","3"))
+vec.sp.df$Season<- factor(vec.sp.df$Season, levels = c("Short I","Long","Short II"))
+vec.sp.df$Season2<-c(1,2,3)
 vec.sp.df<- vec.sp.df[order(vec.sp.df$Season2),] 
 vec.sp.df$harvest_code<-as.factor(with(vec.sp.df, paste(Livestockdensity,Treatment, sep="-")))
 
@@ -233,31 +264,114 @@ CenPlot<-CenPlot + #theme_bw() +
         ,legend.key.width = unit(1.2,"cm"))
 CenPlot
 
-# PERMANOVA/ADONIS - Total 
-# Distance matrix
-vare.dis<-vegdist(nsSpp3[,10:74]) 
-vare.dis2<-as.matrix(vare.dis)
-vare.dis
 
-# PERMANOVA grasses
-nsSpp3$time_code<-as.factor(with(nsSpp3, paste(Transect,Block,Treatment,Replicate, sep="-")))
-PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Date+
-                Date:Treatment+Livestockdensity:Date+
-                Livestockdensity:Treatment+
-                Treatment:Livestockdensity:Date, 
-              strata=as.numeric(nsSpp3$Block)/as.numeric(nsSpp3$time_code),
-              method = "bray",perm=999, data=nsSpp3)
-PermT$aov.tab
-PermT$aov.tab$R2
-str(PermT)
-install.packages("Rcmdr")
-library(BiodiversityR)
-Ordination.model1 <- CAPdiscrim(nsSpp3[,10:74]~Treatment:Livestockdensity:Date, data=nsSpp,
-                                dist="bray", axes=2, m=0, add=FALSE)
-Ordination.model1
-plot1 <- ordiplot(Ordination.model1, type="none")
-ordisymbol(plot1, dune.env, "Management", legend=TRUE)
 
+# 1st factor = treatment:
+treat <- nsSpp3$Livestockdensity
+levels(nsSpp3$Livestockdensity)
+# 2nd factor = impact:
+imp <- nsSpp3$Treatment
+
+# simulating effect -
+# simulation will add similar effects
+
+## create a design matrix of the contrasts for "imp"
+contrasts(imp) <- c(-1, 1)
+Imp <- model.matrix(~ imp)[, -1]
+
+## create a design matrix of the contrasts for "treat"
+contrasts(treat) <- cbind(c(0,1,0),c(0,0,1))
+Treat <- model.matrix(~ treat)[, -1]
+
+imp.in.t1 <- Imp * ifelse(treat == "t1", 1, 0)
+imp.in.t2 <- Imp * Treat[, 1]
+imp.in.t3 <- Imp * Treat[, 2]
+
+## specify the orthogonal contrasts for "treat"
+contrasts(treat) <- cbind(c(1, -1, 0), c(1, 0, -1))
+
+## specify the design matrix of the orthogonal
+## contrasts for "treat"
+Treat.ortho <- model.matrix(~ treat)[, -1]
+
+## create a factor for each of the orthogonal "treat" contrasts
+treat1vs2 <- Treat.ortho[, 1]
+treat1vs3 <- Treat.ortho[, 2]
+
+## do the pm-manova with the full model
+fm1 <- adonis(vare.dis2~ treat * imp, method = "bray", perm = 999)
+
+## do the pm-manova with the orthogonal contrasts for imp and treat'
+## and the interaction contrasts of interest
+fm2 <- adonis(vare.dis2~ treat1vs2 + treat1vs3 +
+                imp.in.t1 + imp.in.t2 + imp.in.t3,
+              method = "bray", perm = 999)
+fm1; fm2
+
+
+# Mean distance moved by each plot - overall
+nsSpp3$NMDS1<-mdsNS$points[,1]
+nsSpp3$NMDS2<-mdsNS$points[,2]
+nsSpp31<-droplevels(nsSpp3[nsSpp3$Season=="Short I",])
+nsSpp32<-droplevels(nsSpp3[nsSpp3$Season=="Long",])
+nsSpp33<-droplevels(nsSpp3[nsSpp3$Season=="Short II",])
+
+nsSpp31sub<-nsSpp31[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp32sub<-nsSpp32[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp33sub<-nsSpp33[,c("Quadrats","Season","NMDS1","NMDS2")]
+dim(nsSpp32sub)
+
+# First season NMDS scores
+cnt<-cbind(nsSpp31sub$NMDS1,nsSpp31sub$NMDS2)
+
+library(ecodist)
+#euc.dist <- function(x1) sqrt(sum((x1 - cnt) ^ 2)) # bcdist= bray curtis
+NMDSdist2<-as.data.frame(cbind(apply(cbind(nsSpp31sub$NMDS1,nsSpp32sub$NMDS1),1, bcdist),apply(cbind(nsSpp31sub$NMDS2,nsSpp32sub$NMDS2),1, bcdist)))
+NMDSdist3<-as.data.frame(cbind(apply(cbind(nsSpp32sub$NMDS1,nsSpp33sub$NMDS1),1, bcdist),apply(cbind(nsSpp32sub$NMDS2,nsSpp33sub$NMDS2),1, bcdist)))
+
+nsSpp32<-cbind(nsSpp32,NMDSdist2)
+nsSpp33<-cbind(nsSpp33,NMDSdist3)
+colnames(nsSpp32)[84]<-"Bcdist1"
+colnames(nsSpp32)[85]<-"Bcdist2"
+colnames(nsSpp33)[84]<-"Bcdist1"
+colnames(nsSpp33)[85]<-"Bcdist2"
+reharv23<-rbind(nsSpp32,nsSpp33)
+names(reharv23)
+
+ggplot(reharv23,aes(x=Livestockdensity,y=Bcdist1, colour=Treatment))+geom_boxplot()
+ggplot(reharv23,aes(x=Livestockdensity,y=Bcdist2, colour=Treatment))+geom_boxplot()
+
+# Large outlier - test with and without  - low livestock
+#nsSpp3G23b<-nsSpp3G23[-c(90,180),]
+
+# Transform bray curtis distance to positive values - so difference from zero..
+abs(reharv23$Bcdist)
+reharv23$Bcdist1 <- abs(reharv23$Bcdist1)
+reharv23$Bcdist2 <- abs(reharv23$Bcdist2)
+
+# Sum distance by quadrat
+library(dplyr)
+reharv23$time_code<-as.factor(with(reharv23, paste(Transect,Block,Treatment,Replicate, sep="-")))
+QuadSUM1<-reharv23 %>% group_by(time_code,Livestockdensity,Treatment,Block) %>% summarise(Bcdist1 = sum(Bcdist1))
+QuadSUM2<-reharv23 %>% group_by(time_code,Livestockdensity,Treatment,Block) %>% summarise(Bcdist2 = sum(Bcdist2))
+ggplot(QuadSUM1,aes(x=Livestockdensity,y=Bcdist1, colour=Treatment))+geom_boxplot()
+ggplot(QuadSUM2,aes(x=Livestockdensity,y=Bcdist2, colour=Treatment))+geom_boxplot()
+
+# Mixed linear model - grass biomass and Bray curtis dist
+library(glmmADMB)
+Bcdist1<-glmmadmb(Bcdist1~Livestockdensity+Treatment+
+                    Livestockdensity:Treatment+
+                   +(1|Block), 
+                 #admb.opts=admbControl(shess=FALSE,noinit=FALSE,impSamp=200,maxfn=1000,imaxfn=500,maxph=5),
+                 family="gamma",data=QuadSUM1)
+summary(Bcdist1)
+
+Bcdist2<-glmmadmb(Bcdist2~Livestockdensity+Treatment+
+                    Livestockdensity:Treatment+
+                    +(1|Block), 
+                  #admb.opts=admbControl(shess=FALSE,noinit=FALSE,impSamp=200,maxfn=1000,imaxfn=500,maxph=5),
+                  family="gamma",data=QuadSUM2)
+summary(Bcdist2)
 
 #Contrast: High_Low                      average
 #BothriochloainsculptaHochstExARichACamus 1.440e-01 # 0.144
@@ -270,7 +384,9 @@ boxplot(ChrysopogonplumulosusHochst~Livestockdensity, nsSpp3) # High in high
 boxplot(CynodonnlemfuensisVanderyst~Livestockdensity, nsSpp3) # High in Low livestock
 boxplot(HeteropogoncontortusLRoemSchult~Livestockdensity, nsSpp3) # Higher in Low
 
+##########################################################################
 #### Grasses ####
+##########################################################################
 # USE NMDS on Grass only
 names(nsSpp3G[,10:28]) # 
 mdsNSG<-metaMDS(nsSpp3G[,10:28], trace =F) 
@@ -284,21 +400,52 @@ nsSpp3G$harvest_code<-as.factor(with(nsSpp3G, paste(Livestockdensity,Treatment,D
 NS.harG <- envfit(mdsNSG~ harvest_code,data = nsSpp3G, 
                   perm=999,strata=as.numeric(nsSpp3G$Block))
 NS.harG
+# PERMANOVA/ADONIS - GRASSES
+# Distance matrix
+#nsSpp3GSI<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
+vare.disG<-vegdist(nsSpp3G[,10:28], "bray") 
+vare.dis2G<-as.matrix(vare.disG)
+
+# Beta Dispersion
+nsSpp3G$harvest_code<-as.factor(with(nsSpp3G, paste(Livestockdensity,Treatment,Season, sep="-")))
+modTLivG <- betadisper(vare.disG, nsSpp3G$harvest_code,type = c("centroid"))
+modTLivG
+
+# PERMANOVA grasses
+nsSpp3G$time_code<-as.factor(with(nsSpp3G, paste(Transect,Block,Treatment,Replicate, sep="-")))
+PermG<-adonis(vare.disG~Livestockdensity+Treatment+Season+rainmm+
+                Season:Treatment+Livestockdensity:Season+
+                Livestockdensity:Treatment+rainmm:Season+
+                rainmm:Livestockdensity+rainmm:Treatment+
+                Treatment:Livestockdensity:Season+
+                Treatment:Livestockdensity:rainmm, 
+              strata=as.numeric(nsSpp3G$Block),#/as.numeric(nsSpp3G$time_code),
+              method = "bray",perm=999, data=nsSpp3G)
+PermG$aov.tab
+PermG$aov.tab$R2
 
 # Extract centroids
 #https://stackoverflow.com/questions/14711470/plotting-envfit-vectors-vegan-package-in-ggplot2/25425258#25425258
-
-vec.sp.dfG<-as.data.frame(cbind(NS.harG$factors$centroids*sqrt(NS.harG$factors$r)))
+#vec.sp.dfG<-as.data.frame(cbind(NS.harG$factors$centroids*sqrt(NS.harG$factors$r)))
+vec.sp.dfG<-data.frame(cbind(modTLivG$centroids[,1],modTLivG$centroids[,2]))
+colnames(vec.sp.dfG)[1]<-"NMDS1"
+colnames(vec.sp.dfG)[2]<-"NMDS2"
 #vec.sp.dfG<-as.data.frame(scores(mdsNSG, display = "sites"))
 vec.sp.dfG$Livestockdensity<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
                                 "Medium","Medium","Medium","Medium","Medium","Medium")
 vec.sp.dfG$Treatment<-c("Control","Control","Control","Exclosure","Exclosure","Exclosure","Control","Control","Control","Exclosure","Exclosure","Exclosure",
                         "Control","Control","Control","Exclosure","Exclosure","Exclosure")
-vec.sp.dfG$Season<-rep(c(1,3,2))
+vec.sp.dfG$Season<-rep(c("Long","Short I","Short II"))
+vec.sp.dfG$harvest_code<-as.factor(with(vec.sp.dfG, paste(Livestockdensity,Treatment,Season, sep="-")))
+
+TotBio<-aggregate(TotalBiomass1~harvest_code,nsSpp3,mean)
+vec.sp.df<-merge(vec.sp.df, TotBio, by.x = "harvest_code")
+vec.sp.df$TotalBiomass1<-as.numeric(vec.sp.df$TotalBiomass1)
 
 GReharvestBio<-aggregate(GrassNetReharvestBiomass1~harvest_code,nsSpp3G,mean)
-vec.sp.dfG$GrassNetReharvestBiomass1<-GReharvestBio[,2]
+vec.sp.dfG<-merge(vec.sp.dfG, GReharvestBio, by.x = "harvest_code")
 vec.sp.dfG$GrassNetReharvestBiomass1<-as.numeric(vec.sp.dfG$GrassNetReharvestBiomass1)
+
 #NS.harG$scores
 #Grass species scores
 spp.scrs <- as.data.frame(scores(mdsNSG, display = "species"))
@@ -308,8 +455,9 @@ spp.scrs$Season<-c("Short I")
 spp.scrs$Treatment<-c("Control")
 
 # Reorder by season and Harvest code
-vec.sp.dfG$Season2<- factor(vec.sp.dfG$Season, levels = c("1","2","3"))
-vec.sp.dfG<- vec.sp.dfG[order(vec.sp.dfG$Season2),] 
+vec.sp.dfG$Season<- factor(vec.sp.dfG$Season, levels = c("Short I","Long","Short II"))
+vec.sp.dfG$Season2<-c(1,2,3)
+vvec.sp.dfG<- vec.sp.dfG[order(vec.sp.dfG$Season2),] 
 vec.sp.dfG$harvest_code<-as.factor(with(vec.sp.dfG, paste(Livestockdensity,Treatment, sep="-")))
 
 vec.sp.dfG$Livestockdensity<-as.factor(vec.sp.dfG$Livestockdensity)
@@ -356,7 +504,7 @@ levels(vec.sp.dfG$Livestockdensity)
 #df_ell$NMDS2<-df_ell$NMDS2/6
 
 # Grass NMDS movement plot
-CenPlotG<-ggplot(vec.sp.dfG[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2, colour=Livestockdensity,fill=Livestockdensity))
+CenPlotG<-ggplot(vec.sp.dfG[order(vec.sp.dfG$Season),],aes(x=NMDS1,y=NMDS2, colour=Livestockdensity,fill=Livestockdensity))
 #CenPlotG<-CenPlotG+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
 CenPlotG<-CenPlotG+geom_point(aes(size=GrassNetReharvestBiomass1,shape=Treatment), stroke=1)
 CenPlotG<-CenPlotG+geom_path(aes(group=harvest_code),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
@@ -399,22 +547,139 @@ CenPlotG<-CenPlotG+ #theme_bw() +
         ,legend.key.width = unit(1.2,"cm"))
 CenPlotG
 
-# PERMANOVA/ADONIS - GRASSES
-# Distance matrix
-#nsSpp3GSI<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
-vare.disG<-vegdist(nsSpp3G[,10:28]) 
-vare.dis2G<-as.matrix(vare.disG)
+#### CONTRASTS WITHIN GRASS PERMANOVA ####
+# 1st factor = treatment:
+treat <- nsSpp3G$Livestockdensity
 
-# PERMANOVA grasses
-nsSpp3G$time_code<-as.factor(with(nsSpp3G, paste(Transect,Block,Treatment,Replicate, sep="-")))
-PermG<-adonis(vare.dis2G ~ Livestockdensity+Treatment+Date+
-                Date:Treatment+Livestockdensity:Date+
-                  Livestockdensity:Treatment+
-                  Treatment:Livestockdensity:Date, 
-                strata=as.numeric(nsSpp3G$Block)/as.numeric(nsSpp3G$time_code),
-              method = "bray",perm=999, data=nsSpp3G)
-PermG$aov.tab
-PermG$aov.tab$R2
+# 2nd factor = impact:
+imp <- nsSpp3G$Treatment
+
+# simulating effect -
+# simulation will add similar effects
+
+## create a design matrix of the contrasts for "imp"
+contrasts(imp) <- c(-1, 1)
+Imp <- model.matrix(~ imp)[, -1]
+
+## create a design matrix of the contrasts for "treat"
+contrasts(treat) <- cbind(c(0,1,0),c(0,0,1))
+Treat <- model.matrix(~ treat)[, -1]
+
+imp.in.t1 <- Imp * ifelse(treat == "t1", 1, 0)
+imp.in.t2 <- Imp * Treat[, 1]
+imp.in.t3 <- Imp * Treat[, 2]
+
+## specify the orthogonal contrasts for "treat"
+contrasts(treat) <- cbind(c(1, -1, 0), c(1, 0, -1))
+
+## specify the design matrix of the orthogonal
+## contrasts for "treat"
+Treat.ortho <- model.matrix(~ treat)[, -1]
+
+## create a factor for each of the orthogonal "treat" contrasts
+treat1vs2 <- Treat.ortho[, 1]
+treat1vs3 <- Treat.ortho[, 2]
+
+## do the pm-manova with the full model
+fm1 <- adonis(vare.dis2G~ treat * imp, method = "bray", perm = 999)
+
+## do the pm-manova with the orthogonal contrasts for imp and treat'
+## and the interaction contrasts of interest
+fm2 <- adonis(vare.dis2G~ treat1vs2 + treat1vs3 +
+                imp.in.t1 + imp.in.t2 + imp.in.t3,
+              method = "bray", perm = 999)
+fm1; fm2
+
+#  Contrast with high livestock
+# interaction between high and  low livestock and treatment - 
+# Issues - this is the same as total biomass - I do not believe the output...
+# no interaction with high and medium and treatment
+#Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#treat1vs2   1     3.082 3.08222 12.0766 0.04072  0.001 ***
+#treat1vs3   1     2.691 2.69139 10.5452 0.03556  0.001 ***
+#imp.in.t2   1     2.055 2.05539  8.0533 0.02716  0.001 ***
+#imp.in.t3   1     0.223 0.22279  0.8729 0.00294  0.495    
+#####
+
+# Mean distance moved by each plot - grasses
+nsSpp3G$NMDS1<-mdsNSG$points[,1]
+nsSpp3G$NMDS2<-mdsNSG$points[,2]
+nsSpp3G1<-droplevels(nsSpp3G[nsSpp3G$Season=="Short I",])
+nsSpp3G2<-droplevels(nsSpp3G[nsSpp3G$Season=="Long",])
+nsSpp3G3<-droplevels(nsSpp3G[nsSpp3G$Season=="Short II",])
+
+nsSpp3G1sub<-nsSpp3G1[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp3G2sub<-nsSpp3G2[,c("Quadrats","Season","NMDS1","NMDS2")]
+nsSpp3G3sub<-nsSpp3G3[,c("Quadrats","Season","NMDS1","NMDS2")]
+dim(nsSpp3G2sub)
+
+#cnt = c(mean(m[,1]),mean(m[,2]))
+cnt<-cbind(nsSpp3G1sub$NMDS1,nsSpp3G1sub$NMDS2)
+
+# Bray curtis distance movement - Grasses
+library(ecodist)
+#apply(m,1,function(x,cnt) {(sqrt((x[1] - cnt[1])^2+(x[2]-cnt[2])^2))},cnt)
+euc.dist <- function(x1) sqrt(sum((x1 - cnt) ^ 2))
+
+test.NMDSdist2<-as.data.frame(cbind(apply(cbind(nsSpp3G1sub$NMDS1,nsSpp3G2sub$NMDS1),1, bcdist),apply(cbind(nsSpp3G1sub$NMDS2,nsSpp3G2sub$NMDS2),1, bcdist)))
+test.NMDSdist3<-as.data.frame(cbind(apply(cbind(nsSpp3G2sub$NMDS1,nsSpp3G3sub$NMDS1),1, bcdist),apply(cbind(nsSpp3G2sub$NMDS2,nsSpp3G3sub$NMDS2),1, bcdist)))
+
+nsSpp3G2<-cbind(nsSpp3G2,test.NMDSdist2)
+nsSpp3G3<-cbind(nsSpp3G3,test.NMDSdist3)
+colnames(nsSpp3G2)[39]<-"Bcdist1"
+colnames(nsSpp3G2)[40]<-"Bcdist2"
+colnames(nsSpp3G3)[39]<-"Bcdist1"
+colnames(nsSpp3G3)[40]<-"Bcdist2"
+nsSpp3G23<-rbind(nsSpp3G2,nsSpp3G3)
+names(nsSpp3G23)
+
+# Transform bray curtis distance to positive values - so difference from zero..
+abs(nsSpp3G23$Bcdist1)
+nsSpp3G23$Bcdist1 <- abs(nsSpp3G23$Bcdist1)
+nsSpp3G23$Bcdist2 <- abs(nsSpp3G23$Bcdist2)
+
+ggplot(nsSpp3G23,aes(x=Livestockdensity,y=Bcdist1, colour=Treatment,shape=Season))+geom_boxplot()+scale_y_continuous(limits=c(0,10))
+ggplot(nsSpp3G23,aes(x=Livestockdensity,y=Bcdist2, colour=Treatment, shape=Season))+geom_boxplot()+scale_y_continuous(limits=c(0,10))
+
+nsSpp3G23b<-nsSpp3G23[-c(90,180),]
+
+# Sum distance by quadrat
+library(dplyr)
+nsSpp3G23$time_code<-as.factor(with(nsSpp3G23, paste(Transect,Block,Treatment,Replicate, sep="-")))
+QuadSUMG1<-nsSpp3G23 %>% group_by(time_code,Livestockdensity,Treatment,Block) %>% summarise(Bcdist1 = sum(Bcdist1))
+QuadSUMG2<-nsSpp3G23 %>% group_by(time_code,Livestockdensity,Treatment,Block) %>% summarise(Bcdist2 = sum(Bcdist2))
+ggplot(QuadSUMG1,aes(x=Livestockdensity,y=Bcdist1, colour=Treatment))+geom_boxplot()+scale_y_continuous(limits=c(0,10))
+ggplot(QuadSUMG2,aes(x=Livestockdensity,y=Bcdist2, colour=Treatment))+geom_boxplot()+scale_y_continuous(limits=c(0,10))
+
+# Mixed linear model - grass biomass and Eudist
+library(glmmADMB)
+#nsSpp3G23$fBlock<-as.factor(nsSpp3G23$Block)
+#nsSpp3G23$Bcdist1[nsSpp3G23$Bcdist1==0]<-.01
+#nsSpp3G23$Bcdist2[nsSpp3G23$Bcdist2==0]<-.01
+
+BcdistG1<-glmmadmb(Bcdist1~Livestockdensity+Treatment+
+                    Livestockdensity:Treatment+
+                    +(1|Block), 
+                  #admb.opts=admbControl(shess=FALSE,noinit=FALSE,impSamp=200,maxfn=1000,imaxfn=500,maxph=5),
+                  family="gamma",data=QuadSUMG1)
+summary(BcdistG1)
+drop1(BcdistG1, test="Chi")
+BcdistG2<-glmmadmb(Bcdist2~Livestockdensity+Treatment+
+                    Livestockdensity:Treatment+
+                    +(1|Block), 
+                  #admb.opts=admbControl(shess=FALSE,noinit=FALSE,impSamp=200,maxfn=1000,imaxfn=500,maxph=5),
+                  family="gamma",data=QuadSUMG2)
+summary(BcdistG2)
+drop1(BcdistG2, test="Chi")
+
+summary(BcdistLMG)
+summary(BcdistLMG2)
+
+drop1(BcdistLMG, test="Chi")
+#Livestockdensity:Treatment  2 171.51  3.5748  0.167395  
+#Livestockdensity:Treatment:Season  2 171.93 4.358   0.1132
+
+drop1(BcdistLMG2, test="Chi")
 
 ## Repeated measure
 library(permute)
@@ -500,13 +765,312 @@ CynNle<-ggplot(nsSpp3G,aes(x=Livestockdensity,y=CynodonnlemfuensisVanderyst,shap
 CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 CynNle # Huge increase in low livestock exclosures- season III
 
+##########################################################################
+#### Woody ####
+##########################################################################
+# USE NMDS on Woody only
+
+# Remove rows with sum = zero
+nsSpp3Wb<- nsSpp3W[ rowSums(nsSpp3W[,10:19])!=0, ] 
+
+# NMDS woody biomass
+mdsNSW<-metaMDS(nsSpp3Wb[,10:19], trace =F) 
+mdsNSW # 0.09492855 
+
+NS.evW <- envfit(mdsNSW~Livestockdensity+Treatment+ Season,data = nsSpp3Wb, 
+                 perm=999,strata=as.numeric(nsSpp3Wb$Block))
+NS.evW # Livestock density and treatment significant - not season
+
+nsSpp3Wb$harvest_code<-as.factor(with(nsSpp3Wb, paste(Livestockdensity,Treatment,Date, sep="-")))
+NS.harW <- envfit(mdsNSW~ harvest_code,data = nsSpp3Wb, 
+                  perm=999,strata=as.numeric(nsSpp3Wb$Block))
+NS.harW
+# PERMANOVA/ADONIS - WOODY PLANTS
+# Distance matrix
+#nsSpp3GSI<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
+vare.disW<-vegdist(nsSpp3Wb[,10:19], "bray") 
+vare.dis2W<-as.matrix(vare.disW)
+
+# Beta Dispersion
+nsSpp3Wb$harvest_code<-as.factor(with(nsSpp3Wb, paste(Livestockdensity,Treatment,Season, sep="-")))
+modTLivW <- betadisper(vare.disW, nsSpp3Wb$harvest_code,type = c("centroid"))
+modTLivW
+
+# PERMANOVA grasses
+nsSpp3Wb$time_code<-as.factor(with(nsSpp3Wb, paste(Transect,Block,Treatment,Replicate, sep="-")))
+PermW<-adonis(vare.disW~Livestockdensity+Treatment+Season+rainmm+
+                Season:Treatment+Livestockdensity:Season+
+                Livestockdensity:Treatment+rainmm:Season+
+                rainmm:Livestockdensity+rainmm:Treatment+
+                Treatment:Livestockdensity:Season+
+                Treatment:Livestockdensity:rainmm, 
+              strata=as.numeric(nsSpp3Wb$Block),#/as.numeric(nsSpp3G$time_code),
+              method = "bray",perm=999, data=nsSpp3Wb)
+PermW$aov.tab
+PermW$aov.tab$R2
+
+# Extract centroids
+#https://stackoverflow.com/questions/14711470/plotting-envfit-vectors-vegan-package-in-ggplot2/25425258#25425258
+#vec.sp.dfG<-as.data.frame(cbind(NS.harG$factors$centroids*sqrt(NS.harG$factors$r)))
+vec.sp.dfW<-data.frame(cbind(modTLivW$centroids[,1],modTLivW$centroids[,2]))
+colnames(vec.sp.dfW)[1]<-"NMDS1"
+colnames(vec.sp.dfW)[2]<-"NMDS2"
+#vec.sp.dfG<-as.data.frame(scores(mdsNSG, display = "sites"))
+vec.sp.dfW$Livestockdensity<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
+                               "Medium","Medium","Medium","Medium","Medium","Medium")
+vec.sp.dfW$Treatment<-c("Control","Control","Control","Exclosure","Exclosure","Exclosure","Control","Control","Control","Exclosure","Exclosure","Exclosure",
+                        "Control","Control","Control","Exclosure","Exclosure","Exclosure")
+vec.sp.dfW$Season<-rep(c("Long","Short I","Short II"))
+vec.sp.dfW$harvest_code<-as.factor(with(vec.sp.dfW, paste(Livestockdensity,Treatment,Season, sep="-")))
+
+WReharvestBio<-aggregate(DwarfShrubNetReharvestBiomass1~harvest_code,nsSpp3Wb,mean)
+vec.sp.dfW<-merge(vec.sp.dfW, WReharvestBio, by.x = "harvest_code")
+vec.sp.dfW$DwarfShrubNetReharvestBiomass1<-as.numeric(vec.sp.dfW$DwarfShrubNetReharvestBiomass1)
+
+#NS.harG$scores
+#Grass species scores
+spp.scrsW <- as.data.frame(scores(mdsNSW, display = "species"))
+spp.scrsW <- cbind(spp.scrsW, Species = rownames(spp.scrsW))
+spp.scrsW$Livestockdensity<-c("Low")
+spp.scrsW$Season<-c("Short I")
+spp.scrsW$Treatment<-c("Control")
+
+# Reorder by season and Harvest code
+vec.sp.dfW$Season<- factor(vec.sp.dfW$Season, levels = c("Short I","Long","Short II"))
+vec.sp.dfW$Season2<-c(1,2,3)
+vvec.sp.dfW<- vec.sp.dfW[order(vec.sp.dfW$Season2),] 
+vec.sp.dfW$harvest_code<-as.factor(with(vec.sp.dfW, paste(Livestockdensity,Treatment, sep="-")))
+
+vec.sp.dfW$Livestockdensity<-as.factor(vec.sp.dfW$Livestockdensity)
+levels(vec.sp.dfW$Livestockdensity)
+
+# Grass NMDS movement plot
+CenPlotW<-ggplot(vec.sp.dfW[order(vec.sp.dfW$Season),],aes(x=NMDS1,y=NMDS2, colour=Livestockdensity,fill=Livestockdensity))
+#CenPlotG<-CenPlotG+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
+CenPlotW<-CenPlotW+geom_point(aes(size=DwarfShrubNetReharvestBiomass1,shape=Treatment), stroke=1)
+CenPlotW<-CenPlotW+geom_path(aes(group=harvest_code),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
+#CenPlotW<-CenPlotW+geom_text(data=spp.scrs,aes(label=Species),colour="light grey")
+CenPlotW<-CenPlotW+geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
+CenPlotW<-CenPlotW+scale_colour_manual(values=c("black","grey80","grey50"))
+CenPlotW<-CenPlotW+scale_fill_manual(values=c("black","grey80","grey50"))
+CenPlotW<-CenPlotW+scale_radius(range=c(1,8))
+CenPlotW<-CenPlotW+scale_shape_manual(values=c(21,22))
+CenPlotW<-CenPlotW+ggtitle("Woody")
+CenPlotW<-CenPlotW+#theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+CenPlotW
+
+
+
+
+
+
+# Herb also increases...
+#RhynchosiaminimaLDC
+names(nsSpp2G)
+RhyMin<-ggplot(nsSpp2,aes(x=Trt_Liv,y=RhynchosiaminimaLDC  ,shape=Treatment,colour=Livestockdensity))
+RhyMin<-RhyMin+geom_boxplot(outlier.shape=NA,show.legend=F)+geom_jitter(size=2,stroke=1,show.legend=F)
+RhyMin
+
+
 
 ##########################################################################################
 #### Species richness ####
 # Paritioning the beta - alpha and gamma
 library(betapart)
 ##########################################################################################
-names(nsSpp3G)
+
+#### OVERALL COMMUNITY SPECIES CHANGE ####
+# Create a factor to define each plot shared across seasons
+nsSpp3$plot_codeII<-as.factor(with(nsSpp3, paste(Transect,Block,Trtname,Replicate, sep="_")))
+
+# Compare diversity through time
+levels(nsSpp3$Date)
+nsSpp3SeasonI<-droplevels(nsSpp3[nsSpp3$Date=="21.10.2012",])
+nsSpp3SeasonII<-droplevels(nsSpp3[nsSpp3$Date=="21.11.2013",])
+nsSpp3SeasonIII<-droplevels(nsSpp3[nsSpp3$Date=="21.6.2013",])
+
+# Presence and absence of species
+names(nsSpp3SeasonI[,10:74])
+names(nsSpp3SeasonII[,10:74])
+names(nsSpp3SeasonIII[,10:74])
+PresabsI<-ifelse(nsSpp3SeasonI[,10:74]>0,1,0)
+PresabsII<-ifelse(nsSpp3SeasonII[,10:74]>0,1,0)
+PresabsIII<-ifelse(nsSpp3SeasonIII[,10:74]>0,1,0)
+
+# Convert to betapart objects
+PresabsI.core <- betapart.core(PresabsI)
+PresabsII.core <- betapart.core(PresabsII)
+PresabsIII.core <- betapart.core(PresabsIII)
+
+# Assign plot (without season) to each row
+row.names(PresabsI) <- paste(nsSpp3SeasonI$plot_codeII, 1:nrow(PresabsI), sep="")
+row.names(PresabsII) <- paste(nsSpp3SeasonII$plot_codeII, 1:nrow(PresabsII), sep="")
+row.names(PresabsIII) <- paste(nsSpp3SeasonIII$plot_codeII, 1:nrow(PresabsIII), sep="")
+
+dimnames(PresabsI) 
+dimnames(PresabsII)
+dimnames(PresabsIII)
+
+# Beta.temp
+ObtI<-beta.temp(PresabsI,PresabsII,index.family="sor") # this is soreson
+ObtII<-beta.temp(PresabsII,PresabsIII,index.family="sor") 
+
+nsSpp3S2_3<-rbind(nsSpp3SeasonII,nsSpp3SeasonIII)
+betaSeason2_3<-rbind(ObtI,ObtII)
+nsSpp3beta<-cbind(nsSpp3S2_3,betaSeason2_3)
+
+# Analyse turnover component (sim) - OVERALL COMMUNITY
+turnbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
+                Livestockdensity:Season+Season:Treatment+
+                Livestockdensity:Treatment+ #  rainmm:Season+ 
+                rainmm:Livestockdensity+rainmm:Treatment+
+                Treatment:Livestockdensity:Season+
+                Treatment:Livestockdensity:rainmm+
+                (1 |Block), data=nsSpp3beta)
+summary(turnbt)
+anova(turnbt) 
+AIC(turnbt) # -55.17815
+drop1(turnbt, test="Chi") # ALL NS
+
+# Resid versus fit
+E1 <- resid(turnbt,type="pearson") 
+F1 <- fitted(turnbt)
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
+abline(v = 100, lwd = 2, col = 2) 
+abline(h = 0, lty = 2, col = 1)
+
+# Update and remove factors # issues with interactions
+turnbt3<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+ (1 |Block), data=nsSpp3beta)
+turnbta <- update(turnbt, .~. -Treatment:Livestockdensity:rainmm)
+turnbtb <- update(turnbt, .~. -Treatment:Livestockdensity:Season)
+turnbt2 <- update(turnbta, .~. -Treatment:Livestockdensity:Season) # No three way interactions..
+turnbt2a <- update(turnbt2, .~. -rainmm:Treatment)
+turnbt2b <- update(turnbt2, .~. -rainmm:Livestockdensity)
+turnbt2c <- update(turnbt2, .~. -Livestockdensity:Treatment)
+turnbt2d <- update(turnbt2, .~. -Season:Treatment)
+turnbt2e <- update(turnbt2, .~. -Livestockdensity:Season)
+turnbt3a <- update(turnbt3, .~. -rainmm)
+turnbt3b<- update(turnbt3, .~. -Season)
+turnbt3c <- update(turnbt3, .~. -Treatment)
+turnbt3d <- update(turnbt3, .~. -Livestockdensity)
+
+anova(turnbt,turnbta)
+anova(turnbt,turnbtb)
+anova(turnbt2,turnbt2a)
+anova(turnbt2,turnbt2b)
+anova(turnbt2,turnbt2c)
+anova(turnbt2,turnbt2d)
+anova(turnbt2,turnbt2e)
+anova(turnbt3,turnbt3a)
+anova(turnbt3,turnbt3b)
+anova(turnbt3,turnbt3c)
+anova(turnbt3,turnbt3d)
+
+#Df    AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)   
+#turnbta 18 -148.5 -91.023 92.248   -184.5 
+#turnbt  20 -155.9 -92.040 97.949   -195.9 11.402      2   0.003342 ** #Treatment:Livestockdensity:rainmm
+#turnbt  20 -155.90 -92.040 97.949  -195.90 11.532      2   0.003132 ** #Treatment:Livestockdensity:Season
+#turnbt2  16 -149.34  -98.253 90.670  -181.34 0.7724      1     0.3795 #rainmm:Treatment
+#turnbt2  16 -149.34  -98.253  90.67  -181.34 6.3596      2    0.04159 * #rainmm:Livestockdensity
+#turnbt2  16 -149.34 -98.253 90.670  -181.34 15.957      2  0.0003428 ***#Livestockdensity:Treatment
+#turnbt2  16 -149.34  -98.253 90.670  -181.34 0.7924      1     0.3734 #Season:Treatment
+#turnbt2  16 -149.34  -98.253 90.670  -181.34 6.5259      2    0.03828 *#Livestockdensity:Season
+#turnbt3   8 -141.61 -116.07 78.807  -157.61 6.4437      1    0.01113 * # rain
+#turnbt3   8 -141.61 -116.07 78.807  -157.61 6.2094      1    0.01271 * # Season
+#turnbt3   8 -141.61 -116.07 78.807  -157.61 10.039      1   0.001533 ** # Treatment
+#turnbt3   8 -141.61 -116.07 78.807  -157.61 7.4406      2    0.02423 * # Livestock density
+
+nsSpp3betaMean<-aggregate(beta.sim~Livestockdensity+Treatment+Season,nsSpp3beta,mean)
+ggplot(nsSpp3betaMean,aes(x=Livestockdensity,y=beta.sim,colour=Treatment, shape=Season))+
+  geom_point(size=4.5, position=pd)
+nsSpp3betaRain<-aggregate(beta.sim~Livestockdensity+Treatment+Season+rainmm,nsSpp3beta,mean)
+ggplot(nsSpp3betaRain,aes(x=rainmm,y=beta.sim,colour=Treatment, shape=Livestockdensity))+
+  geom_point(size=4.5)
+
+# Analyse nested component (sne) - OVERALL
+nestbt<-lmer(beta.sne~Livestockdensity+Treatment+Season+rainmm+
+               #Livestockdensity:Season+Season:Treatment+
+               #Livestockdensity:Treatment+rainmm:Season+ 
+               #rainmm:Livestockdensity+rainmm:Treatment+
+               #Treatment:Livestockdensity:Season+
+               #Treatment:Livestockdensity:rainmm+
+               (1 |Block), data=nsSpp3beta)
+summary(nestbt)
+anova(nestbt) 
+AIC(nestbt) # -235.313
+drop1(nestbt, test="Chi") # ALL NS
+
+# Resid versus fit
+E1 <- resid(turnbt,type="pearson") 
+F1 <- fitted(turnbt)
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
+abline(v = 100, lwd = 2, col = 2) 
+abline(h = 0, lty = 2, col = 1)
+
+# Analyse nested component (sne) - GRASSES
+nestGbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
+                #Livestockdensity:Season+Season:Treatment+
+                Livestockdensity:Treatment+#rainmm:Season+
+                #rainmm:Livestockdensity+rainmm:Treatment+
+                #Treatment:Livestockdensity:Season+
+                #Treatment:Livestockdensity:rainmm+
+                (1 |Block), data=nsSpp3Gbeta)
+summary(nestGbt)
+anova(nestGbt) #
+AIC(nestGbt) # -190.4819
+drop1(nestGbt, test="Chi") # 
+#Livestockdensity:Treatment 0.02193 *
+
+# Update and remove factors # issues with interactions
+nestGbta <- update(nestGbt, .~. -Livestockdensity:Treatment)
+nestGbtb <- update(nestGbt, .~. -rainmm)
+nestGbtc <- update(nestGbt, .~. -Season)
+nestGbta2 <- update(nestGbta, .~. -Treatment)
+nestGbta3 <- update(nestGbta, .~. -Livestockdensity)
+
+anova(nestGbt,nestGbta)
+anova(nestGbt,nestGbtb)
+anova(nestGbt,nestGbtc)
+anova(nestGbta,nestGbta2)
+anova(nestGbta,nestGbta3)
+
+#         Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.8661      2    0.01958 * #Livestockdensity:Treatment
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.3234      1   0.006806 ** # rain
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.3733      1    0.00662 ** # Season
+#nestGbta   8 -222.10 -196.55 119.05  -238.10 1.261      1     0.2615 # Treatment
+#nestGbta   8 -222.10 -196.55 119.05  -238.10 1.0472      2     0.5924 # Livestock
 
 # Create a factor to define each plot shared across seasons
 nsSpp3G$plot_codeII<-as.factor(with(nsSpp3G, paste(Transect,Block,Trtname,Replicate, sep="_")))
@@ -535,7 +1099,6 @@ row.names(GpresabsI) <- paste(nsSpp3GSeasonI$plot_codeII, 1:nrow(GpresabsI), sep
 row.names(GpresabsII) <- paste(nsSpp3GSeasonII$plot_codeII, 1:nrow(GpresabsII), sep="")
 row.names(GpresabsIII) <- paste(nsSpp3GSeasonIII$plot_codeII, 1:nrow(GpresabsIII), sep="")
 
-
 dimnames(GpresabsI) 
 dimnames(GpresabsII)
 dimnames(GpresabsIII)
@@ -547,24 +1110,27 @@ btII<-beta.temp(GpresabsII,GpresabsIII,index.family="sor")
 nsSpp3GS2_3<-rbind(nsSpp3GSeasonII,nsSpp3GSeasonIII)
 betaSeason<-rbind(btI,btII)
 nsSpp3Gbeta<-cbind(nsSpp3GS2_3,betaSeason)
-names(nsSpp3Gbeta)
 
 # Analyse turnover component (sim) - GRASSES
-turnGbt<-lmer(beta.sim~Livestockdensity+Treatment+Date+
-             # Date:Treatment+Livestockdensity:Date+
-#              Livestockdensity:Treatment+
-              #Treatment:Livestockdensity:Date+#Simplified via LRT 
+turnGbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
+                #Livestockdensity:Season+Season:Treatment+
+               rainmm:Season+# Livestockdensity:Treatment+
+                #rainmm:Livestockdensity+rainmm:Treatment+
+                #Treatment:Livestockdensity:Season+
+                #Treatment:Livestockdensity:rainmm+
                (1 |Block), data=nsSpp3Gbeta)
 summary(turnGbt)
-anova(turnGbt) #
-AIC(turnGbt) # -37.78991
-drop1(turnGbt, test="Chi")
+anova(turnGbt) 
+AIC(turnGbt) # -55.17815
+drop1(turnGbt, test="Chi") # ALL NS
 
 # Analyse nested component (sne) - GRASSES
-nestGbt<-lmer(beta.sne~Livestockdensity+Treatment+#Date+
-                 #Date:Treatment+Livestockdensity:Date+
-                              Livestockdensity:Treatment+
-               # Treatment:Livestockdensity:Date+#Simplified via LRT 
+nestGbt<-lmer(beta.sne~Livestockdensity+Treatment+Season+rainmm+
+                #Livestockdensity:Season+Season:Treatment+
+                 Livestockdensity:Treatment+#rainmm:Season+
+                #rainmm:Livestockdensity+rainmm:Treatment+
+                #Treatment:Livestockdensity:Season+
+                #Treatment:Livestockdensity:rainmm+
                 (1 |Block), data=nsSpp3Gbeta)
 summary(nestGbt)
 anova(nestGbt) #
@@ -572,15 +1138,47 @@ AIC(nestGbt) # -190.4819
 drop1(nestGbt, test="Chi") # 
 #Livestockdensity:Treatment 0.02193 *
 
+# Resid versus fit
+E1 <- resid(nestGbt,type="pearson") #THIS IS FOR lme..NOT lme4
+F1 <- fitted(nestGbt)
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1, 
+     y = E1,
+     xlab = "Fitted values",
+     ylab = "Residuals")
+abline(v = 100, lwd = 2, col = 2) 
+abline(h = 0, lty = 2, col = 1)
+# Update and remove factors # issues with interactions
+nestGbta <- update(nestGbt, .~. -Livestockdensity:Treatment)
+nestGbtb <- update(nestGbt, .~. -rainmm)
+nestGbtc <- update(nestGbt, .~. -Season)
+nestGbta2 <- update(nestGbta, .~. -Treatment)
+nestGbta3 <- update(nestGbta, .~. -Livestockdensity)
+
+anova(nestGbt,nestGbta)
+anova(nestGbt,nestGbtb)
+anova(nestGbt,nestGbtc)
+anova(nestGbta,nestGbta2)
+anova(nestGbta,nestGbta3)
+
+#         Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.8661      2    0.01958 * #Livestockdensity:Treatment
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.3234      1   0.006806 ** # rain
+#nestGbt  10 -225.96 -194.03 122.98  -245.96 7.3733      1    0.00662 ** # Season
+#nestGbta   8 -222.10 -196.55 119.05  -238.10 1.261      1     0.2615 # Treatment
+#nestGbta   8 -222.10 -196.55 119.05  -238.10 1.0472      2     0.5924 # Livestock
+
+# Exploring SNE nested component graphically
 sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
-nsSpp3GbetaMean<-aggregate(beta.sne~Livestockdensity+Treatment,nsSpp3Gbeta,mean)
-nsSpp3GbetaSD<-aggregate(beta.sne~Livestockdensity+Treatment,nsSpp3Gbeta,sem)
-nsSpp3GbetaMean<-cbind(nsSpp3GbetaMean,nsSpp3GbetaSD[3])
-colnames(nsSpp3GbetaMean)[4]<-"sd"
+nsSpp3GbetaMean<-aggregate(beta.sne~Livestockdensity+Treatment+Season,nsSpp3Gbeta,mean)
+nsSpp3GbetaSD<-aggregate(beta.sne~Livestockdensity+Treatment+Season,nsSpp3Gbeta,sem)
+nsSpp3GbetaMean<-cbind(nsSpp3GbetaMean,nsSpp3GbetaSD[4])
+colnames(nsSpp3GbetaMean)[5]<-"sd"
 pd <- position_dodge(0.5)
-ggplot(nsSpp3GbetaMean,aes(x=Livestockdensity,y=beta.sne,colour=Treatment))+
+ggplot(nsSpp3GbetaMean,aes(x=Livestockdensity,y=beta.sne,colour=Treatment, shape=Season))+
   geom_point(size=4.5, position=pd)+geom_errorbar(aes(x = Livestockdensity, ymin=beta.sne-sd,ymax=beta.sne+sd),
       position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+
 
 # Plot Beta by livestock density and treatment
 ggplot(nsSpp3Gbeta,aes(x=beta.sor,colour=Livestockdensity, linetype=Treatment))+geom_density()
@@ -591,177 +1189,12 @@ ggplot(nsSpp3Gbeta,aes(x=beta.sne,colour=Livestockdensity, linetype=Treatment))+
 with(nsSpp3Gbeta, plot(sqrt(beta.sim) ~ sqrt(beta.sne), 
                  type='n', ylab=expression(sqrt(beta[sim])), 
                  xlab=expression(sqrt(beta[sne]))))
-with(nsSpp3Gbeta, text(y= sqrt(beta.sim), x=sqrt(beta.sne), col=c(Livestockdensity)))
+with(nsSpp3Gbeta, points(y= sqrt(beta.sim), x=sqrt(beta.sne), pch=c(Treatment),col=c(Livestockdensity)))
 
 # Nested - seems to be two plots that are outliers - are these low livestock?
 plot(hclust(dist(nsSpp3Gbeta$beta.sim), method="single"),col=c(nsSpp3Gbeta$Livestockdensity),
      hang=-1, main='', sub='', xlab='')
 
 ##########################################################################################
-#### Species richness #### 
-##########################################################################################
-#### Overall summary - species richness
-nsSpp3$Richness<-apply(nsSpp3[,10:74]>0,1,sum)
-aggregate(Richness~Livestockdensity+Treatment+Season,nsSpp3,mean)
-nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index="shannon")
-ShanD1<-lme(Shannon~Treatment+Livestockdensity+Season+
-              Treatment:Livestockdensity+Livestockdensity:Season+
-              Treatment:Season+
-              Treatment:Livestockdensity:Season,
-            random= ~ 1|fBlock,data=nsSpp3)
-summary(ShanD1)
-anova(ShanD1)
-AIC(ShanD1) #1136.222    
-aggregate(Shannon~Livestockdensity+Season,nsSpp3,mean)
-# Diversity higher in low livestock and third season
-
-# Grasses
-nsSpp3G$Richness<-apply(nsSpp3G[,10:28]>0,1,sum)
-aggregate(Richness~Season+Livestockdensity,nsSpp3G,mean)
-
-
-
-
-
-
-#### Biplot #####
-# Biplot # Species - just grasses 
-par(mfrow=c(1,1))
-plot(mdsNSG, type="n",xlim=c(-2,2), ylim=c(-1,1),
-     ylab="NMDS 2", xlab="NMDS 1",mgp=c(1.75,.45,0), 
-     tck=.02, las=1, lwd=1.75, bty='l', main="Species")
-with(nsSpp3G,text(mdsNSG,display="species",
-                  col="grey", cex=.75))#Add spp
-with(nsSpp3G,ordiellipse(mdsNSG,Livestockdensity:Treatment, conf=0.95,
-                         cex=1.5, col="black", lwd=2, lty=c(1,2,3),label=F))
-
-# USE NMDS on Dwarf shrub only
-names(nsSpp3W0)
-nsSpp3W$woodySUM<-rowSums(nsSpp3W[,c(10:19)]) # Need to remove rows with sum zero
-nsSpp3W0<-droplevels(nsSpp3W[nsSpp3W$woodySUM!=0, ])
-mdsNSW<-metaMDS(nsSpp3W0[,c(10:19)], trace =F) 
-mdsNSW #  0.09276031
-
-NS.evW <- envfit(mdsNSW~Livestockdensity+Treatment+ Season,data = nsSpp3W0, 
-                 perm=999,strata=as.numeric(nsSpp3W0$Block))
-NS.evW # Livestock density and treatment significant - not season
-
-nsSpp3W0$harvest_code<-as.factor(with(nsSpp3W0, paste(Livestockdensity,Treatment,Date, sep="-")))
-
-NS.harW <- envfit(mdsNSW~ harvest_code,data = nsSpp3W0, 
-                  perm=999,strata=as.numeric(nsSpp3W0$Block))
-NS.harW
-
-# Extract centroids
-#https://stackoverflow.com/questions/14711470/plotting-envfit-vectors-vegan-package-in-ggplot2/25425258#25425258
-
-vec.sp.dfW<-as.data.frame(cbind(NS.harW$factors$centroids*sqrt(NS.harW$factors$r)))
-#vec.sp.dfG<-as.data.frame(scores(mdsNSG, display = "sites"))
-vec.sp.dfW$Livestock.density<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
-                                "Medium","Medium","Medium","Medium","Medium","Medium")
-vec.sp.dfW$Treatment<-c("Control","Control","Control","Exclosure","Exclosure","Exclosure","Control","Control","Control","Exclosure","Exclosure","Exclosure",
-                        "Control","Control","Control","Exclosure","Exclosure","Exclosure")
-vec.sp.dfW$Season<-rep(c(1,3,2))
-
-WReharvestBio<-aggregate(DwarfShrubNetReharvestBiomass1~harvest_code,nsSpp3W0,mean)
-vec.sp.dfW$DwarfShrubNetReharvestBiomass1<-WReharvestBio[,2]
-vec.sp.dfW$DwarfShrubNetReharvestBiomass1<-as.numeric(vec.sp.dfW$DwarfShrubNetReharvestBiomass1)
-#NS.harG$scores
-#spp.scrs <- as.data.frame(scores(mdsNSG, display = "species"))
-#spp.scrs <- cbind(spp.scrs, Species = rownames(spp.scrs))
-
-# Plot woody
-CenPlotW<-ggplot(vec.sp.dfW,aes(x=NMDS1,y=NMDS2))
-#CenPlotG<-CenPlotG+geom_text(data=spp.scrs,aes(label=Species),colour="light grey")
-CenPlotW<-CenPlotW+geom_point(aes( colour=Livestock.density,fill=Livestock.density,shape=Treatment,size=DwarfShrubNetReharvestBiomass1))
-CenPlotW<-CenPlotW+geom_text(aes(label=Season),hjust=0, vjust=-.5)
-CenPlotW<-CenPlotW+theme_classic()
-CenPlotW
-
-
-
-
-# Need to edit below...
-
-# Exclosure species move away from open plots - just explore low intensity livestock
-
-# Focus in on low intensity and season effects - grasses
-nsSpp2GL<-nsSpp2G[nsSpp2G$Livestockdensity=="Low",]
-nsSpp2GL$Trt_Liv<-as.factor(with(nsSpp2GL, paste(Livestockdensity,Treatment, sep="-")))
-nsSpp2G$Trt_Liv<-as.factor(with(nsSpp2G, paste(Livestockdensity,Treatment, sep="-")))
-nsSpp2$Trt_Liv<-as.factor(with(nsSpp2, paste(Livestockdensity,Treatment, sep="-")))
-
-nsSpp2GLex<-nsSpp2GL[nsSpp2GL$Treatment=="Exclosure",]
-
-nsSpp2GLex1<-nsSpp2GLex[nsSpp2GLex$Season=="Season I",]
-nsSpp2GLex23<-nsSpp2GLex[nsSpp2GLex$Season!="Season I",]
-
-colMax <- function(data) sapply(data, max, na.rm = TRUE)
-colMean<- function(data) sapply(data, mean, na.rm = TRUE)
-Mean1<-colMean(nsSpp2GLex1[,10:28])
-Mean23<-colMean(nsSpp2GLex23[,10:28])
-PlantMeans<-as.data.frame(cbind(Mean1,Mean23))
-names(PlantMeans)
-plot(Mean23~Mean1,PlantMeans)
-abline(0, 1) # Loss of grass species - replacement by herbs?
-
-
-# Focus in on low intensity and season effects - climbers
-
-nsSpp2CL<-nsSpp2C[nsSpp2C$Livestockdensity=="Low",]
-nsSpp2CL$Trt_Liv<-as.factor(with(nsSpp2CL, paste(Livestockdensity,Treatment, sep="-")))
-nsSpp2C$Trt_Liv<-as.factor(with(nsSpp2C, paste(Livestockdensity,Treatment, sep="-")))
-
-nsSpp2CLex<-nsSpp2CL[nsSpp2CL$Treatment=="Exclosure",]
-
-nsSpp2CLex1<-nsSpp2CLex[nsSpp2CLex$Season=="Season I",]
-nsSpp2CLex23<-nsSpp2CLex[nsSpp2CLex$Season!="Season I",]
-names(nsSpp2CLex)
-
-Mean1C<-colMean(nsSpp2CLex1[,10:13])
-Mean23C<-colMean(nsSpp2CLex23[,10:13])
-PlantMeansC<-as.data.frame(cbind(Mean1C,Mean23C))
-plot(Mean23C~Mean1C,PlantMeansC)
-abline(0, 1) # Loss of grass species - replacement by herbs?
-
-
-
-#### Biplot #####
-# Biplot # Species - just grasses 
-par(mfrow=c(1,1))
-plot(mdsNSG, type="n",xlim=c(-2,2), ylim=c(-2,2),
-     ylab="NMDS 2", xlab="NMDS 1",mgp=c(1.75,.45,0), 
-     tck=.02, las=1, lwd=1.75, bty='l', main="Species")
-with(nsSpp2G,text(mdsNSG,display="species",
-                  col="grey", cex=.75))#Add spp
-with(nsSpp2G,ordiellipse(mdsNSG,Livestockdensity:Treatment, conf=0.95,
-                         cex=1.5, col="black", lwd=2, lty=c(1,2,3),label=F))
-names(nsSpp2G)
-
-#CynodonnlemfuensisVanderyst
-CynNle<-ggplot(nsSpp2GL,aes(x=Trt_Liv,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Season))
-CynNle<-CynNle+geom_boxplot(outlier.shape=NA,show.legend=F)+geom_jitter(size=2,stroke=1,show.legend=F)
-CynNle
-
-#IschaemumafrumJFGmeLDandy
-HetCon<-ggplot(nsSpp2G,aes(x=Trt_Liv,y=IschaemumafrumJFGmeLDandy,shape=Treatment,colour=Season))
-HetCon<-HetCon+geom_boxplot(outlier.shape=NA,show.legend=F)+geom_jitter(size=2,stroke=1,show.legend=F)
-HetCon
-
-# Heteropogoncontortus
-names(nsSpp2GL)
-HetCon<-ggplot(nsSpp2GL,aes(x=Trt_Liv,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Season))
-HetCon<-HetCon+geom_boxplot(outlier.shape=NA,show.legend=F)+geom_jitter(size=2,stroke=1,show.legend=F)
-HetCon
-
-
-
-# Herb also increases...
-#RhynchosiaminimaLDC
-names(nsSpp2G)
-RhyMin<-ggplot(nsSpp2,aes(x=Trt_Liv,y=RhynchosiaminimaLDC  ,shape=Treatment,colour=Livestockdensity))
-RhyMin<-RhyMin+geom_boxplot(outlier.shape=NA,show.legend=F)+geom_jitter(size=2,stroke=1,show.legend=F)
-RhyMin
-
-
-#### END ####
+#### END #### 
+#########################################################################################
