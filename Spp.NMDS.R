@@ -84,16 +84,19 @@ to.removeC  <- gsub("[()]", "",to.removeC)
 nsSpp3G<-nsSpp3[ , !(names(nsSpp3) %in% to.remove)]
 #nsSpp2G<-subset(nsSpp2,select = names(nsSpp2) %ni% to.remove)
 names(nsSpp3G) # Subset is now just grasses
+names(nsSpp3G[10:28]) 
 
 # Subset woody - dwarf shrubs
 nsSpp3W<-nsSpp3[ , !(names(nsSpp3) %in% to.removeW)]
 nsSpp3W<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeW)
 names(nsSpp3W) # Subset is now just dwarf shrubs
+names(nsSpp3W[10:19]) 
 
 # Subset Herbs and climbers
 nsSpp3C<-nsSpp3[ , !(names(nsSpp3) %in% to.removeC)]
 nsSpp3C<-subset(nsSpp3,select = names(nsSpp3) %ni% to.removeC)
 names(nsSpp3C) # Subset is now herbs and climber
+names(nsSpp3C[10:38]) 
 
 ################################################################################
 #### Non multi-dimensional scaling - explore spp data ####
@@ -221,15 +224,39 @@ vec.sp.df$harvest_code<-as.factor(with(vec.sp.df, paste(Livestockdensity,Treatme
 #df_ell$NMDS1<-df_ell$NMDS1/4
 #df_ell$NMDS2<-df_ell$NMDS2/4
 
+# Importance of rainfall - use ordisurf
+#https://oliviarata.wordpress.com/2014/07/17/ordinations-in-ggplot2-v2-ordisurf/
+ordi <- ordisurf(mdsNS  ~ rainmm, data =  nsSpp3, plot = FALSE, scaling = 3,
+                 method = "ML", select = TRUE)
+ordi.grid <- ordi$grid #extracts the ordisurf object
+ordi.mite <- expand.grid(x = ordi.grid$x, y = ordi.grid$y) #get x and ys
+ordi.mite$z <- as.vector(ordi.grid$z) #unravel the matrix for the z scores
+ordi.mite.na <- data.frame(na.omit(ordi.mite)) #gets rid of the nas
+ordi.mite.na #looks ready for plotting!
+
+colnames(ordi.mite.na)<-c("NMDS1","NMDS2","rain.mm")
+#ordi.mite.na$Livestockdensity<-c("Low")
+class(ordi.mite.na$rain.mm)
+
+library(directlabels)
+
 # Plot centroids
-CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2, colour=Livestockdensity,fill=Livestockdensity))
+CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2))
 #CenPlot<-CenPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
-CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1), stroke=1)
-CenPlot<-CenPlot+geom_path(aes(group=harvest_code),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
+CenPlot<-CenPlot +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
+CenPlot<-CenPlot +scale_y_continuous(limits = c(-0.2,.2), expand = c(0,0))
+CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,alpha= (..level..)),colour = "dodgerblue1", #colour = rev(..level..),
+             binwidth = 2, show.legend = F)
+CenPlot<-CenPlot+annotate(geom="text",x=0.15, y=0, label="110", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.025, y=0, label="120", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.19, y=-0.15, label="130", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=Livestockdensity), stroke=1)
+CenPlot<-CenPlot+geom_path(aes(group=harvest_code,colour=Livestockdensity),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
 CenPlot<-CenPlot +scale_colour_manual(values=c("black","grey80","grey50"))
 CenPlot<-CenPlot +scale_fill_manual(values=c("black","grey80","grey50"))
 CenPlot<-CenPlot +scale_radius(range=c(1,8))
+#CenPlot<-CenPlot +scale_alpha_manual(values=c(.75,.95))
 CenPlot<-CenPlot +scale_shape_manual(values=c(21,22))
 CenPlot<-CenPlot +ggtitle("Total biomass")
 CenPlot<-CenPlot + #theme_bw() +
@@ -265,8 +292,18 @@ CenPlot<-CenPlot + #theme_bw() +
 CenPlot
 
 
+CenPlot2<-ggplot()
+CenPlot2<-CenPlot2 +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
+CenPlot2<-CenPlot2 +scale_y_continuous(limits = c(-0.2,.2), expand = c(0,0))
+CenPlot2<-CenPlot2+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,colour= (..level..)),colour = "dodgerblue1", #colour = rev(..level..),
+                              binwidth = 2)
+direct.label(CenPlot2, list("visualcenter", colour='dodgerblue1'))
 
+# CONTRAST WITHIN PERMANOVA - OVERALL COMMUNITY
+#https://thebiobucket.blogspot.com/2011/08/two-way-permanova-adonis-with-custom.html#more
 # 1st factor = treatment:
+nsSpp3$Livestockdensity<- factor(nsSpp3$Livestockdensity, levels(nsSpp3$Livestockdensity)[c(2,3,1)])
+nsSpp3$Treatment<- factor(nsSpp3$Treatment, levels(nsSpp3$Treatment)[c(2,1)])
 treat <- nsSpp3$Livestockdensity
 levels(nsSpp3$Livestockdensity)
 # 2nd factor = impact:
@@ -308,6 +345,67 @@ fm2 <- adonis(vare.dis2~ treat1vs2 + treat1vs3 +
               method = "bray", perm = 999)
 fm1; fm2
 
+# High versus low and medium - (High first) + treatment interactions
+#           Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#treat1vs2   1     3.369  3.3692 12.9304 0.04340  0.001 ***# High vs low
+#treat1vs3   1     2.774  2.7738 10.6453 0.03573  0.001 *** # High vs medium
+#imp.in.t2   1     2.033  2.0330  7.8023 0.02619  0.001 *** # High vs low excl x open
+#imp.in.t3   1     0.401  0.4006  1.5373 0.00516  0.121    # High vs medium excl x open
+#Residuals 265    69.050  0.2606         0.88951           
+#Total     269    77.627                 1.00000   
+
+# Medium versus high and low - (Medium first) + treatment interactions
+#Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#treat1vs2   1     1.692  1.6921  6.5455 0.02180  0.001 ***
+#treat1vs3   1     4.451  4.4509 17.2171 0.05734  0.001 ***
+#imp.in.t2   1     0.944  0.9439  3.6511 0.01216  0.001 ***
+#imp.in.t3   1     2.033  2.0330  7.8642 0.02619  0.001 ***
+#Residuals 265    68.507  0.2585         0.88252           
+#Total     269    77.627                 1.00000     
+
+# Low versus medium and high - (Low first) + treatment interactions
+#           Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#treat1vs2   1     4.153  4.1532 15.6916 0.05350  0.001 *** # Low vs medium
+#treat1vs3   1     1.990  1.9898  7.5180 0.02563  0.001 *** # Low vs high
+#imp.in.t2   1     0.401  0.4006  1.5134 0.00516  0.130     # Low vs medium exclosure
+#imp.in.t3   1     0.944  0.9439  3.5661 0.01216  0.001 *** # Low vs high exclosure
+#Residuals 265    70.139  0.2647         0.90355           
+
+### check model with changed effects
+eff <- sort(rep(1:6, 10))
+eff[treat == "t1" | treat == "t2"] <- 3
+
+# add noise:
+dim(vare.dis2)
+spdf <- matrix(NA, 270, 10, dimnames =
+                 list(1:270, c("sp1", "sp2", "sp3", "sp4","sp5","sp6","sp7","sp8","sp9","sp10")))
+spdf$sp1 = eff + rnorm(270, 0, 0.25)
+spdf$sp2 = eff + rnorm(270, 0, 0.25)
+spdf$sp3 = eff + rnorm(270, 0, 0.25)
+spdf$sp4 = eff + rnorm(270, 0, 0.25)
+spdf$sp5 = eff + rnorm(270, 0, 0.25)
+spdf$sp6 = eff + rnorm(270, 0, 0.25)
+spdf$sp7 = eff + rnorm(270, 0, 0.25)
+spdf$sp8 = eff + rnorm(270, 0, 0.25)
+spdf$sp9 = eff + rnorm(270, 0, 0.25)
+spdf$sp10 = eff + rnorm(270, 0, 0.25)
+
+# interaction plot for all species:
+par(mfrow=c(2, 2), mar = c(2.5, 2.5, 0.5, 0.5))
+for (i in 1:10) {interaction.plot(treat, imp, spdf[, i], lty = c(1, 2), legend = F);
+  legend("topleft", bty = "n", cex = 1.2,
+         paste("Species", i, sep = " "));
+  legend("bottomright", c("no", "yes"),
+         bty = "n", lty = c(2, 1))}
+
+vare.disNULL<-vegdist(spdf,"bray") 
+vare.dis2<-as.matrix(vare.dis)
+
+fm1 <- adonis(spdf ~ treat * imp, method = "bray", perm = 999)
+fm2 <- adonis(spdf ~ treat1vs2 + treat1vs3 +
+                imp.in.t1 + imp.in.t2 + imp.in.t3,
+              method = "euclidean", perm = 999)
+fm1; fm2
 
 # Mean distance moved by each plot - overall
 nsSpp3$NMDS1<-mdsNS$points[,1]
@@ -383,6 +481,17 @@ boxplot(BothriochloainsculptaHochstExARichACamus~Livestockdensity, nsSpp3) # Hig
 boxplot(ChrysopogonplumulosusHochst~Livestockdensity, nsSpp3) # High in high
 boxplot(CynodonnlemfuensisVanderyst~Livestockdensity, nsSpp3) # High in Low livestock
 boxplot(HeteropogoncontortusLRoemSchult~Livestockdensity, nsSpp3) # Higher in Low
+
+# Importance of rainfall - use ord.surf
+par(mfrow=c(1,1))
+ordi <- ordisurf(mdsNS  ~ rainmm, data =  nsSpp3, plot = FALSE, scaling = 3,
+                           method = "ML", select = TRUE)
+plot(mdsNS, type="n",xlim=c(-1,1), ylim=c(-1,1),
+     ylab="NMDS 2", xlab="NMDS 1",mgp=c(1.75,.45,0), 
+     tck=.02, las=1, lwd=1.75, bty='l', main="Rain (mm)")
+plot(ordi, col = "dodgerblue1",lwd=1.5,npoints=6, labcex=.75, add = TRUE)
+
+
 
 ##########################################################################
 #### Grasses ####
@@ -590,6 +699,15 @@ fm2 <- adonis(vare.dis2G~ treat1vs2 + treat1vs3 +
               method = "bray", perm = 999)
 fm1; fm2
 
+# Contrast of high livestock versus low and medium + treatment interactions
+#Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)    
+#treat1vs2   1     3.082 3.08222 12.0766 0.04072  0.001 ***# High vs low
+#treat1vs3   1     2.691 2.69139 10.5452 0.03556  0.001 ***# High vs medium
+#imp.in.t2   1     2.055 2.05539  8.0533 0.02716  0.001 ***# High vs low excl x open
+#imp.in.t3   1     0.223 0.22279  0.8729 0.00294  0.537# High vs low excl x open    
+#Residuals 265    67.634 0.25522         0.89362           
+#Total     269    75.686                 1.00000    
+
 #  Contrast with high livestock
 # interaction between high and  low livestock and treatment - 
 # Issues - this is the same as total biomass - I do not believe the output...
@@ -746,24 +864,35 @@ summary(simG,ordered = TRUE)
 #CynodonnlemfuensisVanderyst              0.140528 0.24070 0.5838
 #HeteropogoncontortusLRoemSchult          0.095644 0.18057 0.5297
 
+nsSpp3G$plot_codeX<-as.factor(with(nsSpp3G, paste(Livestockdensity,Treatment,Season, sep="_")))
+
+
 # High and medium livestock - lower in low livestock
-BotIns<-ggplot(nsSpp3G,aes(x=Livestockdensity,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Date))
+BotIns<-ggplot(nsSpp3G,aes(x=plot_codeX,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Season))
 BotIns<-BotIns+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 BotIns
+# Decline in Bot ins during third season moderate exclosures...
+plot(GrassNetReharvestBiomass1~BothriochloainsculptaHochstExARichACamus,nsSpp3G)
 
-HetCon<-ggplot(nsSpp3G,aes(x=Livestockdensity,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Livestockdensity, linetype=Date))
+HetCon<-ggplot(nsSpp3G,aes(x=plot_codeX,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Livestockdensity, linetype=Season))
 HetCon<-HetCon+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 HetCon # Huge increase in low livesock exclosures - season II
+# High in high exclosures and low open
+plot(GrassNetReharvestBiomass1~HeteropogoncontortusLRoemSchult,nsSpp3G)
 
 # Medium and livestock higher
-ChrPlu<-ggplot(nsSpp3G,aes(x=Livestockdensity,y=ChrysopogonplumulosusHochst,shape=Treatment,colour=Livestockdensity, linetype=Date))
+ChrPlu<-ggplot(nsSpp3G,aes(x=plot_codeX,y=ChrysopogonplumulosusHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
 ChrPlu<-ChrPlu+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 ChrPlu
+plot(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,nsSpp3G)
+# Decline in Chr Plu during thir season moderate exclosures...
 
 # Low livestock - higher - in exclosures
-CynNle<-ggplot(nsSpp3G,aes(x=Livestockdensity,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Date))
+CynNle<-ggplot(nsSpp3G,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
 CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 CynNle # Huge increase in low livestock exclosures- season III
+# Some occurence of this grass in moderate at last season - though also present in second season...
+plot(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G)
 
 ##########################################################################
 #### Woody ####
