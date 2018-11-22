@@ -50,8 +50,8 @@ colnames(Ex_location)[7]<-"Trt.name"
 
 #### Join regrowth and dung data ####
 # Regrowth biomass
-nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
-names(nsreharvest3)
+nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
+names(nsherb3)
 
 myvars <- c("Trt.name", "X", "Y")
 Ex_location1<-Ex_location[myvars]
@@ -110,6 +110,20 @@ nsReharvest<-nsreharvest3locHerb
 #plot(nsreharvest3locHerb$cat.krig,nsreharvest3locHerb$CattleMetBio)
 # No much difference here # Krig = lower estimate of cattle 
 
+#### Functional group split ####
+names(nsReharvestb)
+mean(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+# Grasses 82.86805 + 23
+nsReharvestb$HerbClimberBiomass1<-nsReharvestb$ClimberNetReharvestBiomass1 + nsReharvestb$HerbNetReharvestBiomass1
+
+mean(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+#Herb and climber 9.214427 + 17
+
+mean(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+#Herb and climber 7.917522 + 16
 ########################################################################
 #### Biomass regrowth - plotting data ####
 ########################################################################
@@ -217,9 +231,7 @@ nsReharvestAll$Livestock.density<-as.factor(nsReharvestAll$Livestock.density)
 nsReharvestAll0$Livestock.density<-as.factor(nsReharvestAll0$Livestock.density)
 nsReharvestAll$Livestock.density<- factor(nsReharvestAll$Livestock.density, levels = c("Low","Medium","High"))
 nsReharvestAll0$Livestock.density<- factor(nsReharvestAll0$Livestock.density, levels = c("Low","Medium","High"))
-
 aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
-
 
 # Convert date to season
 nsReharvestAll$Reharvest.date2<-as.factor(nsReharvestAll$Reharvest.date)
@@ -236,10 +248,8 @@ nsReharvestAll0$harvest_trt<-as.factor(with(nsReharvestAll0, paste(Harvest,Treat
 # Total Biomass
 ReHavTot<-nsReharvestAll[nsReharvestAll$fxgroup=="Total",]
 ReHavTot0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Total",]
-
 levels(ReHavTot$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
 levels(ReHavTot0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
-
 levels(ReHavTot$Treatment)<-c("Herbivory","No herbivory")  
 levels(ReHavTot0$Treatment)<-c("Herbivory","No herbivory") 
 
@@ -315,29 +325,35 @@ Regrow2b <- grid.grab()
 is.grob(Regrow2b)
 
 # Export graph
-filename <- paste0("TotBioRegrowth_NecSar", "_",Sys.Date(), ".jpeg" )
-jpeg (filename, width=22, height=12, res=400, unit="cm")
+#filename <- paste0("TotBioRegrowth_NecSar", "_",Sys.Date(), ".jpeg" )
+#jpeg (filename, width=22, height=12, res=400, unit="cm")
 ggarrange(Regrow2b, ncol=1)
-dev.off()
-
+#dev.off()
 
 # All other functional groups - Grass, Woody and Herbs - supporting info
 
-# Grasses
-Regrow2<-ggplot(TGexcl, aes(x=Reharvest.date2, y=Biomass,
-                           group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
-Regrow2<-Regrow2+geom_line(position=pd,stat = "identity",size=.75,show.legend = F) 
-Regrow2<-Regrow2+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
-Regrow2<-Regrow2+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
-Regrow2<-Regrow2+facet_wrap(~fxgroup+Livestock.density, scale="fixed", ncol=3)
-Regrow2<-Regrow2+scale_colour_manual(values=c("grey20","grey30"))
-Regrow2<-Regrow2+scale_fill_manual(values=c("grey60","white"))
-Regrow2<-Regrow2+scale_shape_manual(values=c(22,21))
-Regrow2<-Regrow2+geom_errorbar(data=TG0excl,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
-Regrow2<-Regrow2+geom_point(data=TG0excl,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
-Regrow2<-Regrow2+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
-Regrow2<-Regrow2+xlab("Season") + ylab(expression(paste("Biomass (g ",m^-2,")")))
-Regrow2<-Regrow2+ #theme_bw() +
+#### Grasses only - Regrowth graph ####
+ReHavG<-nsReharvestAll[nsReharvestAll$fxgroup=="Grass",]
+ReHavG0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Grass",]
+levels(ReHavG$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavG0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavG$Treatment)<-c("Herbivory","No herbivory")  
+levels(ReHavG0$Treatment)<-c("Herbivory","No herbivory") 
+
+RegrowG<-ggplot(ReHavG, aes(x=Reharvest.date2, y=Biomass,
+                             group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+RegrowG<-RegrowG+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+RegrowG<-RegrowG+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+RegrowG<-RegrowG+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+RegrowG<-RegrowG+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
+RegrowG<-RegrowG+scale_colour_manual(values=c("grey20","grey30"))
+RegrowG<-RegrowG+scale_fill_manual(values=c("grey60","white"))
+RegrowG<-RegrowG+scale_shape_manual(values=c(21,22))
+RegrowG<-RegrowG+geom_errorbar(data=ReHavG0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
+RegrowG<-RegrowG+geom_point(data=ReHavG0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
+RegrowG<-RegrowG+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+RegrowG<-RegrowG+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")"))) + ggtitle("Grass")
+RegrowG<-RegrowG+#theme_bw() +
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
         ,plot.background=element_rect(fill="transparent",colour=NA)
@@ -348,32 +364,169 @@ Regrow2<-Regrow2+ #theme_bw() +
         ,panel.grid.major.y = element_blank()
         ,axis.text=element_text(size=12,color="black")
         ,axis.title.y=element_text(size=12,color="black")
-        ,axis.title.x=element_blank()
-        ,axis.text.x=element_blank()
-        ,axis.ticks.x=element_blank()
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
         ,axis.ticks.length=unit(-1.5, "mm")
         ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
         ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
         ,axis.line.y = element_line(color="black", size = .5)
-        ,axis.line.x = element_blank()
+        ,axis.line.x = element_line(color="black", size = .5)
         ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
         ,strip.background = element_rect(fill="transparent",colour=NA)
-        ,strip.text.x = element_blank()
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
         ,strip.text.y = element_blank()
         ,panel.spacing = unit(.1, "lines")
-        ,legend.position = "top"
-        ,legend.justification = "center"
-        ,legend.direction="horizontal"
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
         ,legend.key.width = unit(1.2,"cm"))
-Regrow2
+RegrowG<-RegrowG+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
+RegrowG<-RegrowG+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
+
+RegrowG<-RegrowG+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
+                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,22), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+ReHavG2<-ReHavG
+ReHavG2$Sampling<-as.factor(ReHavG2$Livestock.density)
+levels(ReHavG2$Sampling)<-c("One harvest","Two Harvests","Three Harvests")
+RegrowG2 <-  RegrowG+ geom_point(data = ReHavG2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
+RegrowG2 <-  RegrowG2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","dotted","solid"), size=1,fill=c("black","white","grey60"),col=c("black","grey30","grey20"), stroke=1)))
+RegrowG2
+
+#### Herbs and climbers only - Regrowth graph ####
+ReHavH<-nsReharvestAll[nsReharvestAll$fxgroup=="Herb & Climber",]
+ReHavH0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Herb & Climber",]
+levels(ReHavH$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavH0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavH$Treatment)<-c("Herbivory","No herbivory")  
+levels(ReHavH0$Treatment)<-c("Herbivory","No herbivory") 
+
+RegrowH<-ggplot(ReHavH, aes(x=Reharvest.date2, y=Biomass,
+                            group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+RegrowH<-RegrowH+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+RegrowH<-RegrowH+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+RegrowH<-RegrowH+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+RegrowH<-RegrowH+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
+RegrowH<-RegrowH+scale_colour_manual(values=c("grey20","grey30"))
+RegrowH<-RegrowH+scale_fill_manual(values=c("grey60","white"))
+RegrowH<-RegrowH+scale_shape_manual(values=c(21,22))
+RegrowH<-RegrowH+geom_errorbar(data=ReHavH0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
+RegrowH<-RegrowH+geom_point(data=ReHavH0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
+RegrowH<-RegrowH+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+RegrowH<-RegrowH+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")"))) + ggtitle("Herbs & Climbers")
+RegrowH<-RegrowH+#theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+RegrowH<-RegrowH+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
+RegrowH<-RegrowH+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
+
+RegrowH<-RegrowH+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
+                        shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,22), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+ReHavH2<-ReHavH
+ReHavH2$Sampling<-as.factor(ReHavH2$Livestock.density)
+levels(ReHavH2$Sampling)<-c("One harvest","Two Harvests","Three Harvests")
+RegrowH2 <-  RegrowH+ geom_point(data = ReHavH2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
+RegrowH2 <-  RegrowH2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","dotted","solid"), size=1,fill=c("black","white","grey60"),col=c("black","grey30","grey20"), stroke=1)))
+RegrowH2
+
+#### Woody only - Regrowth graph ####
+ReHavW<-nsReharvestAll[nsReharvestAll$fxgroup=="Woody",]
+ReHavW0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Woody",]
+levels(ReHavW$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavW0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(ReHavW$Treatment)<-c("Herbivory","No herbivory")  
+levels(ReHavW0$Treatment)<-c("Herbivory","No herbivory") 
+
+RegrowW<-ggplot(ReHavW, aes(x=Reharvest.date2, y=Biomass,
+                            group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+RegrowW<-RegrowW+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+RegrowW<-RegrowW+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+RegrowW<-RegrowW+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+RegrowW<-RegrowW+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
+RegrowW<-RegrowW+scale_colour_manual(values=c("grey20","grey30"))
+RegrowW<-RegrowW+scale_fill_manual(values=c("grey60","white"))
+RegrowW<-RegrowW+scale_shape_manual(values=c(21,22))
+RegrowW<-RegrowW+geom_errorbar(data=ReHavW0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
+RegrowW<-RegrowW+geom_point(data=ReHavW0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
+RegrowW<-RegrowW+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+RegrowW<-RegrowW+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")"))) + ggtitle("Woody")
+RegrowW<-RegrowW+#theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+RegrowW<-RegrowW+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
+RegrowW<-RegrowW+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
+
+RegrowW<-RegrowW+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
+                        shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,22), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+ReHavW2<-ReHavW
+ReHavW2$Sampling<-as.factor(ReHavW2$Livestock.density)
+levels(ReHavW2$Sampling)<-c("One harvest","Two Harvests","Three Harvests")
+RegrowW2 <-  RegrowW+ geom_point(data = ReHavW2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
+RegrowW2 <-  RegrowW2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","dotted","solid"), size=1,fill=c("black","white","grey60"),col=c("black","grey30","grey20"), stroke=1)))
+RegrowW2
 
 # Combine graphs
-library(grid)
-library(gridExtra)
-library(egg)
-library(ggpubr)
-
-egg::ggarrange(Regrow+ theme(legend.position="none"),Regrow2+ theme(legend.position="none"), ncol=1) #common.legend = T)
+#library(grid)
+#library(gridExtra)
+#library(egg)
+#library(ggpubr)
+#egg::ggarrange(Regrow+ theme(legend.position="none"),Regrow2+ theme(legend.position="none"), ncol=1) #common.legend = T)
 
 ########################################################################
 #### Percentage difference ####
@@ -464,14 +617,16 @@ drop1(Tot1,test="Chisq")
 #### Double harvest versus single harvest analysis ####
 # Use lme4 rather nlme package - more maintained...
 
-# TOTAL BIOMASS Regrowth only double harvest
-Tot1<-lmer(TotalBiomass1~Livestock.density+Treatment+Harvest.date+#rain.mm+
-            Harvest.date:Treatment+Livestock.density:Harvest.date+
+#### TOTAL BIOMASS Regrowth only double harvest ####
+nsReharvestH1$Season<-as.factor(nsReharvestH1$Harvest.date)
+Tot1<-lmer(TotalBiomass1~Livestock.density+Treatment+Season+#rain.mm+
+             Season:Treatment+Livestock.density:Season+
             Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
              #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
-            Treatment:Livestock.density:Harvest.date+
+            Treatment:Livestock.density:Season+
              #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
           (1|fBlock), REML=F,data=nsReharvestH1)
+class(nsReharvestH1$"Harvest.date")
 summary(Tot1)
 anova(Tot1)
 AIC(Tot1) #2811.925
@@ -506,7 +661,21 @@ anova(Tot2,Tot2c)
 #Tot2   8 2828.2 2857.0 -1406.1   2812.2 27.396      1  1.658e-07 *** # Treatment
 #Tot2   8 2828.2 2857 -1406.1   2812.2 22.159      2  1.543e-05 *** # Livestock.density
 
-# GRASS BIOMASS Regrowth only double harvest
+#### Total biomass - model contrasts #### 
+
+# lsmeans
+library(multcomp)
+library(multcompView)
+library(lsmeans)
+library(lmerTest)
+library(Hmisc)
+library(pbkrtest)
+
+# Date needs to be factor for contrast - GREAT  low excl long season vs low season differ 
+TrtLivDate <-difflsmeans(Tot1,test.effs= "Treatment:Livestock.density:Season")
+write.table(TrtLivDate, "Treat_Liv_Date.contrasts.txt", sep="\t")
+
+#### GRASS BIOMASS Regrowth only double harvest ####
 Grass1<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+
              Harvest.date:Treatment+Livestock.density:Harvest.date+
              Livestock.density:Treatment+rain.mm:Harvest.date+ # Simplified via LRT
