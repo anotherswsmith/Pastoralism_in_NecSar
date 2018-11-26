@@ -110,21 +110,7 @@ nsReharvest<-nsreharvest3locHerb
 #plot(nsreharvest3locHerb$cat.krig,nsreharvest3locHerb$CattleMetBio)
 # No much difference here # Krig = lower estimate of cattle 
 
-#### Functional group split ####
-names(nsReharvestb)
-mean(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-sd(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-# Grasses 82.86805 + 23
-nsReharvestb$HerbClimberBiomass1<-nsReharvestb$ClimberNetReharvestBiomass1 + nsReharvestb$HerbNetReharvestBiomass1
-
-mean(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-sd(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-#Herb and climber 9.214427 + 17
-
-mean(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-sd(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
-#Herb and climber 7.917522 + 16
-########################################################################
+######################################################################
 #### Biomass regrowth - plotting data ####
 ########################################################################
 
@@ -528,6 +514,20 @@ RegrowW2
 #library(ggpubr)
 #egg::ggarrange(Regrow+ theme(legend.position="none"),Regrow2+ theme(legend.position="none"), ncol=1) #common.legend = T)
 
+#### Functional group split ####
+mean(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$GrassNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+# Grasses 82.86805 + 23
+nsReharvestb$HerbClimberBiomass1<-nsReharvestb$ClimberNetReharvestBiomass1 + nsReharvestb$HerbNetReharvestBiomass1
+
+mean(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$HerbClimberBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+#Herb and climber 9.214427 + 17
+
+mean(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+sd(nsReharvestb$DwarfShrubNetReharvestBiomass1/nsReharvestb$TotalBiomass1*100,na.rm=T)
+#Herb and climber 7.917522 + 16
+
 ########################################################################
 #### Percentage difference ####
 ########################################################################
@@ -556,6 +556,61 @@ Regrow2<-Regrow2+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_c
 Regrow2<-Regrow2+geom_point(size=4)
 Regrow2<-Regrow2+ggtitle("Total Biomass percentage")
 Regrow2
+
+########################################################################
+#### Data exploration ####
+# A Missing values?
+# B Outliers in Y / Outliers in X
+# C Collinearity X
+# D Relationships Y vs X
+# E Spatial/temporal aspects of sampling design (not relevant here)
+# F Interactions (is the quality of the data good enough to include them?)
+# G Zero inflation Y
+# H Are categorical covariates balanced?
+########################################################################
+
+# Only need exclosure and control
+nsReharvestb<-droplevels(nsReharvest[nsReharvest$Treatment=="Control" | nsReharvest$Treatment=="Exclosure",])
+
+# Livestock density and regrowth
+nsReharvestb$harvest_code<-as.factor(with(nsReharvestb, paste(Livestock.density,Treatment, sep="-")))
+levels(nsReharvestb$harvest_code) # 6
+
+#### Only reharvest ####
+nsReharvestbO<-droplevels(nsReharvestb[is.na(nsReharvestb$Harvest.date),])
+nsReharvestbH1_2<-droplevels(nsReharvestb[!is.na(nsReharvestb$Harvest.date),])
+
+nsReharvestbH1_2$Plot.ID<-as.numeric(nsReharvestbH1_2$Plot.name)
+Rdate2<-strptime(as.character(nsReharvestbH1_2$Reharvest.date),format="%d.%m.%Y",tz="Africa/Nairobi" )
+nsReharvestbH1_2$YrMonth<-format(Rdate2, "%Y-%m")
+
+# ONLY double harvest...
+nsReharvestH1<- droplevels(nsReharvestbH1_2[nsReharvestbH1_2$Harvest=="double",])
+#nsReharvestH1<-nsReharvestbH1_2
+nsReharvestH1$Harvest
+
+# Block as factor
+nsReharvestH1$fBlock<-as.factor(nsReharvestH1$Block)
+nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
+
+#B Collinearity X
+
+# Boxplot for factors
+names(nsReharvestb)
+par(mfrow = c(1, 1), mar = c(4, 3, 3, 2))
+boxplot(rain.mm ~ Season, 
+        xlab = "Season",
+        ylab = "Rain.mm",
+        data = nsReharvestb) # Collinear...
+
+par(mfrow = c(1, 1), mar = c(4, 3, 3, 2))
+boxplot(rain.mm ~ Livestock.density, 
+        xlab = "Livestock.density",
+        ylab = "Rain.mm",
+        data = nsReharvestb) # Not colinear - low area not drier
+
+bwplot(rain.mm~Season|Livestock.density,nsReharvestb)
+# Second short season - medium livestock gets a bit more rainfall...
 
 ########################################################################
 #### Biomass regrowth - data analysis ####

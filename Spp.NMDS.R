@@ -142,17 +142,18 @@ vare.dis<-vegdist(nsSpp3[,10:74],"bray")
 vare.dis2<-as.matrix(vare.dis)
 
 # Beta Dispersion
+nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="-")))
 modTLiv <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("centroid"))
 modTLiv
 
 # PERMANOVA total biomass
 nsSpp3$time_code<-as.factor(with(nsSpp3, paste(Transect,Block,Treatment,Replicate, sep="-")))
-PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+rainmm+
+PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+TotalBiomass1+
                 Season:Treatment+Livestockdensity:Season+
-                Livestockdensity:Treatment+rainmm:Season+
-                rainmm:Livestockdensity+rainmm:Treatment+
+                Livestockdensity:Treatment+TotalBiomass1:Season+
+                TotalBiomass1:Livestockdensity+TotalBiomass1:Treatment+
                 Treatment:Livestockdensity:Season+
-              Treatment:Livestockdensity:rainmm,
+              Treatment:Livestockdensity:TotalBiomass1,
               strata=as.numeric(nsSpp3$Block),#/as.numeric(nsSpp3$time_code),
               method = "bray",perm=999, data=nsSpp3)
 PermT$aov.tab
@@ -226,8 +227,10 @@ vec.sp.df$harvest_code<-as.factor(with(vec.sp.df, paste(Livestockdensity,Treatme
 
 # Importance of rainfall - use ordisurf
 #https://oliviarata.wordpress.com/2014/07/17/ordinations-in-ggplot2-v2-ordisurf/
-ordi <- ordisurf(mdsNS  ~ rainmm, data =  nsSpp3, plot = FALSE, scaling = 3,
+names(nsSpp3)
+ordi <- ordisurf(mdsNS  ~ TotalBiomass1, data =  nsSpp3, plot = FALSE, scaling = 3,
                  method = "ML", select = TRUE)
+#plot(ordi)
 ordi.grid <- ordi$grid #extracts the ordisurf object
 ordi.mite <- expand.grid(x = ordi.grid$x, y = ordi.grid$y) #get x and ys
 ordi.mite$z <- as.vector(ordi.grid$z) #unravel the matrix for the z scores
@@ -244,12 +247,12 @@ library(directlabels)
 CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2))
 #CenPlot<-CenPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
 CenPlot<-CenPlot +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
-CenPlot<-CenPlot +scale_y_continuous(limits = c(-0.2,.2), expand = c(0,0))
+CenPlot<-CenPlot +scale_y_continuous(limits = c(-0.2,.25), expand = c(0,0))
 CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,alpha= (..level..)),colour = "dodgerblue1", #colour = rev(..level..),
              binwidth = 2, show.legend = F)
-CenPlot<-CenPlot+annotate(geom="text",x=0.15, y=0, label="110", colour = "dodgerblue1", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.025, y=0, label="120", colour = "dodgerblue1", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.19, y=-0.15, label="130", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.16, label="70", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label="80", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label="88", colour = "dodgerblue1", size=4)
 CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=Livestockdensity), stroke=1)
 CenPlot<-CenPlot+geom_path(aes(group=harvest_code,colour=Livestockdensity),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
