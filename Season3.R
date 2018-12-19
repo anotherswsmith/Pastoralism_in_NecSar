@@ -236,8 +236,8 @@ ReHavTot<-nsReharvestAll[nsReharvestAll$fxgroup=="Total",]
 ReHavTot0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Total",]
 levels(ReHavTot$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
 levels(ReHavTot0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
-levels(ReHavTot$Treatment)<-c("Herbivory","No herbivory")  
-levels(ReHavTot0$Treatment)<-c("Herbivory","No herbivory") 
+levels(ReHavTot$Treatment)<-c("Open","Exclosed")  
+levels(ReHavTot0$Treatment)<-c("Open","Exclosed") 
 
 # Position dodge
 pd <- position_dodge(0.5)
@@ -250,8 +250,8 @@ Regrow<-Regrow+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Bioma
 Regrow<-Regrow+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
 Regrow<-Regrow+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
 Regrow<-Regrow+scale_colour_manual(values=c("grey20","grey30"))
-Regrow<-Regrow+scale_fill_manual(values=c("grey60","white"))
-Regrow<-Regrow+scale_shape_manual(values=c(21,22))
+Regrow<-Regrow+scale_fill_manual(values=c("white","white"))#"grey60",
+Regrow<-Regrow+scale_shape_manual(values=c(22,21))
 Regrow<-Regrow+geom_errorbar(data=ReHavTot0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
 Regrow<-Regrow+geom_point(data=ReHavTot0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
 Regrow<-Regrow+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
@@ -290,15 +290,17 @@ Regrow<- Regrow+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black',
 Regrow<- Regrow+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
 
 Regrow<- Regrow+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
-                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,22), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(22,21), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
 ReHavTot2<-ReHavTot
-ReHavTot2$Sampling<-as.factor(ReHavTot2$Livestock.density)
-levels(ReHavTot2$Sampling)<-c("One harvest","Two Harvests","Three Harvests")
+ReHavTot2$Sampling<-as.factor(ReHavTot2$Treatment)
+levels(ReHavTot2$Sampling)<-c("Standing biomass","Regrowth") #"One harvest","Two Harvests","Three Harvests"
 Regrow2 <-  Regrow+ geom_point(data = ReHavTot2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
-Regrow2 <-  Regrow2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","dotted","solid"), size=1,fill=c("black","white","grey60"),col=c("black","grey30","grey20"), stroke=1)))
+Regrow2 <-  Regrow2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","solid"), size=1,fill=c("black","white"),col=c("black","grey20"), stroke=1))) # "blank","dotted","solid" # "black","white","grey60" #"black","grey30","grey20"
 Regrow2
 
 # Enlarge symbol around line manually
+library(grid)
+library(ggpubr)
 grid.ls(grid.force()) 
 grid.gedit("key-3-1-1.4-2-4-2", size = unit(4, "mm")) 
 grid.gedit("key-3-1-2.4-2-4-2", size = unit(4, "mm")) 
@@ -311,10 +313,10 @@ Regrow2b <- grid.grab()
 is.grob(Regrow2b)
 
 # Export graph
-#filename <- paste0("TotBioRegrowth_NecSar", "_",Sys.Date(), ".jpeg" )
-#jpeg (filename, width=22, height=12, res=400, unit="cm")
+filename <- paste0("TotBioRegrowth_NecSar", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=22, height=12, res=400, unit="cm")
 ggarrange(Regrow2b, ncol=1)
-#dev.off()
+dev.off()
 
 # All other functional groups - Grass, Woody and Herbs - supporting info
 
@@ -611,6 +613,23 @@ boxplot(rain.mm ~ Livestock.density,
 
 bwplot(rain.mm~Season|Livestock.density,nsReharvestb)
 # Second short season - medium livestock gets a bit more rainfall...
+
+#corvif
+library(car)
+GRAZE.lm1<-lm(TotalBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm, data = nsReharvestb)
+vif(GRAZE.lm1)
+#                       GVIF Df GVIF^(1/(2*Df))
+#Livestock.density   1.06597  2         1.01610
+#Treatment           1.00000  1         1.00000
+#Harvest.date      830.76014  1        28.82291
+#rain.mm           830.82611  1        28.82405 # Cannot use rainfall and season in the same model
+
+# C Collinearity Y
+names(nsReharvestb)
+MyVar<-c("GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1",
+         "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1")
+pairs(nsReharvestb[,MyVar],lower.panel = panel.cor)
+# Poor correlation between functional group regrowth biomass
 
 ########################################################################
 #### Biomass regrowth - data analysis ####

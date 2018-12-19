@@ -240,28 +240,36 @@ ordi.mite.na #looks ready for plotting!
 colnames(ordi.mite.na)<-c("NMDS1","NMDS2","rain.mm")
 #ordi.mite.na$Livestockdensity<-c("Low")
 class(ordi.mite.na$rain.mm)
+ordi.mite.na$TotalBiomass1<-ordi.mite.na$rain.mm
 
-library(directlabels)
+# Rename seasons, exclosure, - short hand
+levels(vec.sp.df$Season)<-c(" ","L","SII")
+vec.sp.df$Treatment<-as.factor(vec.sp.df$Treatment)
+vec.sp.df$Livestockdensity<-as.factor(vec.sp.df$Livestockdensity)
+levels(vec.sp.df$Treatment)<-c("Open","Exclosed")
+vec.sp.df$Livestockdensity<- factor(vec.sp.df$Livestockdensity, levels(vec.sp.df$Livestockdensity)[c(2,3,1)])
+
+sizeLegend<-expression(paste("Biomass regrowth (g ",m^-2,")"))
 
 # Plot centroids
 CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2))
 #CenPlot<-CenPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
 CenPlot<-CenPlot +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
 CenPlot<-CenPlot +scale_y_continuous(limits = c(-0.2,.25), expand = c(0,0))
-CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,alpha= (..level..)),colour = "dodgerblue1", #colour = rev(..level..),
+CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm, size=TotalBiomass1,alpha= (..level..)),colour = "green4", #colour = rev(..level..),
              binwidth = 2, show.legend = F)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.16, label="70", colour = "dodgerblue1", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label="80", colour = "dodgerblue1", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label="88", colour = "dodgerblue1", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.16, label=expression(paste("70 g ",m^-2,"")), colour = "green4", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label=expression(paste("     80 g ",m^-2,"")), colour = "green4", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label=expression(paste("88 g ",m^-2,"")), colour = "green4", size=4)
 CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=Livestockdensity), stroke=1)
 CenPlot<-CenPlot+geom_path(aes(group=harvest_code,colour=Livestockdensity),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
-CenPlot<-CenPlot +scale_colour_manual(values=c("black","grey80","grey50"))
-CenPlot<-CenPlot +scale_fill_manual(values=c("black","grey80","grey50"))
-CenPlot<-CenPlot +scale_radius(range=c(1,8))
+CenPlot<-CenPlot +scale_colour_manual(values=c("black","grey50","grey80"))
+CenPlot<-CenPlot +scale_fill_manual(values=c("black","grey50","grey80"))
+CenPlot<-CenPlot +scale_radius(sizeLegend,range=c(1,8))
 #CenPlot<-CenPlot +scale_alpha_manual(values=c(.75,.95))
 CenPlot<-CenPlot +scale_shape_manual(values=c(21,22))
-CenPlot<-CenPlot +ggtitle("Total biomass")
+#CenPlot<-CenPlot +ggtitle("Total biomass")
 CenPlot<-CenPlot + #theme_bw() +
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
@@ -285,6 +293,7 @@ CenPlot<-CenPlot + #theme_bw() +
         ,strip.background = element_rect(fill="transparent",colour=NA)
         ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
         ,strip.text.y = element_blank()
+        ,legend.background=element_blank()
         ,panel.spacing = unit(.1, "lines")
         ,legend.text=element_text(size=12)
         ,legend.title=element_text(size=12)
@@ -294,13 +303,60 @@ CenPlot<-CenPlot + #theme_bw() +
         ,legend.key.width = unit(1.2,"cm"))
 CenPlot
 
+CenPlot<- CenPlot+guides(linetype=F, fill=F,#size=T,
+                         colour = guide_legend("Livestock density",override.aes = list(shape=c(21), size=3.5,fill=c("black","grey50","grey80"),col=c("black","grey50","grey80"), stroke=1)),
+                         shape = guide_legend("Treatment",override.aes = list(shape=c(21,22), size=3.5,fill=NA,col="grey30", stroke=1)))
+      # size = guide_legend((expression(paste("Biomass ( kg ",m^-2,")"))),override.aes = list(shape=c(21),fill=c("grey30"),col=c("grey30"), stroke=1)))
+CenPlot
 
-CenPlot2<-ggplot()
-CenPlot2<-CenPlot2 +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
-CenPlot2<-CenPlot2 +scale_y_continuous(limits = c(-0.2,.2), expand = c(0,0))
-CenPlot2<-CenPlot2+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,colour= (..level..)),colour = "dodgerblue1", #colour = rev(..level..),
-                              binwidth = 2)
-direct.label(CenPlot2, list("visualcenter", colour='dodgerblue1'))
+# Export ggplot
+ggsave("NMDS2.ordsurf.jpeg",width= 15, height = 12,units ="cm", bg ="transparent",
+       dpi = 600, limitsize = TRUE)
+
+# CHECKING NUMBERS FOR ordisurf line
+library(directlabels)
+#CenPlot2<-ggplot()
+#CenPlot2<-CenPlot2 +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
+#CenPlot2<-CenPlot2 +scale_y_continuous(limits = c(-0.2,.2), expand = c(0,0))
+#CenPlot2<-CenPlot2+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm,colour= (..level..)),colour = "green4", #colour = rev(..level..),
+#                              binwidth = 2)
+#direct.label(CenPlot2, list("visualcenter", colour='green4')) # dodgerblue1
+
+# Predicted versus observed biomass based on changes in sepcies composition
+str(ordi)
+#y ~ s(x1, x2, k = 10, bs = "tp", fx = FALSE)
+#A. Create a grid of covariate values
+range(Crayfish2$TotalBiomass1)
+MyData <- expand.grid(x1 = vec.sp.df$NMDS1,
+                      x2= vec.sp.df$NMDS2,
+                      k=10)
+                      #TotalBiomass1= seq(min(nsSpp3$TotalBiomass1),max(nsSpp3$TotalBiomass1), length = 25))
+
+predict(ordi,MyData,type="terms",se=TRUE)
+
+#B. Predict Weight values for these artificial covariate values
+P2 <- predict(ordi, newdata = MyData, se = TRUE)
+
+#Put everything in MyData (for ggplot2)
+MyData$mu   <- P2$fit
+MyData$seup <- P2$fit + 1.96 * P2$se.fit
+MyData$selo <- P2$fit - 1.96 * P2$se.fit
+MyData
+colnames(MyData)<-c("NMDS1","NMDS2","k","TotalBiomass1","seup","selo")
+names(vec.sp.df)
+PredGAM<-ggplot(vec.sp.df,aes(x=NMDS2, y=TotalBiomass1))+geom_point(size=2)
+PredGAM<-PredGAM+geom_point(data=MyData,aes(x=NMDS2, y=TotalBiomass1), colour="red")
+PredGAM
+
+vec.sp.df$TotalBiomass1
+PredGAMnmds2<-aggregate(TotalBiomass1~NMDS2,MyData,mean)
+vec.sp.df$PredBio<-PredGAMnmds2$TotalBiomass1
+vec.sp.df$PredDiff<-vec.sp.df$TotalBiomass1-PredGAMnmds2$TotalBiomass1
+
+PredDiff2<-ggplot(vec.sp.df,aes(x=TotalBiomass1, y=PredBio, colour=Livestockdensity,shape=Treatment))
+PredDiff2<-PredDiff2+geom_abline(slope=1, intercept=0, size =.95) # Reference line
+PredDiff2<-PredDiff2+geom_point(size=2)
+PredDiff2
 
 # CONTRAST WITHIN PERMANOVA - OVERALL COMMUNITY
 #https://thebiobucket.blogspot.com/2011/08/two-way-permanova-adonis-with-custom.html#more
@@ -493,8 +549,6 @@ plot(mdsNS, type="n",xlim=c(-1,1), ylim=c(-1,1),
      ylab="NMDS 2", xlab="NMDS 1",mgp=c(1.75,.45,0), 
      tck=.02, las=1, lwd=1.75, bty='l', main="Rain (mm)")
 plot(ordi, col = "dodgerblue1",lwd=1.5,npoints=6, labcex=.75, add = TRUE)
-
-
 
 ##########################################################################
 #### Grasses ####
@@ -869,7 +923,6 @@ summary(simG,ordered = TRUE)
 
 nsSpp3G$plot_codeX<-as.factor(with(nsSpp3G, paste(Livestockdensity,Treatment,Season, sep="_")))
 
-
 # High and medium livestock - lower in low livestock
 BotIns<-ggplot(nsSpp3G,aes(x=plot_codeX,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Season))
 BotIns<-BotIns+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -887,15 +940,18 @@ plot(GrassNetReharvestBiomass1~HeteropogoncontortusLRoemSchult,nsSpp3G)
 ChrPlu<-ggplot(nsSpp3G,aes(x=plot_codeX,y=ChrysopogonplumulosusHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
 ChrPlu<-ChrPlu+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 ChrPlu
-plot(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,nsSpp3G)
+plot(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,col=c(nsSpp3G$Livestockdensity),nsSpp3G)
 # Decline in Chr Plu during thir season moderate exclosures...
-
+summary(lm(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,nsSpp3G))
 # Low livestock - higher - in exclosures
 CynNle<-ggplot(nsSpp3G,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
 CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 CynNle # Huge increase in low livestock exclosures- season III
 # Some occurence of this grass in moderate at last season - though also present in second season...
 plot(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G)
+abline(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
+summary(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
+
 
 ##########################################################################
 #### Woody ####
@@ -1019,7 +1075,6 @@ CenPlotW<-CenPlotW+#theme_bw() +
         ,legend.direction="vertical"
         ,legend.key.width = unit(1.2,"cm"))
 CenPlotW
-
 
 ##########################################################################
 #### Herbs and climbers ####
@@ -1163,10 +1218,94 @@ egg::ggarrange(CenPlotG+ theme(legend.position="none"),
                CenPlotW+ theme(legend.position="none"), ncol=3) #common.legend = T)
 
 ##########################################################################################
-#### Species richness ####
+#### Species richness and evenness ####
 # Paritioning the beta - alpha and gamma
 library(betapart)
 ##########################################################################################
+
+# OVERALL COMMUNITY
+# Shannon index, species richness and Eveness
+nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index = "shannon")
+nsSpp3$richness<-specnumber(nsSpp3[,10:74], MARGIN = 1)
+nsSpp3$eveness<-nsSpp3$Shannon/log(nsSpp3$richness)
+
+# Aggregate
+aggregate(richness~Livestockdensity+Treatment,nsSpp3,mean)
+
+# Drop Short I
+nsSpp3i<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
+
+# Shannon diversity
+ShanTot<-lmer(Shannon~Livestockdensity+#Season+rainmm+#Treatment+
+               #Livestockdensity:Season+Season:Treatment+
+               #Livestockdensity:Treatment+   #rainmm:Season+ 
+               #rainmm:Livestockdensity+rainmm:Treatment+
+               #Treatment:Livestockdensity:Season+
+               #Treatment:Livestockdensity:rainmm+
+               (1 |Block), data=nsSpp3i)
+summary(ShanTot)
+anova(ShanTot) 
+AIC(ShanTot) # 184.9415
+drop1(ShanTot, test="Chi") # Only livestock
+
+#                 Sum Sq Mean Sq NumDF DenDF F value  Pr(>F)  
+#Livestockdensity 1.0024 0.50122     2   177   3.415 0.03506 *
+
+# Update model
+ShanTota <- update(ShanTot, .~. -Livestockdensity)
+anova(ShanTot,ShanTota)
+#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
+#ShanTot   5 172.39 188.35 -81.195   162.39 6.8152      2    0.03312 *
+
+# Resid versus fit
+E1 <- resid(ShanTot,type="pearson") 
+F1 <- fitted(ShanTot)
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
+abline(v = 100, lwd = 2, col = 2) 
+abline(h = 0, lty = 2, col = 1)
+
+# lsmeans
+library(multcomp)
+library(multcompView)
+library(lsmeans)
+library(lmerTest)
+library(Hmisc)
+library(pbkrtest)
+boxplot(Shannon~Livestockdensity,nsSpp3i) # High has higher diversity
+summary(glht(ShanTot, mcp(Livestockdensity="Tukey")))  # High has higher diversity - marginally
+
+# Eveness
+EveTot<-lmer(eveness~Livestockdensity+Season+rainmm+#Treatment+
+                #Livestockdensity:Season+Season:Treatment+
+                #Livestockdensity:Treatment+   rainmm:Season+ 
+                #rainmm:Livestockdensity+rainmm:Treatment+
+                #Treatment:Livestockdensity:Season+
+                #Treatment:Livestockdensity:rainmm+
+                (1 |Block), data=nsSpp3i)
+summary(EveTot)
+anova(EveTot) 
+AIC(EveTot) # -123.8387
+drop1(EveTot, test="Chi") # ALL NS
+bwplot(eveness~Livestockdensity|Season,nsSpp3)
+
+# Update model
+EveTota <- update(EveTot, .~. -Livestockdensity)
+EveTotb <- update(EveTot, .~. -Season)
+EveTotc <- update(EveTot, .~. -rainmm)
+anova(EveTot,EveTota)
+anova(EveTot,EveTotb)
+anova(EveTot,EveTotc)
+#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
+#EveTot   7 -157.48 -135.13 85.740  -171.48 7.5263      2    0.02321 * # Livestockdensity
+#EveTot   7 -157.48 -135.13 85.740  -171.48 5.171      1    0.02297 * # Season
+#EveTot   7 -157.48 -135.13 85.740  -171.48 5.3941      1     0.0202 * # Rain
+
+# Contrasts within the model
+boxplot(eveness~Livestockdensity,nsSpp3i) # Low livestock has lower eveness...
+boxplot(eveness~Season,nsSpp3i) # Long is more even than the rest
+summary(glht(EveTot, mcp(Livestockdensity="Tukey")))  # Lower evenenss with low livestock 
+summary(glht(EveTot, mcp(Season="Tukey"))) 
 
 #### OVERALL COMMUNITY SPECIES CHANGE ####
 # Create a factor to define each plot shared across seasons
@@ -1311,7 +1450,97 @@ plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
 
-# Analyse nested component (sne) - Herbs and climbers
+# Grasses
+# Shannon index, species richness and Eveness
+nsSpp3G$Shannon<-diversity(nsSpp3G[10:28], index = "shannon")
+nsSpp3G$richness<-specnumber(nsSpp3G[10:28], MARGIN = 1)
+nsSpp3G$eveness<-nsSpp3G$Shannon/log(nsSpp3G$richness)
+
+# Drop Short I
+nsSpp3Gi<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
+
+# Shannon diversity
+ShanG<-lmer(Shannon~Livestockdensity+#Season+rainmm+#Treatment+
+                Livestockdensity:Season+#Season:Treatment+
+               # Livestockdensity:Treatment+   #rainmm:Season+ 
+                rainmm:Livestockdensity+#rainmm:Treatment+
+                #Treatment:Livestockdensity:Season+
+                #Treatment:Livestockdensity:rainmm+
+                (1 |Block), data=nsSpp3Gi)
+summary(ShanG)
+anova(ShanG) 
+AIC(ShanG) #  177.3046
+drop1(ShanG, test="Chi") # ALL NS
+bwplot(Shannon~Season|Livestockdensity*Treatment,nsSpp3Gi) # Livestock lower diversity
+
+# Update model
+ShanGa <- update(ShanG, .~. -Livestockdensity:Season)
+ShanGb <- update(ShanG, .~. -Livestockdensity:rainmm)
+ShanGc <- update(ShanGa, .~. -Livestockdensity:rainmm)
+ShanGc1 <- update(ShanGc, .~. -Livestockdensity)
+
+anova(ShanG,ShanGa)
+anova(ShanG,ShanGb)
+anova(ShanGc,ShanGc1)
+
+#       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
+#ShanG  11 135.54 170.66 -56.769   113.54 10.682      3    0.01358 * #Livestockdensity:Season
+#ShanG  11 135.54 170.66 -56.769   113.54 10.746      3    0.01318 *#Livestockdensity:rainmm
+#ShanGc   5 134.58 150.55 -62.291   124.58 7.4068      2    0.02464 * #Livestock
+
+# lsmeans
+library(multcomp)
+library(multcompView)
+library(lsmeans)
+library(lmerTest)
+library(Hmisc)
+library(pbkrtest)
+boxplot(Shannon~Livestockdensity,nsSpp3Gi) # High has higher diversity
+summary(glht(ShanG, mcp(Livestockdensity="Tukey")))  # High has higher diversity
+lsShanG <-difflsmeans(ShanG, test.effs= "Livestockdensity:Season" )
+lsShanG 
+
+aggregate(Shannon~Livestockdensity+Season,nsSpp3Gi,mean)
+
+with(nsSpp3Gi, {interaction.plot(Season,Livestockdensity,Shannon,
+                                  xlab = "tree canopy",
+                                  ylab = "Biomass Rainfall correlation",
+                                  fun=mean)})
+names(SerEbio5)
+
+# Eveness of grasses
+EveG<-lmer(eveness~Livestockdensity+Season+#rainmm+Treatment+
+               #Livestockdensity:Season+Season:Treatment+
+               #Livestockdensity:Treatment+   rainmm:Season+ 
+               #rainmm:Livestockdensity+rainmm:Treatment+
+               #Treatment:Livestockdensity:Season+
+               #Treatment:Livestockdensity:rainmm+
+               (1 |Block), data=nsSpp3G)
+summary(EveG)
+anova(EveG) 
+AIC(EveG) # -30.63383
+drop1(EveG, test="Chi") # ALL NS
+bwplot(eveness~Livestockdensity|Season,nsSpp3G)
+
+# Update model
+EveGa <- update(EveG, .~. -Livestockdensity)
+EveGb <- update(EveG, .~. -Season)
+
+anova(EveG,EveGa)
+anova(EveG,EveGb)
+
+#      Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq) 
+#EveG   7 -58.075 -33.286 36.037  -72.075 8.2332      2     0.0163 * #Livestockdensity
+#EveG   7 -58.075 -33.286 36.037  -72.075 12.838      2   0.001631 ** #Season
+
+# Model contrasts
+boxplot(eveness~Livestockdensity,nsSpp3G)
+boxplot(eveness~Season,nsSpp3G) 
+summary(glht(EveG, mcp(Livestockdensity="Tukey")))  # Eveness higher in high livestock
+summary(glht(EveG, mcp(Season="Tukey"))) # Increased from short I
+
+
+# Analyse nested component (sne) - Grasses
 nestGbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
                 #Livestockdensity:Season+Season:Treatment+
                 Livestockdensity:Treatment+#rainmm:Season+
@@ -1492,9 +1721,86 @@ with(nsSpp3Gbeta, points(y= sqrt(beta.sim), x=sqrt(beta.sne), pch=c(Treatment),c
 plot(hclust(dist(nsSpp3Gbeta$beta.sim), method="single"),col=c(nsSpp3Gbeta$Livestockdensity),
      hang=-1, main='', sub='', xlab='')
 
+names(nsSpp3Gbeta)
+aggregate(beta.sne~Livestockdensity,nsSpp3Gbeta,median)
+#  Livestockdensity   beta.sne
+#1             High 0.10982804
+#2              Low 0.10257937
+#3           Medium 0.09832011
 
-##### Herbs and climbers #####
 
+##### Woody plants #####
+
+# Shannon index, species richness and Eveness
+nsSpp3W$Shannon<-diversity(nsSpp3W[,10:19], index = "shannon")
+nsSpp3W$richness<-specnumber(nsSpp3W[,10:19], MARGIN = 1)
+nsSpp3W$eveness<-nsSpp3W$Shannon/log(nsSpp3W$richness)
+
+# Drop first date
+nsSpp3Wi<-droplevels(nsSpp3W[nsSpp3W$Date!="21.10.2012",])
+
+# Shannon diversity
+ShanW<-lmer(Shannon~Livestockdensity+Season+rainmm+Treatment+
+              #Livestockdensity:Season+Season:Treatment+
+              Livestockdensity:Treatment+  # rainmm:Season+ 
+              #rainmm:Livestockdensity+rainmm:Treatment+
+              #Treatment:Livestockdensity:Season+
+              #Treatment:Livestockdensity:rainmm+
+              (1 |Block), data=nsSpp3Wi)
+summary(ShanW)
+anova(ShanW) 
+AIC(ShanW) #  177.3046
+drop1(ShanW, test="Chi") # ALL NS
+
+# Update model
+ShanWa <- update(ShanW, .~. -Livestockdensity:Treatment)
+ShanWb <- update(ShanW, .~. -rainmm)
+ShanWc <- update(ShanW, .~. -Season)
+ShanWa1 <- update(ShanWa, .~. -Treatment)
+ShanWa2 <- update(ShanWa, .~. -Livestockdensity)
+
+anova(ShanW,ShanWa)
+anova(ShanW,ShanWb)
+anova(ShanW,ShanWc)
+anova(ShanWa,ShanWa1)
+anova(ShanWa,ShanWa2)
+
+#       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
+#ShanW  10 100.71 132.64 -40.356   80.713 7.1883      2    0.02748 * # Livestockdensity:Treatment
+#ShanW  10 100.71 132.64 -40.356   80.713 6.0508      1     0.0139 * #rainmm
+#ShanW  10 100.71 132.64 -40.356   80.713 5.8807      1    0.01531 * #Season
+#ShanWa   8 103.90 129.44 -43.951   87.901 1.7777      1     0.1824 # Treatment
+#ShanWa   8 103.9 129.44 -43.951   87.901 0.7957      2     0.6718 #Livestockdensity
+
+# Eveness of woody
+EveW<-lmer(eveness~Livestockdensity+Treatment+#Season+rainmm+
+             #Livestockdensity:Season+#Season:Treatment+
+             Livestockdensity:Treatment+  # rainmm:Season+ 
+             #rainmm:Livestockdensity+rainmm:Treatment+
+             #Treatment:Livestockdensity:Season+
+             #Treatment:Livestockdensity:rainmm+
+             (1 |Block), data=nsSpp3W)
+summary(EveW)
+anova(EveW) 
+AIC(EveW) # 140.0116
+drop1(EveW, test="Chi") # ALL NS
+bwplot(eveness~Livestockdensity|Treatment,nsSpp3W)
+
+# Update model
+EveWa <- update(EveW, .~. -Livestockdensity:Treatment)
+EveWa1 <- update(EveWa, .~. -Livestockdensity)
+EveWa2 <- update(EveWa, .~. -Treatment)
+
+anova(EveW,EveWa)
+anova(EveWa,EveWa1)
+anova(EveWa,EveWa2)
+
+#      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#EveW   8 123.25 147.34 -53.627   107.25 11.466      2   0.003237 **#Livestockdensity:Treatment
+#EveWa   6 130.72 148.78 -59.360   118.72 0.6755      2     0.7134#Livestockdensity
+#EveWa   6 130.72 148.78 -59.360   118.72 1.235      1     0.2664#Treatment
+
+# Woody species beta part
 # Remove rows with sum = zero
 names(nsSpp3W[,10:19])
 
@@ -1574,12 +1880,6 @@ plot(x = Fc1,  y = Ec1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
 
-
-Treatment+Season+rainmm+ Livestockdensity+
-  Livestockdensity:Season+ #Season:Treatment+ 
-  Livestockdensity:Treatment+ #rainmm:Season+
-  rainmm:Livestockdensity
-
 # Update and remove factors # issues with interactions
 turnWbt2<-lmer(beta.sim~Treatment+Season+rainmm+ Livestockdensity+(1 |Block), data=nsSpp3Wbeta)
 turnWbta <- update(turnWbt, .~. -rainmm:Livestockdensity) 
@@ -1597,7 +1897,6 @@ anova(turnWbt2,turnWbt2a)
 anova(turnWbt2,turnWbt2b)
 anova(turnWbt2,turnWbt2c)
 anova(turnWbt2,turnWbt2d)
-
 
 #         Df      AIC    BIC logLik deviance  Chisq Chi Df Pr(>Chisq) 
 #turnWbt  14 -12.7871 27.572 20.393  -40.787 8.4276      2    0.01479 * # rainmm:Livestockdensity
@@ -1664,7 +1963,79 @@ anova(nestWbt2,nestWbt2c)
 #nestWbt2   7 -69.225 -49.045 41.612  -83.225 0.1266      1      0.722 #rainmm
 #nestWbt2   7 -69.225 -49.045 41.612  -83.225 0.1368      1     0.7115 #Season
 #nestWbt2   7 -69.225 -49.045 41.612  -83.225 2.9739      2     0.2261 #Livestockdensity
+
+
 ##### Herbs and climbers  #####
+
+# Shannon index, species richness and Eveness
+nsSpp3C$Shannon<-diversity(nsSpp3C[,10:38], index = "shannon")
+nsSpp3C$richness<-specnumber(nsSpp3C[,10:38], MARGIN = 1)
+nsSpp3C$eveness<-nsSpp3C$Shannon/log(nsSpp3C$richness)
+
+# Drop first date
+nsSpp3Ci<-droplevels(nsSpp3C[nsSpp3C$Date!="21.10.2012",])
+
+# Shannon diversity
+ShanC<-lmer(Shannon~Livestockdensity+#Season+rainmm+Treatment+
+              #Livestockdensity:Season+Season:Treatment+
+              #Livestockdensity:Treatment+   #rainmm:Season+ 
+              #rainmm:Livestockdensity+rainmm:Treatment+
+              #Treatment:Livestockdensity:Season+
+              #Treatment:Livestockdensity:rainmm+
+              (1 |Block), data=nsSpp3Ci)
+summary(ShanC)
+anova(ShanC) 
+AIC(ShanC) #  177.3046
+drop1(ShanC, test="Chi") # ALL NS
+
+# Update model
+ShanCa <- update(ShanC, .~. -Livestockdensity)
+anova(ShanC,ShanCa)
+
+#       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+#ShanC   5 228.13 244.09 -109.06   218.13 38.332      2  4.746e-09 ***
+
+boxplot(Shannon~Livestockdensity,nsSpp3Ci) # Much lower in high>low>medium
+
+# Evenness
+EveC<-lmer(eveness~Livestockdensity+Season+rainmm+Treatment+
+              Livestockdensity:Season+Season:Treatment+
+              Livestockdensity:Treatment+   #rainmm:Season+ 
+              rainmm:Livestockdensity+rainmm:Treatment+
+              Treatment:Livestockdensity:Season+
+              Treatment:Livestockdensity:rainmm+
+              (1 |Block), data=nsSpp3Ci)
+summary(EveC)
+anova(EveC) 
+AIC(EveC) #  177.3046
+drop1(EveC, test="Chi") # ALL NS
+bwplot(eveness~Livestockdensity|Treatment*Season,nsSpp3Ci)
+
+
+# Update model
+EveCa <- update(EveC, .~. -Livestockdensity:Season:Treatment)
+EveCb <- update(EveC, .~. -Livestockdensity:rainmm:Treatment)
+EveCc <- update(EveCa, .~. -Livestockdensity:rainmm:Treatment)
+EveCc1 <- update(EveCc, .~. -rainmm:Treatment)
+EveCc2 <- update(EveCc, .~. -rainmm:Livestockdensity)
+EveCc3 <- update(EveCc, .~. -Livestockdensity:Treatment)
+EveCc4 <- update(EveCc, .~. -Season:Treatment)
+EveCc5 <- update(EveCc, .~. -Livestockdensity:Season)
+EveCd<-lmer(eveness~Livestockdensity+Season+rainmm+Treatment+(1 |Block), data=nsSpp3Ci)
+EveCd1 <- update(EveCd, .~. -Treatment)
+EveCd2 <- update(EveCd, .~. -rainmm)
+EveCd3 <- update(EveCd, .~. -Season)
+EveCd4 <- update(EveCd, .~. -Livestockdensity)
+
+
+anova(EveC,EveCa)
+
+#       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+#EveC  20 69.154 127.84 -14.577   29.154 7.0043      2    0.03013 * #Livestockdensity:Season:Treatment
+
+boxplot(Shannon~Livestockdensity,nsSpp3Ci) # Much lower in high>low>medium
+
+
 
 # Remove rows with sum = zero
 nsSpp3Cb<- nsSpp3C[ rowSums(nsSpp3C[,10:38])!=0, ] 
