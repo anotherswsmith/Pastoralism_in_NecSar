@@ -144,7 +144,11 @@ vare.dis2<-as.matrix(vare.dis)
 # Beta Dispersion
 nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="-")))
 modTLiv <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("centroid"))
-modTLiv
+modTLivM <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("median"))
+
+# Dispersion sd
+SE<- function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+CentSD<-tapply(modTLiv$distances, nsSpp3$harvest_code, SE)
 
 # PERMANOVA total biomass
 nsSpp3$time_code<-as.factor(with(nsSpp3, paste(Transect,Block,Treatment,Replicate, sep="-")))
@@ -158,13 +162,15 @@ PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+TotalBiomass1+
               method = "bray",perm=999, data=nsSpp3)
 PermT$aov.tab
 #PermT$aov.tab$R2
-
+mean(modTLiv$centroids[,1])
+modTLiv$centroids[1]
 # Extract centroids 
 #vec.sp.df<-as.data.frame(cbind(NS.har$factors$centroids*sqrt(NS.har$factors$r)))
-vec.sp.df<-data.frame(cbind(modTLiv$centroids[,1],modTLiv$centroids[,2]))
+vec.sp.df<-data.frame(cbind(modTLiv$centroids[,1],modTLiv$centroids[,2],CentSD))
 vec.sp.df
 colnames(vec.sp.df)[1]<-"NMDS1"
 colnames(vec.sp.df)[2]<-"NMDS2"
+colnames(vec.sp.df)[3]<-"CenSd"
 data.frame(cbind(modTLiv$centroids[,1],modTLiv$centroids[,2]))
 centroids<-data.frame(grps=rownames(mod$centroids),data.frame(mod$centroids))
 vec.sp.df$Livestockdensity<-c("High","High","High","High","High","High","Low","Low","Low","Low","Low","Low",
@@ -261,6 +267,8 @@ CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z =
 CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.16, label=expression(paste("70 g ",m^-2,"")), colour = "green4", size=4)
 CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label=expression(paste("     80 g ",m^-2,"")), colour = "green4", size=4)
 CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label=expression(paste("88 g ",m^-2,"")), colour = "green4", size=4)
+CenPlot<-CenPlot+geom_errorbar(aes(colour=Livestockdensity,ymin=NMDS2-CenSd, ymax=NMDS2+CenSd),show.legend=F)
+CenPlot<-CenPlot+geom_errorbarh(aes(colour=Livestockdensity,xmin = NMDS1-CenSd,xmax = NMDS1+CenSd),show.legend=F)
 CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=Livestockdensity), stroke=1)
 CenPlot<-CenPlot+geom_path(aes(group=harvest_code,colour=Livestockdensity),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
@@ -549,6 +557,112 @@ plot(mdsNS, type="n",xlim=c(-1,1), ylim=c(-1,1),
      ylab="NMDS 2", xlab="NMDS 1",mgp=c(1.75,.45,0), 
      tck=.02, las=1, lwd=1.75, bty='l', main="Rain (mm)")
 plot(ordi, col = "dodgerblue1",lwd=1.5,npoints=6, labcex=.75, add = TRUE)
+
+
+# Overall spp most asscoicated with specific livestock x treatment x season combination
+nsSpp3.env<-nsSpp3[,c("fBlock","Livestockdensity","Season","Treatment")]
+nsSpp3I<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
+nsSpp3.envI<-droplevels(nsSpp3.env[nsSpp3.env$Date!="21.10.2012",])
+
+# Livestock density x treatment as a single factor
+nsSpp3I$Liv_Trt<-as.factor(with(nsSpp3I, paste(Livestockdensity,Treatment, sep="_")))
+
+simT <- with(nsSpp3.envI, simper(nsSpp3I[,10:74],nsSpp3I$Liv_Trt),permutations=999)
+SimpSum<-summary(simT,ordered = TRUE)
+sink("SIMPER.summary.txt")
+print(SimpSum)
+
+
+#Contrast: High_Medium 
+#                                           average        sd  ratio       ava       avb cumsum
+#BothriochloainsculptaHochstExARichACamus 1.622e-01 0.1425744 1.1376 15.266667 19.366667 0.2442
+#ChrysopogonplumulosusHochst              1.473e-01 0.1161515 1.2684 14.766667 18.383333 0.4660
+#TriumfettaflavescensHochst               6.768e-02 0.0949657 0.7127  3.283333  6.075000 0.5679
+#HeteropogoncontortusLRoemSchult          5.011e-02 0.0920001 0.5447  3.950000  2.666667 0.6433
+#TetrapogonvillosusDesj                   2.991e-02 0.0819890 0.3648  0.000000  3.250000 0.6883
+#DigitariamacroblepharaHackStapf          2.877e-02 0.0322177 0.8929  3.033333  1.333333 0.7316
+#LintonianutansStapf                      2.082e-02 0.0383072 0.5434  2.000000  0.016667 0.7630
+#RhynchosiaminimaLDC                      1.866e-02 0.0486582 0.3835  0.716667  1.766667 0.7910
+#Contrast: High_Low 
+
+#Contrast: High_Low 
+#average        sd  ratio       ava       avb cumsum
+#BothriochloainsculptaHochstExARichACamus 1.365e-01 0.1298052 1.0519 15.266667 10.333333
+#ChrysopogonplumulosusHochst              1.320e-01 0.1221284 1.0806 14.766667 11.133333
+#CynodonnlemfuensisVanderyst              1.099e-01 0.1932534 0.5686  0.816667 14.216667
+#HeteropogoncontortusLRoemSchult          7.837e-02 0.1527033 0.5132  3.950000  7.341667
+#TriumfettaflavescensHochst               5.658e-02 0.0862453 0.6560  3.283333  5.316667
+#RhynchosiaminimaLDC                      3.165e-02 0.0404309 0.7829  0.716667  3.808333
+#DigitariamacroblepharaHackStapf          2.706e-02 0.0327213 0.8271  3.033333  0.416667
+#DyschoristeradicansNees                  2.400e-02 0.0451341 0.5317  1.425000  1.683333
+
+#Contrast: Medium_Low 
+#average       sd  ratio       ava       avb cumsum
+#BothriochloainsculptaHochstExARichACamus 0.1466790 0.123793 1.1849 19.366667 10.333333 0.1944
+#ChrysopogonplumulosusHochst              0.1317967 0.112944 1.1669 18.383333 11.133333 0.3691
+#CynodonnlemfuensisVanderyst              0.1060495 0.186373 0.5690  1.083333 14.216667 0.5097
+#HeteropogoncontortusLRoemSchult          0.0697258 0.136581 0.5105  2.666667  7.341667 0.6021
+#TriumfettaflavescensHochst               0.0588615 0.069250 0.8500  6.075000  5.316667 0.6802
+#TetrapogonvillosusDesj                   0.0350416 0.089707 0.3906  3.250000  1.666667 0.7266
+#RhynchosiaminimaLDC                      0.0339460 0.048535 0.6994  1.766667  3.808333 0.7716
+#AristidakenyensisHenr                    0.0201779 0.067430 0.2992  0.166667  2.166667 0.7984
+#SetariaincrassataHochstWild              0.0201162 0.091928 0.2188  0.000000  2.833333 0.8250
+#DyschoristeradicansNees                  0.0152932 0.032773 0.4666  0.116667  1.683333 0.8453
+
+nsSpp3$plot_codeX<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="_")))
+nsSpp3I$plot_codeX<-as.factor(with(nsSpp3I, paste(Livestockdensity,Treatment,Season, sep="_")))
+
+# High and medium livestock - lower in low livestock
+ChrPlu<-ggplot(nsSpp3I,aes(x=plot_codeX,y=ChrysopogonplumulosusHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
+ChrPlu<-ChrPlu+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+ChrPlu # Higher in high and moderate liverstock - lower in lo
+plot(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,col=c(nsSpp3G$Livestockdensity),nsSpp3G)
+summary(lm(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,nsSpp3G))
+
+BotIns<-ggplot(nsSpp3I,aes(x=plot_codeX,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Season))
+BotIns<-BotIns+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+BotIns # Higher in high and moderate liverstock - lower in low
+plot(GrassNetReharvestBiomass1~BothriochloainsculptaHochstExARichACamus,nsSpp3G)
+summary(lm(GrassNetReharvestBiomass1~BothriochloainsculptaHochstExARichACamus,nsSpp3G))
+
+Digmac<-ggplot(nsSpp3I,aes(x=plot_codeX,y=DigitariamacroblepharaHackStapf  ,shape=Treatment,colour=Livestockdensity, linetype=Season))
+Digmac<-Digmac+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+Digmac # High livestock and moderae - absent in low 
+
+# Decline in Bot ins during third season moderate exclosures...
+HetCon<-ggplot(nsSpp3I,aes(x=plot_codeX,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Livestockdensity, linetype=Season))
+HetCon<-HetCon+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+HetCon # Contrast low exclosure none - open high 
+# High in high exclosures 
+plot(GrassNetReharvestBiomass1~HeteropogoncontortusLRoemSchult,nsSpp3G)
+
+# Medium and livestock higher
+# Low livestock - higher - in exclosures
+CynNle<-ggplot(nsSpp3I,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
+CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+CynNle # Huge increase in low livestock exclosures
+# Some occurence of this grass in moderate at last season - though also present in second season...
+plot(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G)
+abline(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
+summary(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
+
+aggregate(CynodonnlemfuensisVanderyst~Liv_Trt,nsSpp3I,mean)
+aggregate(CynodonnlemfuensisVanderyst~Liv_Trt,nsSpp3I,sd)
+
+Linton<-ggplot(nsSpp3I,aes(x=plot_codeX,y=LintonianutansStapf,shape=Treatment,colour=Livestockdensity, linetype=Season))
+Linton<-Linton+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+Linton # High in high livestock and outside in low livestock - none in moderate
+
+# Forbs
+RhyMin<-ggplot(nsSpp3I,aes(x=plot_codeX,y=RhynchosiaminimaLDC,shape=Treatment,colour=Livestockdensity, linetype=Season))
+RhyMin<-RhyMin+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+RhyMin # Higher in low than moderate or high livestock - particularly exclosures
+
+
+# Dwarf shrub species
+Trifla<-ggplot(nsSpp3I,aes(x=plot_codeX,y=TriumfettaflavescensHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
+Trifla<-Trifla+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+Trifla # Low livestock exclosures and moderate livestock
 
 ##########################################################################
 #### Grasses ####
@@ -924,6 +1038,10 @@ summary(simG,ordered = TRUE)
 nsSpp3G$plot_codeX<-as.factor(with(nsSpp3G, paste(Livestockdensity,Treatment,Season, sep="_")))
 
 # High and medium livestock - lower in low livestock
+Digmac<-ggplot(nsSpp3,aes(x=plot_codeX,y=DigitariamacroblepharaHackStapf  ,shape=Treatment,colour=Livestockdensity, linetype=Season))
+Digmac<-Digmac+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+Digmac # High livestock
+
 BotIns<-ggplot(nsSpp3G,aes(x=plot_codeX,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Season))
 BotIns<-BotIns+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 BotIns
@@ -943,6 +1061,7 @@ ChrPlu
 plot(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,col=c(nsSpp3G$Livestockdensity),nsSpp3G)
 # Decline in Chr Plu during thir season moderate exclosures...
 summary(lm(GrassNetReharvestBiomass1~ChrysopogonplumulosusHochst,nsSpp3G))
+
 # Low livestock - higher - in exclosures
 CynNle<-ggplot(nsSpp3G,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
 CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -952,6 +1071,21 @@ plot(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G)
 abline(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
 summary(lm(GrassNetReharvestBiomass1~CynodonnlemfuensisVanderyst,nsSpp3G))
 
+CynNle<-ggplot(nsSpp3G,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
+CynNle<-CynNle+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+CynNle
+
+
+# Others
+nsSpp3$plot_codeX<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="_")))
+
+RhyMin<-ggplot(nsSpp3,aes(x=plot_codeX,y=RhynchosiaminimaLDC,shape=Treatment,colour=Livestockdensity, linetype=Season))
+RhyMin<-RhyMin+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+RhyMin 
+
+Trifla<-ggplot(nsSpp3,aes(x=plot_codeX,y=TriumfettaflavescensHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
+Trifla<-Trifla+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
+Trifla # Low livestock and moderate # Dwardf shrub
 
 ##########################################################################
 #### Woody ####
