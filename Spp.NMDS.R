@@ -568,9 +568,9 @@ nsSpp3.envI<-droplevels(nsSpp3.env[nsSpp3.env$Date!="21.10.2012",])
 nsSpp3I$Liv_Trt<-as.factor(with(nsSpp3I, paste(Livestockdensity,Treatment, sep="_")))
 
 simT <- with(nsSpp3.envI, simper(nsSpp3I[,10:74],nsSpp3I$Liv_Trt),permutations=999)
-SimpSum<-summary(simT,ordered = TRUE)
-sink("SIMPER.summary.txt")
-print(SimpSum)
+#SimpSum<-summary(simT,ordered = TRUE)
+#sink("SIMPER.summary.txt")
+#print(SimpSum)
 
 
 #Contrast: High_Medium 
@@ -628,6 +628,9 @@ summary(lm(GrassNetReharvestBiomass1~BothriochloainsculptaHochstExARichACamus,ns
 Digmac<-ggplot(nsSpp3I,aes(x=plot_codeX,y=DigitariamacroblepharaHackStapf  ,shape=Treatment,colour=Livestockdensity, linetype=Season))
 Digmac<-Digmac+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
 Digmac # High livestock and moderae - absent in low 
+
+aggregate(DigitariamacroblepharaHackStapf~Liv_Trt,nsSpp3I,mean)
+aggregate(DigitariamacroblepharaHackStapf~Liv_Trt,nsSpp3I,sd)
 
 # Decline in Bot ins during third season moderate exclosures...
 HetCon<-ggplot(nsSpp3I,aes(x=plot_codeX,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Livestockdensity, linetype=Season))
