@@ -15,7 +15,7 @@ library(ggplot2)
 library(nlme)
 library(dplyr)
 ############################################################################
-
+setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar")
 nsSpp<-read.csv("VegCompSeason3.csv",header=T,sep=",")
 
 names(nsSpp)
@@ -1366,6 +1366,22 @@ nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index = "shannon")
 nsSpp3$richness<-specnumber(nsSpp3[,10:74], MARGIN = 1)
 nsSpp3$eveness<-nsSpp3$Shannon/log(nsSpp3$richness)
 
+# Species richness and biomass
+xyplot(Shannon~TotalBiomass1|Livestockdensity,nsSpp3)
+abline(lm(Shannon~TotalBiomass1,nsSpp3))
+summary(lm(Shannon~TotalBiomass1,nsSpp3)) # Highly significant
+xyplot(richness~TotalBiomass1|Livestockdensity,nsSpp3)
+abline(lm(richness~TotalBiomass1,nsSpp3))
+summary(lm(richness~TotalBiomass1,nsSpp3))
+xyplot(eveness~TotalBiomass1|Livestockdensity,nsSpp3)
+abline(lm(eveness~TotalBiomass1,nsSpp3))
+summary(lm(eveness~TotalBiomass1,nsSpp3)) # NS
+
+MyVar<-c("Shannon","richness","eveness")
+pairs(nsSpp3[,MyVar],lower.panel = panel.cor) # All highligh correlated
+#  Richness and eveness less so...Higher diversity = higher even
+# Less diverse, less even = more productive
+
 # Aggregate
 aggregate(richness~Livestockdensity+Treatment,nsSpp3,mean)
 
@@ -1373,12 +1389,10 @@ aggregate(richness~Livestockdensity+Treatment,nsSpp3,mean)
 nsSpp3i<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
 
 # Shannon diversity
-ShanTot<-lmer(Shannon~Livestockdensity+#Season+rainmm+#Treatment+
+ShanTot<-lmer(Shannon~Livestockdensity+#Treatment+
                #Livestockdensity:Season+Season:Treatment+
-               #Livestockdensity:Treatment+   #rainmm:Season+ 
-               #rainmm:Livestockdensity+rainmm:Treatment+
+               #Livestockdensity:Treatment+ 
                #Treatment:Livestockdensity:Season+
-               #Treatment:Livestockdensity:rainmm+
                (1 |Block), data=nsSpp3i)
 summary(ShanTot)
 anova(ShanTot) 
@@ -1587,11 +1601,22 @@ plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
 
-# Grasses
+##### Grasses #####
 # Shannon index, species richness and Eveness
 nsSpp3G$Shannon<-diversity(nsSpp3G[10:28], index = "shannon")
 nsSpp3G$richness<-specnumber(nsSpp3G[10:28], MARGIN = 1)
 nsSpp3G$eveness<-nsSpp3G$Shannon/log(nsSpp3G$richness)
+
+# Grass  richness and biomass
+plot(Shannon~TotalBiomass1,nsSpp3G)
+abline(lm(Shannon~TotalBiomass1,nsSpp3G))
+summary(lm(Shannon~TotalBiomass1,nsSpp3G)) # Highly significant
+plot(richness~TotalBiomass1,nsSpp3G)
+abline(lm(richness~TotalBiomass1,nsSpp3G))
+summary(lm(richness~TotalBiomass1,nsSpp3G)) # NS
+plot(eveness~TotalBiomass1,nsSpp3G)
+abline(lm(eveness~TotalBiomass1,nsSpp3G))
+summary(lm(eveness~TotalBiomass1,nsSpp3G)) # NS
 
 # Drop Short I
 nsSpp3Gi<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
