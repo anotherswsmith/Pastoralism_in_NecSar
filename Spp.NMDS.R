@@ -1357,6 +1357,7 @@ egg::ggarrange(CenPlotG+ theme(legend.position="none"),
 ##########################################################################################
 #### Species richness and evenness ####
 # Paritioning the beta - alpha and gamma
+library(lme4)
 library(betapart)
 ##########################################################################################
 
@@ -1511,6 +1512,49 @@ nsSpp3S2_3<-rbind(nsSpp3SeasonII,nsSpp3SeasonIII)
 betaSeason2_3<-rbind(ObtI,ObtII)
 nsSpp3beta<-cbind(nsSpp3S2_3,betaSeason2_3)
 
+# Analyse Beta diversiy (turnovr) - OVERALL COMMUNITY
+turnSor<-lmer(beta.sor~Livestockdensity+Treatment+Season+
+               Livestockdensity:Season+#Season:Treatment+
+               Livestockdensity:Treatment+
+               #Treatment:Livestockdensity:Season+
+               (1 |Block), data=nsSpp3beta)
+
+summary(turnSor)
+anova(turnSor) 
+AIC(turnSor) #-148.959
+drop1(turnSor, test="Chi") 
+
+# Resid versus fit
+E1 <- resid(turnSor,type="pearson") 
+F1 <- fitted(turnSor)
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
+abline(v = 100, lwd = 2, col = 2) 
+abline(h = 0, lty = 2, col = 1)
+
+# Update and remove factors # issues with interactions
+turnSor3<-lmer(beta.sor~Livestockdensity+Treatment+Season+ (1 |Block), data=nsSpp3beta)
+turnSora <- update(turnSor, .~. -Livestockdensity:Treatment)
+turnSorb <- update(turnSor, .~. -Livestockdensity:Season)
+turnSor3b<- update(turnSor3, .~. -Season)
+turnSor3c <- update(turnSor3, .~. -Treatment)
+turnSor3d <- update(turnSor3, .~. -Livestockdensity)
+
+
+anova(turnSor,turnSora)
+anova(turnSor,turnSorb)
+anova(turnSor3,turnSor3b)
+anova(turnSor3,turnSor3c)
+anova(turnSor3,turnSor3d)
+
+#Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+#turnSor  11 -195.66 -160.54 108.83  -217.66 15.579      2  0.0004141 *** #Livestockdensity:Treatment
+#turnSor  11 -195.66 -160.54 108.83  -217.66 6.6669      2    0.03567 * #Livestockdensity:Season
+#turnSor3   7 -181.97 -159.62 97.985  -195.97 5.8149      1    0.01589 * #Season
+#turnSor3   7 -181.97 -159.62 97.985  -195.97 7.5699      1   0.005935 ** #Treatment
+#turnSor3   7 -181.97 -159.62 97.985  -195.97 5.3486      2    0.06896 . #Livestockdensity
+
+
 # Analyse turnover component (sim) - OVERALL COMMUNITY
 turnbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
                 Livestockdensity:Season+Season:Treatment+
@@ -1622,33 +1666,24 @@ summary(lm(eveness~TotalBiomass1,nsSpp3G)) # NS
 nsSpp3Gi<-droplevels(nsSpp3G[nsSpp3G$Date!="21.10.2012",])
 
 # Shannon diversity
-ShanG<-lmer(Shannon~Livestockdensity+#Season+rainmm+#Treatment+
-                Livestockdensity:Season+#Season:Treatment+
-               # Livestockdensity:Treatment+   #rainmm:Season+ 
-                rainmm:Livestockdensity+#rainmm:Treatment+
+ShanG<-lmer(Shannon~Livestockdensity+#Season+#Treatment+
+               # Livestockdensity:Season+#Season:Treatment+
+               # Livestockdensity:Treatment+  
                 #Treatment:Livestockdensity:Season+
-                #Treatment:Livestockdensity:rainmm+
                 (1 |Block), data=nsSpp3Gi)
 summary(ShanG)
 anova(ShanG) 
 AIC(ShanG) #  177.3046
 drop1(ShanG, test="Chi") # ALL NS
-bwplot(Shannon~Season|Livestockdensity*Treatment,nsSpp3Gi) # Livestock lower diversity
+boxplot(Shannon~Livestockdensity,nsSpp3Gi) # Livestock lower diversity
 
 # Update model
-ShanGa <- update(ShanG, .~. -Livestockdensity:Season)
-ShanGb <- update(ShanG, .~. -Livestockdensity:rainmm)
-ShanGc <- update(ShanGa, .~. -Livestockdensity:rainmm)
-ShanGc1 <- update(ShanGc, .~. -Livestockdensity)
+ShanGc1 <- update(ShanG, .~. -Livestockdensity)
 
-anova(ShanG,ShanGa)
-anova(ShanG,ShanGb)
-anova(ShanGc,ShanGc1)
+anova(ShanG,ShanGc1)
 
 #       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
-#ShanG  11 135.54 170.66 -56.769   113.54 10.682      3    0.01358 * #Livestockdensity:Season
-#ShanG  11 135.54 170.66 -56.769   113.54 10.746      3    0.01318 *#Livestockdensity:rainmm
-#ShanGc   5 134.58 150.55 -62.291   124.58 7.4068      2    0.02464 * #Livestock
+#ShanG    5 134.58 150.55 -62.291   124.58 7.4068      2    0.02464 ** #Livestock
 
 # lsmeans
 library(multcomp)

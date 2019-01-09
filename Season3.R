@@ -670,35 +670,31 @@ nsReharvestH1T<- nsReharvestH1[is.finite(nsReharvestH1$Tot.Per.diff),]
 
 #### TOTAL BIOMASS REGROWTH MODEL ####
 # Regrowth  - only double harvest
-Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+
+Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+
             Harvest.date:Treatment+Livestock.density:Harvest.date+
-            Livestock.density:Treatment+rain.mm:Harvest.date+
-            rain.mm:Livestock.density+rain.mm:Treatment+
-            Treatment:Livestock.density:Harvest.date+
-            Treatment:Livestock.density:rain.mm+, #TotalBiomass0,
-          random= ~ 1|fBlock, method="ML",data=nsReharvestH1)
+            Livestock.density:Treatment+
+            Treatment:Livestock.density:Harvest.date, #TotalBiomass0,
+           random= ~ 1|fBlock, method="ML",data=nsReharvestH1)
           #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
 summary(Tot1)
 anova(Tot1)
-AIC(Tot1) #2806.535
+AIC(Tot1) #1739.536
 plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
 
 plot(Tot1) # Potential issue very small residuals at low fitted values
 
 drop1(Tot1,test="Chisq")
-#Livestock.density:Treatment:Harvest.date 11.614  0.02046 *
+#Livestock.density:Treatment:Harvest.date  2 1744.4 8.8967   0.0117  *
 
 #### Double harvest versus single harvest analysis ####
 # Use lme4 rather nlme package - more maintained...
 
 #### TOTAL BIOMASS Regrowth only double harvest ####
 nsReharvestH1$Season<-as.factor(nsReharvestH1$Harvest.date)
-Tot1<-lmer(TotalBiomass1~Livestock.density+Treatment+Season+#rain.mm+
+Tot1<-lmer(TotalBiomass1~Livestock.density+Treatment+Season+
              Season:Treatment+Livestock.density:Season+
-            Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
-             #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
-            Treatment:Livestock.density:Season+
-             #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+            Livestock.density:Treatment+ # Simplified via LRT
+            Treatment:Livestock.density:Season+#Simplified via LRT 
           (1|fBlock), REML=F,data=nsReharvestH1)
 class(nsReharvestH1$"Harvest.date")
 summary(Tot1)
@@ -709,12 +705,12 @@ AIC(Tot1) #2811.925
 drop1(Tot1,test="Chisq")
 
 # Update and remove factors # issues with interactions
-Tot2<-lmer(TotalBiomass1~Livestock.density+Treatment+Harvest.date+(1|fBlock), REML=F,data=nsReharvestH1)
-Tot1a <- update(Tot1, .~. -Treatment:Livestock.density:Harvest.date)
+Tot2<-lmer(TotalBiomass1~Livestock.density+Treatment+Season+(1|fBlock), REML=F,data=nsReharvestH1)
+Tot1a <- update(Tot1, .~. -Treatment:Livestock.density:Season)
 Tot1a2 <- update(Tot1a, .~. -Livestock.density:Treatment)
-Tot1a3 <- update(Tot1a, .~. -Livestock.density:Harvest.date)
-Tot1a4 <- update(Tot1a, .~. -Harvest.date:Treatment)
-Tot2a <- update(Tot2, .~. -Harvest.date)
+Tot1a3 <- update(Tot1a, .~. -Livestock.density:Season)
+Tot1a4 <- update(Tot1a, .~. -Season:Treatment)
+Tot2a <- update(Tot2, .~. -Season)
 Tot2b <- update(Tot2, .~. -Treatment)
 Tot2c <- update(Tot2, .~. -Livestock.density)
 
@@ -727,13 +723,13 @@ anova(Tot2,Tot2b)
 anova(Tot2,Tot2c)
 
 #      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-#Tot1  20 2806.5 2878.5 -1383.3   2766.5 11.614      4    0.02046 * #Treatment:Livestock.density:Harvest.date
-#Tot1a  16 2810.2 2867.7 -1389.1   2778.2 2.2671      2     0.3219 # Livestock.density:Treatment
-#Tot1a  16 2810.2 2867.7 -1389.1   2778.2 26.996      4  1.992e-05 *** #Livestock.density:Harvest.date
-# Tot1a  16 2810.2 2867.7 -1389.1   2778.2 5.6364      2    0.05971 .# Harvest.date:Treatment
-#Tot2   8 2828.2 2857.0 -1406.1   2812.2 205.38      2  < 2.2e-16 *** # Harvest.date
-#Tot2   8 2828.2 2857.0 -1406.1   2812.2 27.396      1  1.658e-07 *** # Treatment
-#Tot2   8 2828.2 2857 -1406.1   2812.2 22.159      2  1.543e-05 *** # Livestock.density
+#Tot1  14 1739.5 1784.2 -855.77   1711.5 8.8967      2     0.0117 * #Treatment:Livestock.density:Harvest.date
+#Tot1a  12 1744.4 1782.8 -860.22   1720.4 1.2906      2     0.5245 # Livestock.density:Treatment
+#Tot1a  12 1744.4 1782.8 -860.22   1720.4 15.269      2  0.0004834 *** #Livestock.density:Harvest.date
+#Tot1a  12 1744.4 1782.8 -860.22   1720.4 3.3337      1    0.06787 .# Harvest.date:Treatment
+#Tot2   7 1753.9 1776.3 -869.96   1739.9 6.6595      1   0.009863 ** # Harvest.date
+#Tot2   7 1753.9 1776.3 -869.96   1739.9 21.56      1   3.43e-06 *** # Treatment
+#Tot2   7 1753.9 1776.3 -869.96   1739.9 14.538      2   0.000697 *** # Livestock.density
 
 #### Total biomass - model contrasts #### 
 
@@ -750,81 +746,76 @@ TrtLivDate <-difflsmeans(Tot1,test.effs= "Treatment:Livestock.density:Season")
 write.table(TrtLivDate, "Treat_Liv_Date.contrasts.txt", sep="\t")
 
 #### GRASS BIOMASS Regrowth only double harvest ####
-Grass1<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+
-             Harvest.date:Treatment+Livestock.density:Harvest.date+
-             Livestock.density:Treatment+rain.mm:Harvest.date+ # Simplified via LRT
-             #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
-             Treatment:Livestock.density:Harvest.date+
-             #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+Grass1<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Season+
+             Season:Treatment+Livestock.density:Season+
+             Livestock.density:Treatment+ # Simplified via LRT
+             Treatment:Livestock.density:Season+
              (1|fBlock), REML=F,data=nsReharvestH1)
 summary(Grass1)
 anova(Grass1)
-AIC(Grass1) #2808.792
+AIC(Grass1) #1745.778
 
 # Simplfy model using LRT
 drop1(Grass1,test="Chisq")
 
 # Update and remove factors # issues with interactions
-Grass2<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm+(1|fBlock), REML=F,data=nsReharvestH1)
-Grass1a <- update(Grass1, .~. -Treatment:Livestock.density:Harvest.date)
+Grass2<-lmer(GrassNetReharvestBiomass1~Livestock.density+Treatment+Season+(1|fBlock), REML=F,data=nsReharvestH1)
+Grass1a <- update(Grass1, .~. -Treatment:Livestock.density:Season)
 Grass1a2 <- update(Grass1a, .~. -Livestock.density:Treatment)
-Grass1a3 <- update(Grass1a, .~. -Livestock.density:Harvest.date)
-Grass1a4 <- update(Grass1a, .~. -Harvest.date:Treatment)
-Grass1a5 <- update(Grass1a, .~. -Harvest.date:rain.mm)
-Grass2a <- update(Grass2, .~. -Harvest.date)
+Grass1a3 <- update(Grass1a, .~. -Livestock.density:Season)
+Grass1a4 <- update(Grass1a, .~. -Season:Treatment)
+Grass2a <- update(Grass2, .~. -Season)
 Grass2b <- update(Grass2, .~. -Treatment)
 Grass2c <- update(Grass2, .~. -Livestock.density)
-Grass2d <- update(Grass2, .~. -rain.mm)
 
 anova(Grass1,Grass1a)
 anova(Grass1a,Grass1a2)
 anova(Grass1a,Grass1a3)
 anova(Grass1a,Grass1a4)
-anova(Grass1a,Grass1a5)
 anova(Grass2,Grass2a)
 anova(Grass2,Grass2b)
 anova(Grass2,Grass2c)
-anova(Grass2,Grass2d)
 
 #      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-#Grass1  23 2808.8 2891.6 -1381.4   2762.8 10.446      4    0.03355 * #Treatment:Livestock.density:Harvest.date
-#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 0.1897      2     0.9095 # Livestock.density:Treatment
-#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 34.265      4  6.574e-07 *** #Livestock.density:Harvest.date
-#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 5.8647      2    0.05327 .# Harvest.date:Treatment
-#Grass1a  19 2811.2 2879.6 -1386.6   2773.2 7.6338      2      0.022 *#Harvest.date:rain.mm
-#Grass2   9 2831.3 2863.7 -1406.7   2813.3 169.74      2  < 2.2e-16 ***# Harvest.date
-#Grass2   9 2831.3 2863.7 -1406.7   2813.3 29.236      1  6.409e-08 *** # Treatment
-#Grass2   9 2831.3 2863.7 -1406.7   2813.3 18.194      2   0.000112 *** # Livestock.density
-#Grass2   9 2831.3 2863.7 -1406.7   2813.3 1.5132      1     0.2187 # Rainfall
+#Grass1  14 1745.8 1790.5 -858.89   1717.8 7.1326      2    0.02826 * #Treatment:Livestock.density:Harvest.date
+#Grass1a  12 1748.9 1787.2 -862.46   1724.9 2.8283      2     0.2431 # Livestock.density:Treatment
+#Grass1a  12 1748.9 1787.2 -862.46   1724.9 19.745      2  5.157e-05 *** #Livestock.density:Harvest.date
+#Grass1a  12 1748.9 1787.2 -862.46   1724.9 1.6315      1     0.2015 # Harvest.date:Treatment
+#Grass2   7 1762.6 1785.0 -874.31   1748.6 3.8582      1     0.0495 * # Harvest.date
+#Grass2   7 1762.6 1785 -874.31   1748.6 21.256      1  4.019e-06 *** # Treatment
+#Grass2   7 1762.6 1785.0 -874.31   1748.6 9.2415      2   0.009846 ** # Livestock.density
 
 # Herbs and Climbers BIOMASS Regrowth only double harvest
 nsReharvestH1$HerbClimber1<-nsReharvestH1$HerbNetReharvestBiomass1+nsReharvestH1$ClimberNetReharvestBiomass1
 
-Herb1<-lmer(HerbClimber1~Livestock.density+Treatment+Harvest.date+rain.mm+
-               #Harvest.date:Treatment+Livestock.density:Harvest.date+
-               #Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
-               #rain.mm:Livestock.density+rain.mm:Treatment+ # Simplified via LRT
-               #Treatment:Livestock.density:Harvest.date+
-               #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+Herb1<-lmer(HerbClimber1~Season+ #Livestock.density+Treatment+
+              #Season:Treatment+Livestock.density:Season+
+              #Livestock.density:Treatment+ # Simplified via LRT
+              #Treatment:Livestock.density:Season+
                (1|fBlock), REML=F,data=nsReharvestH1)
 summary(Herb1)
 anova(Herb1)
-AIC(Herb1) #2134.931
+AIC(Herb1) #1357.897
 
 # Simplfy model using LRT
 drop1(Herb1,test="Chisq") # Nothing singificant....
 
+# Update and remove factors # issues with interactions
+Herb1a <- update(Herb1, .~. -Season)
+
+anova(Herb1,Herb1a)
+#Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#Herb1   4 1346.6 1359.3 -669.29   1338.6 4.5692      1    0.03255 * # Season
+
 # Woody BIOMASS Regrowth only double harvest
-Woody1<-lmer(DwarfShrubNetReharvestBiomass1~Livestock.density+Treatment+#Harvest.date+rain.mm+
-               #Harvest.date:Treatment+#Livestock.density:Harvest.date+
-               Livestock.density:Treatment+#rain.mm:Harvest.date+ # Simplified via LRT
-               #rain.mm:Treatment+#rain.mm:Livestock.density+ # Simplified via LRT
-               #Treatment:Livestock.density:Harvest.date+
-               #Treatment:Livestock.density:rain.mm+#Simplified via LRT 
+Woody1<-lmer(DwarfShrubNetReharvestBiomass1~Livestock.density+Treatment+#Season+
+               #Season:Treatment+Livestock.density:Season+
+               Livestock.density:Treatment+ # Simplified via LRT
+              # Treatment:Livestock.density:Season+# Simplified via LRT
                (1|fBlock), REML=F,data=nsReharvestH1)
 summary(Woody1)
 anova(Woody1)
-AIC(Woody1) #1967.998
+AIC(Woody1) #1259.642
 
 # Simplfy model using LRT
 drop1(Woody1,test="Chisq")
@@ -839,9 +830,9 @@ anova(Woody1a,Woody1a2)
 anova(Woody1a,Woody1a3)
 
 #      Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-#Woody1   8 1968.0 1996.8 -976.00   1952.0 11.113      2   0.003861 ** # Livestock.density:Treatment
-#Woody1a   6 1975.1 1996.7 -981.56   1963.1 0.8933      2     0.6398 # Livestock density
-#Woody1a   6 1975.1 1996.7 -981.56   1963.1 0.5437      1     0.4609 # Treatment
+#Woody1   8 1259.6 1285.2 -621.82   1243.6 11.22      2   0.003661 ** # Livestock.density:Treatment
+#Woody1a   6 1266.9 1286.0 -627.43   1254.9 1.0046      2     0.6051 # Livestock density
+#Woody1a   6 1266.9 1286.0 -627.43   1254.9 0.0753      1     0.7838 # Treatment
 
 # Interaction plot most significant - not 
 par(mfrow=c(1,1))
