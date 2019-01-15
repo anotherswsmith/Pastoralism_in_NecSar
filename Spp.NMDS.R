@@ -152,12 +152,12 @@ CentSD<-tapply(modTLiv$distances, nsSpp3$harvest_code, SE)
 
 # PERMANOVA total biomass
 nsSpp3$time_code<-as.factor(with(nsSpp3, paste(Transect,Block,Treatment,Replicate, sep="-")))
-PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+TotalBiomass1+
+PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+#TotalBiomass1+
                 Season:Treatment+Livestockdensity:Season+
-                Livestockdensity:Treatment+TotalBiomass1:Season+
-                TotalBiomass1:Livestockdensity+TotalBiomass1:Treatment+
-                Treatment:Livestockdensity:Season+
-              Treatment:Livestockdensity:TotalBiomass1,
+                Livestockdensity:Treatment+#TotalBiomass1:Season+
+                #TotalBiomass1:Livestockdensity+#TotalBiomass1:Treatment+
+                Treatment:Livestockdensity:Season#+
+              #Treatment:Livestockdensity:TotalBiomass1,
               strata=as.numeric(nsSpp3$Block),#/as.numeric(nsSpp3$time_code),
               method = "bray",perm=999, data=nsSpp3)
 PermT$aov.tab
@@ -1383,9 +1383,6 @@ pairs(nsSpp3[,MyVar],lower.panel = panel.cor) # All highligh correlated
 #  Richness and eveness less so...Higher diversity = higher even
 # Less diverse, less even = more productive
 
-# Aggregate
-aggregate(richness~Livestockdensity+Treatment,nsSpp3,mean)
-
 # Drop Short I
 nsSpp3i<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
 
@@ -1554,7 +1551,6 @@ anova(turnSor3,turnSor3d)
 #turnSor3   7 -181.97 -159.62 97.985  -195.97 7.5699      1   0.005935 ** #Treatment
 #turnSor3   7 -181.97 -159.62 97.985  -195.97 5.3486      2    0.06896 . #Livestockdensity
 
-
 # Analyse turnover component (sim) - OVERALL COMMUNITY
 turnbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
                 Livestockdensity:Season+Season:Treatment+
@@ -1644,6 +1640,20 @@ par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
 plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
+
+#### Graphing Shannon, evenness and species turnover for the overall community
+
+# Means + SE Shannon, evenness and species turnover
+sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+nsSpp3ii<-droplevels(nsSpp3[nsSpp3$Season!="Short I",])
+ShanX<-aggregate(Shannon~Livestockdensity+Treatment+Season,nsSpp3,mean)
+EvenX<-aggregate(eveness~Livestockdensity+Treatment+Season,nsSpp3,mean)
+BetaSX<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3beta,mean)
+ShanSEM<-aggregate(Shannon~Livestockdensity+Treatment+Season,nsSpp3,sem)
+EvenSEM<-aggregate(eveness~Livestockdensity+Treatment+Season,nsSpp3,sem)
+BetaSSEM<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3beta,sem)
+ShanX$Diversity<-"Shannon"
+EvenX$Diversity<-"Shannon"
 
 ##### Grasses #####
 # Shannon index, species richness and Eveness
@@ -1827,6 +1837,32 @@ btII<-beta.temp(GpresabsII,GpresabsIII,index.family="sor")
 nsSpp3GS2_3<-rbind(nsSpp3GSeasonII,nsSpp3GSeasonIII)
 betaSeason<-rbind(btI,btII)
 nsSpp3Gbeta<-cbind(nsSpp3GS2_3,betaSeason)
+
+# Analyse turnover component (sor) - GRASSES
+turnGSor<-lmer(beta.sor~Livestockdensity+Treatment+#Season+
+                #Livestockdensity:Season+Season:Treatment+
+                Livestockdensity:Treatment+
+                #Treatment:Livestockdensity:Season+
+                (1 |Block), data=nsSpp3Gbeta)
+summary(turnGSor)
+anova(turnGSor) 
+AIC(turnGbt) # -55.17815
+drop1(turnGSor, test="Chi") # ALL NS
+
+# Update model
+turnGSora <- update(turnGSor, .~. -Livestockdensity:Treatment)
+turnGSora2 <- update(turnGSora, .~. -Livestockdensity)
+turnGSora3 <- update(turnGSora, .~. -Treatment)
+
+anova(turnGSor,turnGSora)
+anova(turnGSora,turnGSora2)
+anova(turnGSora,turnGSora3)
+
+# Grass beta diversity
+#          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#turnGSor   8 -76.635 -51.091 46.317  -92.635 6.9609      2    0.03079 * #Livestockdensity:Treatment
+#turnGSora   6 -73.674 -54.516 42.837  -85.674 4.8194      2    0.08984 .#Livestockdensity
+#turnGSora   6 -73.674 -54.516 42.837  -85.674 0.7815      1     0.3767 # Treatment
 
 # Analyse turnover component (sim) - GRASSES
 turnGbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
@@ -2056,6 +2092,32 @@ nsSpp3WS2_3<-rbind(nsSpp3WSeasonII,nsSpp3WSeasonIII)
 betaSeasonW<-rbind(WbtI,WbtII)
 nsSpp3Wbeta<-cbind(nsSpp3WS2_3,betaSeasonW)
 
+# Analyse turnover component (sor) - Woody species
+turnWSor<-lmer(beta.sor~Livestockdensity+Treatment+Season+
+                # Livestockdensity:Season+Season:Treatment+
+                 Livestockdensity:Treatment+
+                 #Treatment:Livestockdensity:Season+
+                 (1 |Block), data=nsSpp3Wbeta)
+summary(turnWSor)
+anova(turnWSor) 
+AIC(turnWbt) # 46.30523
+drop1(turnWSor, test="Chi")
+
+# Update model woody species
+turnWSora <- update(turnWSor, .~. -Livestockdensity:Treatment)
+turnWSora2 <- update(turnWSora, .~. -Livestockdensity)
+turnWSora3 <- update(turnWSora, .~. -Treatment)
+
+anova(turnWSor,turnWSora)
+anova(turnWSora,turnWSora2)
+anova(turnWSora,turnWSora3)
+
+# Woody beta diversity
+#          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#turnWSor   9 121.88 149.56 -51.939   103.88 15.99      2  0.0003371 *** #Livestockdensity:Treatment
+#turnWSora   7 133.87 155.39 -59.934   119.87 2.8296      2      0.243#Livestockdensity
+#turnWSora   7 133.87 155.39 -59.934   119.87 3.9743      1     0.0462 * # Treatment
+
 # Analyse turnover component (sim) - Woody species
 turnWbt<-lmer(beta.sim~Treatment+Season+rainmm+ Livestockdensity+
                 Livestockdensity:Season+ #Season:Treatment+ 
@@ -2232,8 +2294,6 @@ anova(EveC,EveCa)
 
 boxplot(Shannon~Livestockdensity,nsSpp3Ci) # Much lower in high>low>medium
 
-
-
 # Remove rows with sum = zero
 nsSpp3Cb<- nsSpp3C[ rowSums(nsSpp3C[,10:38])!=0, ] 
 names(nsSpp3Cb[,10:38])
@@ -2292,7 +2352,35 @@ nsSpp3CS2_3<-rbind(nsSpp3CSeasonII,nsSpp3CSeasonIII)
 betaSeasonC<-rbind(CbtI,CbtII)
 nsSpp3Cbeta<-cbind(nsSpp3CS2_3,betaSeasonC)
 
-# Analyse turnover component (sim) - GRASSES
+# Analyse turnover component (sor) - Herbs and climbers
+turnCSor<-lmer(beta.sor~Livestockdensity+Treatment+Season+
+                  Livestockdensity:Season+Season:Treatment+
+                 Livestockdensity:Treatment+
+                 Treatment:Livestockdensity:Season+
+                 (1 |Block), data=nsSpp3Cbeta)
+summary(turnCSor)
+anova(turnCSor) 
+AIC(turnCSor) # 71.35126
+drop1(turnCSor, test="Chi")
+
+# Update model woody species
+turnCSora <- update(turnCSor, .~. -Livestockdensity:Treatment:Season)
+turnCSora2 <- update(turnCSora, .~. -Livestockdensity:Treatment)
+turnCSora3 <- update(turnCSora, .~. -Season:Treatment)
+turnCSora4 <- update(turnCSora, .~. - Livestockdensity:Season)
+
+anova(turnCSor,turnCSora)
+anova(turnWSora,turnWSora2)
+anova(turnWSora,turnWSora3)
+
+# Woody beta diversity
+#          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)  
+#turnWSor   9 121.88 149.56 -51.939   103.88 15.99      2  0.0003371 *** #Livestockdensity:Treatment
+#turnWSora   7 133.87 155.39 -59.934   119.87 2.8296      2      0.243#Livestockdensity
+#turnWSora   7 133.87 155.39 -59.934   119.87 3.9743      1     0.0462 * # Treatment
+
+
+# Analyse turnover component (sim) - Herbs and climbers
 turnCbt<-lmer(beta.sim~Treatment+Season+#rainmm+ #Livestockdensity
                 Season:Treatment+ #Livestockdensity:Season
                 #rainmm:Season+ #Livestockdensity:Treatment+

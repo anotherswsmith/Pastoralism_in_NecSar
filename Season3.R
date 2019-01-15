@@ -540,12 +540,14 @@ nsReharvestbH1_2<-droplevels(nsReharvestb[!is.na(nsReharvestb$Harvest.date),])
 #nsReharvestbH1_2$TotalBiomass0<-nsReharvestbH1_2[nsReharvestbH1_2$TotalBiomass0<0.1,]<-.1
 
 # Percent of biomass at each time interval - treatment
+names(nsReharvestbH1_2)
 nsReharvestbH1_2$Tot.Per.diff<-(nsReharvestbH1_2$TotalBiomass1-nsReharvestbH1_2$TotalBiomass0)/sd(nsReharvestbH1_2$TotalBiomass0)
+nsReharvestbH1_2$Woody.Per.diff<-(nsReharvestbH1_2$DwarfShrubNetReharvestBiomass1-nsReharvestbH1_2$DwarfShrubNetReharvestBiomass0)/sd(nsReharvestbH1_2$DwarfShrubNetReharvestBiomass0)
 
 #nsReharvestbH1_2$G.Per.diff<-((nsReharvestbH1_2$GrassNetReharvestBiomass1-nsReharvestbO$GrassNetReharvestBiomass1)/nsReharvestbO$GrassNetReharvestBiomass1)*100
 #nsReharvestbH1_2$W.Per.diff<-((nsReharvestbH1_2$DwarfShrubNetReharvestBiomass1-nsReharvestbO$DwarfShrubNetReharvestBiomass1)/nsReharvestbO$DwarfShrubNetReharvestBiomass1)*100
 
-# Percent diff
+# Percent diff total biomass compared to the original plot
 nsReharvestavg<-aggregate(Tot.Per.diff~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestbH1_2, mean)
 nsReharvestsem<-aggregate(Tot.Per.diff~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestbH1_2,sem)
 nsReharvestavg<-cbind(nsReharvestavg,nsReharvestsem[6])
@@ -558,6 +560,20 @@ Regrow2<-Regrow2+geom_line(aes(linetype=harvest_code), show.legend = F) +theme_c
 Regrow2<-Regrow2+geom_point(size=4)
 Regrow2<-Regrow2+ggtitle("Total Biomass percentage")
 Regrow2
+
+# Percent diff woody biomass # compared to the original plot
+nsReharvestavgW<-aggregate(Woody.Per.diff~Harvest+Reharvest.date+Treatment+Livestock.density,nsReharvestbH1_2, mean)
+nsReharvestsemW<-aggregate(Woody.Per.diff~Harvest+Reharvest.date+Treatment+Livestock.density,nsReharvestbH1_2,sem)
+
+# Difference between exclosed and open, livestock density for each season
+aggregate(DwarfShrubNetReharvestBiomass1~Livestock.density+Treatment+Season,nsReharvestb,mean)
+((8.520000-2.100000)/2.100000)*100
+
+# Difference between exclosed and open by livestock density
+aggregate(TotalBiomass1~Livestock.density+Treatment,nsReharvestb,mean)
+((127.89556-108.96000)/108.96000)*100 # 19 % difference # LOW
+((93.22889-55.90667)/55.90667)*100 # 66% medium 
+((68.86444-39.11333)/39.11333)*100 # 76 % high 
 
 ########################################################################
 #### Data exploration ####
