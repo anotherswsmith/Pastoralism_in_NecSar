@@ -693,7 +693,7 @@ SimpSum<-summary(simT,ordered = TRUE)
 nsSpp3$plot_codeX<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="_")))
 nsSpp3I$plot_codeX<-as.factor(with(nsSpp3I, paste(Livestockdensity,Treatment,Season, sep="_")))
 
-# Key species 
+#### Key species ####
 
 # Chr Plu
 ChrPlu<-ggplot(nsSpp3I,aes(x=plot_codeX,y=ChrysopogonplumulosusHochst,shape=Treatment,colour=Livestockdensity, linetype=Season))
@@ -840,9 +840,70 @@ Trifla # Low livestock exclosures and moderate livestock
 nsSpp3Tf<-nsSpp3[nsSpp3$TriumfettaflavescensHochst!=0,]
 mean(nsSpp3Tf$TriumfettaflavescensHochst) # 7.5%
 sd(nsSpp3Tf$TriumfettaflavescensHochst) # 22.5% 
-nrow(nsSpp3[nsSpp3$TriumfettaflavescensHochst>0.01,])/270*100 # 57.8 %
+nrow(nsSpp3I[nsSpp3I$TriumfettaflavescensHochst>0.01,])/270*100 # 57.8 %
 
 
+### Species occurence
+library(dplyr)
+library(tidyr)
+library(reshape)
+
+nsSpp3Long<-melt(nsSpp3I, id.vars=c("Season","Transect","Treatment","Livestockdensity","Quadrats", "Block","Trtname", "Replicate" , "Date",
+ "plot_code","GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1"          
+,"HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1", "TotalBiomass1", "rainmm", "fBlock", "plot_codeX" )) #,"Liv_Trt"
+
+nsSpp3Long<-droplevels(nsSpp3Long[nsSpp3Long$value>0.01,])
+colnames(nsSpp3Long)[19:20]<-c("spp","per_cover")
+names(nsSpp3Long)
+
+nsSpp3Long$plot_id<-as.factor(with(nsSpp3Long, paste(Livestockdensity,Treatment,Replicate, sep="_")))
+levels(nsSpp3Long$plot_id)
+
+nsSpp3Long$preabs<-ifelse(nsSpp3Long$per_cover>0.01,1,0)
+
+table(nsSpp3Long$spp)
+
+SppOccur<-nsSpp3Long %>%
+  group_by(spp) %>% 
+  # Count occurrences per species
+  summarise(n = n()) %>%
+  # Get percent per occurence (number quadrats over experiment = 270)
+  mutate(percent = n / 270 * 100) %>%
+  # Select results per species
+  select(spp, percent) 
+SppOccur<-as.data.frame(SppOccur)
+SppOccur
+
+# Overall spp most asscoicated with specific livestock x treatment x season combination
+nsSpp3.env<-nsSpp3[,c("fBlock","Livestockdensity","Season","Treatment")]
+nsSpp3I<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
+nsSpp3.envI<-droplevels(nsSpp3.env[nsSpp3.env$Date!="21.10.2012",])
+
+# Livestock density x treatment as a single factor
+nsSpp3I$Liv_Trt<-as.factor(with(nsSpp3I, paste(Livestockdensity, sep="_")))
+
+simT <- with(nsSpp3.envI, simper(nsSpp3I[,10:74],nsSpp3I$Liv_Trt),permutations=999)
+SimpSum<-summary(simT,ordered = TRUE)
+#sink("SIMPER.summary.txt")
+print(SimpSum)
+
+class(SimpSum)
+SimpSumDATA<-as.data.frame(SimpSum)
+SimpSumDATA<-data.frame(unclass(SimpSum), check.names = FALSE, stringsAsFactors = FALSE)
+
+names(SimpSumDATA)
+SimpSumDATA$spp <- rownames(SimpSumDATA)
+SimpSumDATA$spp<-as.factor(SimpSumDATA$spp)
+class(SppOccur$spp)
+
+SimpOccur<-merge(SimpSumDATA,SppOccur, by="spp")
+names(SimpOccur)
+SimpOccur$sppAB<-abbreviate(SimpOccur$spp)
+plot(High_Low.average~percent,SimpOccur)
+abline(lm(High_Low.average~percent,SimpOccur))
+
+ggplot(SimpOccur, aes(x=percent, y= High_Low.average*100, label=sppAB))+
+geom_text(aes(label=sppAB),hjust=0, vjust=0)
 ##########################################################################
 #### Grasses ####
 ##########################################################################
