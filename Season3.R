@@ -43,6 +43,9 @@ with(nsbiomass3orig,tapply(TotalSeason3,list(Treatment,Livestock.density),mean))
 ##### Combine dung and biomass regrowth exclosure xy coordinates ####
 ########################################################################
 
+nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
+names(nsreharvest3)
+
 Ex_location<-read.csv(file="PlotNames.csv", sep=",",header=TRUE)
 names(Ex_location)
 levels(Ex_location$OtherName)
@@ -55,7 +58,7 @@ names(nsherb3)
 
 myvars <- c("Trt.name", "X", "Y")
 Ex_location1<-Ex_location[myvars]
-nsreharvest3loc<-left_join(nsreharvest3,Ex_location1, by=c("Trt.name"),drop=F)
+nsreharvest3loc<-merge(nsreharvest3,Ex_location1, by="Trt.name",drop=F)
 
 # Spatial join - herbivore observations and regrowth
 utmproj<-"+proj=utm +north +zone=37 +init=EPSG:32637" # central-ethiopia-37n
@@ -126,10 +129,14 @@ nsReharvest$Reharvest.date<-as.Date(nsReharvest$Reharvest.date,"%d.%m.%Y")
 # Only need exclosure and control
 nsReharvestb<-droplevels(nsReharvest[nsReharvest$Treatment=="Control" | nsReharvest$Treatment=="Exclosure",])
 nsReharvestDUP<-nsReharvestb
+
 # Livestock density and regrowth only - not the original biomass - average seperately
 nsReharvestb<- droplevels(nsReharvestb[nsReharvestb$Harvest!="original",])
 nsReharvestb$harvest_code<-as.factor(with(nsReharvestb, paste(Livestock.density,Treatment, sep="-")))
 levels(nsReharvestb$harvest_code) # 18
+
+# Remove single reharvested quadrats from sampling
+nsReharvestb<- droplevels(nsReharvestb[nsReharvestb$Harvest!="single",])
 
 # Regrowth - Total Biomass
 nsReharvestavg<-aggregate(TotalBiomass1~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
@@ -242,19 +249,24 @@ levels(ReHavTot0$Treatment)<-c("Open","Exclosed")
 # Position dodge
 pd <- position_dodge(0.5)
 
+# Filling code
+ReHavTot$LivTrt<-as.factor(with(ReHavTot, paste(Livestock.density , Treatment, sep="")))
+ReHavTot0$LivTrt<-as.factor(with(ReHavTot0, paste(Livestock.density , Treatment, sep="")))
+
 # Total Biomass Only 
 Regrow<-ggplot(ReHavTot, aes(x=Reharvest.date2, y=Biomass,
-          group=Harvest,linetype=Harvest,shape=Treatment,colour=Harvest,fill=Harvest)) 
+          group=Harvest,linetype=Harvest,shape=Livestock.density,colour=Livestock.density,fill=LivTrt, alpha=Treatment)) 
 Regrow<-Regrow+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
 Regrow<-Regrow+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
 Regrow<-Regrow+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
 Regrow<-Regrow+facet_wrap(~Treatment+Livestock.density, scale="fixed", ncol=3)
-Regrow<-Regrow+scale_colour_manual(values=c("grey20","grey30"))
-Regrow<-Regrow+scale_fill_manual(values=c("white","white"))#"grey60",
-Regrow<-Regrow+scale_shape_manual(values=c(22,21))
+Regrow<-Regrow+scale_colour_manual(values=c("grey70","grey35","black"))
+Regrow<-Regrow+scale_fill_manual(values=c("black","white","grey70","white","grey35","white"))#"grey60",
+Regrow<-Regrow+scale_shape_manual(values=c(21,24,22))
+Regrow<-Regrow+scale_alpha_manual(values=c(1,1))
 Regrow<-Regrow+geom_errorbar(data=ReHavTot0,aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),width=.2, linetype="solid", colour="black",alpha=.99,show.legend=F)
-Regrow<-Regrow+geom_point(data=ReHavTot0,size=3.5,stroke=1,alpha=.99,colour="black", fill="black",show.legend=F)
-Regrow<-Regrow+scale_linetype_manual(values =c("double" ="solid", "single"="dotted"))
+Regrow<-Regrow+geom_point(data=ReHavTot0,size=3.5,stroke=1,alpha=.99,colour="black", fill="orangered3",shape=23,show.legend=F)
+Regrow<-Regrow+scale_linetype_manual(values =c("double" ="solid", single="dotted"))
 Regrow<-Regrow+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")")))
 Regrow<-Regrow+ #theme_bw() +
   theme(rect = element_rect(fill ="transparent")
@@ -289,13 +301,18 @@ Regrow<-Regrow+ #theme_bw() +
 Regrow<- Regrow+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 Regrow<- Regrow+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
 
-Regrow<- Regrow+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
-                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(22,21), alpha=0.99, size=4,linetype=NA,fill=NA,col=c("grey30"),stroke=1)))
+#Regrow<- Regrow+guides(colour=F,size=F,alpha=F, fill=F, linetype=F,
+#                       shape=guide_legend(order=2,"Treatment",override.aes = list(shape=c(21,21), alpha=0.99, size=4,linetype=NA,fill=c("grey30","white"),col=c("grey30"),stroke=1)))
+
+Regrow<- Regrow+guides(fill=F,shape=F, colour = F, linetype=F,
+                       alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
+Regrow
+
 ReHavTot2<-ReHavTot
 ReHavTot2$Sampling<-as.factor(ReHavTot2$Treatment)
 levels(ReHavTot2$Sampling)<-c("Standing biomass","Regrowth") #"One harvest","Two Harvests","Three Harvests"
-Regrow2 <-  Regrow+ geom_point(data = ReHavTot2, aes(size=Sampling, shape = NA, linetype=NA), colour = "grey50")
-Regrow2 <-  Regrow2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(21),linetype=c("blank","solid"), size=1,fill=c("black","white"),col=c("black","grey20"), stroke=1))) # "blank","dotted","solid" # "black","white","grey60" #"black","grey30","grey20"
+Regrow2 <-  Regrow+ geom_point(data = ReHavTot2, aes(size=Sampling, shape = NA), colour = "grey50")
+Regrow2 <-  Regrow2 + guides(size=guide_legend("Harvests", override.aes=list(shape=c(23,21),linetype=c("blank","solid"), size=1,fill=c("orangered3","white"),col=c("black","grey20"), stroke=1))) # "blank","dotted","solid" # "black","white","grey60" #"black","grey30","grey20"
 Regrow2
 
 # Enlarge symbol around line manually

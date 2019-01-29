@@ -51,10 +51,7 @@ nsSpp3<-left_join(nsSpp2,nsreharvest3b, by=c("Transect","Treatment","Block","Trt
 # Block as a factor
 nsSpp3$fBlock<-as.factor(nsSpp3$Block)
 
-names(nsSpp3)
-
 #### SEPERATE PLANT FUNCTIONAL GROUP DATASETS ####
-
 # Combine herbivores and climbers
 levels(nsSppFx$Fx.group)<-c("Herbs","Grass","Dwarf shrub","Grass","Herb","Dwarf shrub")
 
@@ -1711,7 +1708,6 @@ beta.sample(OverallPresabsM, index.family="sorensen", sites=nrow(nsSpp3Med), sam
 beta.sample(OverallPresabsH, index.family="sorensen", sites=nrow(nsSpp3High), samples = 1)
 
 #### Compare diversity through time of overall community ####
-levels(nsSpp3$Date)
 nsSpp3SeasonI<-droplevels(nsSpp3[nsSpp3$Date=="21.10.2012",])
 nsSpp3SeasonII<-droplevels(nsSpp3[nsSpp3$Date=="21.11.2013",])
 nsSpp3SeasonIII<-droplevels(nsSpp3[nsSpp3$Date=="21.6.2013",])
@@ -1880,59 +1876,94 @@ abline(h = 0, lty = 2, col = 1)
 
 #### Graphing Shannon, evenness and species turnover for the overall community
 
+library(betapart)
+
+# Create matrics
+nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index = "shannon")
+nsSpp3$richness<-specnumber(nsSpp3[,10:74], MARGIN = 1)
+nsSpp3$eveness<-nsSpp3$Shannon/log(nsSpp3$richness)
+
+#### Compare diversity through time of overall community ####
+nsSpp3SeasonI<-droplevels(nsSpp3[nsSpp3$Date=="21.10.2012",])
+nsSpp3SeasonII<-droplevels(nsSpp3[nsSpp3$Date=="21.11.2013",])
+nsSpp3SeasonIII<-droplevels(nsSpp3[nsSpp3$Date=="21.6.2013",])
+
+# Presence and absence of species
+PresabsI<-ifelse(nsSpp3SeasonI[,10:74]>0,1,0)
+PresabsII<-ifelse(nsSpp3SeasonII[,10:74]>0,1,0)
+PresabsIII<-ifelse(nsSpp3SeasonIII[,10:74]>0,1,0)
+
+# Assign plot (without season) to each row
+row.names(PresabsI) <- paste(nsSpp3SeasonI$plot_codeII, 1:nrow(PresabsI), sep="")
+row.names(PresabsII) <- paste(nsSpp3SeasonII$plot_codeII, 1:nrow(PresabsII), sep="")
+row.names(PresabsIII) <- paste(nsSpp3SeasonIII$plot_codeII, 1:nrow(PresabsIII), sep="")
+
+#### Beta.temp - Overall community ####
+ObtI<-beta.temp(PresabsI,PresabsII,index.family="sor") # this is soreson
+ObtII<-beta.temp(PresabsII,PresabsIII,index.family="sor") 
+
+nsSpp3S2_3<-rbind(nsSpp3SeasonII,nsSpp3SeasonIII)
+betaSeason2_3<-rbind(ObtI,ObtII)
+nsSpp3beta<-cbind(nsSpp3S2_3,betaSeason2_3)
+
+# Remove short season
 nsSpp3ii<-droplevels(nsSpp3[nsSpp3$Season!="Short I",])
 
 # Summary
 ShanXsum<-aggregate(Shannon~Livestockdensity,nsSpp3,mean)
 EvenXsum<-aggregate(eveness~Livestockdensity,nsSpp3,mean)
-BetaSXsum<-aggregate(abs(Bcdist2)~Livestockdensity,reharv23,mean)
 BetaSXsum<-aggregate(beta.sor~Livestockdensity,nsSpp3beta,mean)
 
-ShanGsum<-aggregate(Shannon~Livestockdensity,nsSpp3G,mean)
-EvenGsum<-aggregate(eveness~Livestockdensity,nsSpp3G,mean)
-BetaGsum<-aggregate(beta.sor~Livestockdensity,nsSpp3Gbeta,mean)
-
-# Means + SE Shannon, evenness and species turnover
-sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+# Means + SE Shannon, evenness and species turnover 
+# Means
 ShanX<-aggregate(Shannon~Livestockdensity+Treatment+Season,nsSpp3ii,mean)
 EvenX<-aggregate(eveness~Livestockdensity+Treatment+Season,nsSpp3ii,mean)
-BetaSX<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3Gbeta,mean)
-#BetaSX<-aggregate(abs(Bcdist2)~Livestockdensity+Treatment+Season,reharv23,mean)
-BetaSX
+BetaSX<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3beta,mean)
+
+# Errors bars
+sem<-function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
 ShanSEM<-aggregate(Shannon~Livestockdensity+Treatment+Season,nsSpp3ii,sem)
 EvenSEM<-aggregate(eveness~Livestockdensity+Treatment+Season,nsSpp3ii,sem)
-BetaSSEM<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3Gbeta,sem)
+BetaSSEM<-aggregate(beta.sor~Livestockdensity+Treatment+Season,nsSpp3beta,sem)
 #BetaSSEM<-aggregate(abs(Bcdist2)~Livestockdensity+Treatment+Season,reharv23,sem)
 
-ShanX$Diversity<-"Shannon"
-EvenX$Diversity<-"Evenness"
-BetaSX$Diversity<-"Beta-diversity"
-
+# Add SE terms to average summaries
 ShanX$SEM<-ShanSEM$Shannon
 EvenX$SEM<-EvenSEM$eveness
 BetaSX$SEM<-BetaSSEM$beta.sor
 
-colnames(ShanX)[4]<-"Amount"
-colnames(EvenX)[4]<-"Amount"
-colnames(BetaSX)[4]<-"Amount"
-names(ShanX)
-names(EvenX)
-names(BetaSX)
-ShanEveBeta<-rbind(ShanX,EvenX,BetaSX)
-names(ShanEveBeta)
+# Create grouping variable - important for connecting points by a line
+ShanX$Groups<-as.factor(with(ShanX, paste(Livestockdensity,Treatment,sep="_")))
+EvenX$Groups<-as.factor(with(EvenX, paste(Livestockdensity,Treatment,sep="_")))
+BetaSX$Groups<-as.factor(with(BetaSX, paste(Livestockdensity,Treatment,sep="_")))
 
-ShanEveBeta$Groups<-as.factor(with(ShanEveBeta, paste(Livestockdensity,Treatment,sep="_")))
+# Reorder livestock treatment so low - medium - high (alphabetical high, low, medium)
+ShanX$Livestockdensity<- factor(ShanX$Livestockdensity, levels = c("Low","Medium","High"))
+EvenX$Livestockdensity<- factor(EvenX$Livestockdensity, levels = c("Low","Medium","High"))
+BetaSX$Livestockdensity<- factor(BetaSX$Livestockdensity, levels = c("Low","Medium","High"))
 
-pd <- position_dodge(0.5)
-SEB<-ggplot(ShanEveBeta, aes(x=Season, y=Amount,shape=Treatment,colour=Livestockdensity,fill=Livestockdensity, group=Groups)) 
-SEB<-SEB+geom_errorbar(aes(x = Season, ymin=Amount-SEM,ymax=Amount+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
-SEB<-SEB+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
-SEB<-SEB+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
-SEB<-SEB+facet_wrap(~Diversity, scale="free", ncol=3)
-SEB<-SEB+scale_shape_manual(values=c(21,22))
-SEB<-SEB+scale_colour_manual(values=c("black","grey70","grey35"))
-SEB<-SEB+scale_fill_manual(values=c("black","grey70","grey35"))
-SEB<-SEB+ #theme_bw() +
+# Rename Treatment names - Control = Open 
+levels(ShanX$Treatment)<-c("Open","Exclosed")
+levels(EvenX$Treatment)<-c("Open","Exclosed")
+levels(BetaSX$Treatment)<-c("Open","Exclosed")
+
+# Fill livestock and treatment control - this will mean we need to override the legend (see below)
+ShanX$LivTrt<-as.factor(with(ShanX, paste(Livestockdensity, Treatment, sep="")))
+EvenX$LivTrt<-as.factor(with(EvenX, paste(Livestockdensity, Treatment, sep="")))
+BetaSX$LivTrt<-as.factor(with(BetaSX, paste(Livestockdensity, Treatment, sep="")))
+
+# Plotting Shannon Diversity graph
+pd <- position_dodge(0.5) # Dodge term - there are two options here either in ggplot arguement or seperate 
+ShanP<-ggplot(ShanX, aes(x=Season, y=Shannon,colour=Livestockdensity,shape=Livestockdensity, fill=LivTrt, group=Groups, alpha=Treatment)) 
+ShanP<-ShanP+geom_errorbar(aes(x = Season, ymin=Shannon-SEM,ymax=Shannon+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+ShanP<-ShanP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+ShanP<-ShanP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+ShanP<-ShanP+scale_shape_manual(values=c(21,24,22))
+ShanP<-ShanP+scale_alpha_manual(values=c(1,1))
+ShanP<-ShanP+scale_colour_manual(values=c("grey70","grey35","black"))
+ShanP<-ShanP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+ShanP<-ShanP+ylab("Shannon Diversity")+xlab("")
+ShanP<-ShanP+#theme_bw() +
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
         ,plot.background=element_rect(fill="transparent",colour=NA)
@@ -1958,13 +1989,135 @@ SEB<-SEB+ #theme_bw() +
         ,panel.spacing = unit(.1, "lines")
         ,legend.text=element_text(size=12)
         ,legend.title=element_text(size=12)
+        ,legend.background = element_rect(fill="transparent",colour=NA)
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
         ,legend.key.width = unit(1.2,"cm"))
-SEB
+# Here we override the legend, it needs to be legend= T to work!
+ShanP<- ShanP +guides(fill=F,shape=F, 
+colour = guide_legend("Livestock density",override.aes = list(shape=c(21,24,22),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
+alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
+ShanP
 
+# Plotting Eveness graph
+pd <- position_dodge(0.5) # Dodge term - there are two options here either in ggplot arguement or seperate 
+EvenP<-ggplot(EvenX, aes(x=Season, y=eveness,colour=Livestockdensity,shape=Livestockdensity, fill=LivTrt, group=Groups, alpha=Treatment)) 
+EvenP<-EvenP+geom_errorbar(aes(x = Season, ymin=eveness-SEM,ymax=eveness+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+EvenP<-EvenP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+EvenP<-EvenP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+EvenP<-EvenP+scale_shape_manual(values=c(21,24,22))
+EvenP<-EvenP+scale_alpha_manual(values=c(1,1))
+EvenP<-EvenP+scale_colour_manual(values=c("grey70","grey35","black"))
+EvenP<-EvenP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+EvenP<-EvenP+ylab("Evenness")
+EvenP<-EvenP+#theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.background = element_rect(fill="transparent",colour=NA)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+# Here we override the legend, it needs to be legend= T to work!
+EvenP<- EvenP +guides(fill=F,shape=F, 
+                      colour = guide_legend("Livestock density",override.aes = list(shape=c(21,24,22),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
+                      alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
+EvenP
 
+# Plotting Beta diversity graph
+pd <- position_dodge(0.5) # Dodge term - there are two options here either in ggplot arguement or seperate 
+BetaP<-ggplot(BetaSX, aes(x=Season, y=beta.sor,colour=Livestockdensity,shape=Livestockdensity, fill=LivTrt, group=Groups, alpha=Treatment)) 
+BetaP<-BetaP+geom_errorbar(aes(x = Season, ymin=beta.sor-SEM,ymax=beta.sor+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
+BetaP<-BetaP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
+BetaP<-BetaP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
+BetaP<-BetaP+scale_shape_manual(values=c(21,24,22))
+BetaP<-BetaP+scale_alpha_manual(values=c(1,1))
+BetaP<-BetaP+scale_colour_manual(values=c("grey70","grey35","black"))
+BetaP<-BetaP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+BetaP<-BetaP+ylab((expression(italic(beta)~"- diversity")))+xlab("")
+BetaP<-BetaP+#theme_bw() +
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        #,panel.grid.major = element_blank()
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=12,color="black")
+        ,axis.title.x=element_text(size=12,color="black")
+        ,axis.text.x=element_text(size=11,color="black",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,strip.background = element_rect(fill="transparent",colour=NA)
+        ,strip.text.x = element_text(size=12,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02)
+        ,strip.text.y = element_blank()
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.background = element_rect(fill="transparent",colour=NA)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key.width = unit(1.2,"cm"))
+# Here we override the legend, it needs to be legend= T to work!
+BetaP
+BetaP<- BetaP +guides(fill=F,shape=F, 
+                      colour = guide_legend("Livestock density",override.aes = list(shape=c(21,24,22),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
+                      alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
+BetaP
+
+# Combine plots into panel
+library(grid)
+library(gridExtra)
+library(egg)
+
+# Extra legend from legend plot
+library(ggpubr)
+legend <- get_legend(ShanP)
+arrangeGrob(legend)
+
+p3 <- arrangeGrob(legend,p,dp,bp, ncol=3, nrow=2,widths=c(1,1,1), heights=c(1,1.4),layout_matrix = cbind(c(1,4), c(2,4),c(3,4))) #common.legend = T)
+grid.arrange(p3)
+
+egg::ggarrange(ShanP+ theme(legend.position="none"),EvenP+ theme(legend.position="none"),BetaP, ncol=3) #common.legend = T)
+
+filename <- paste0("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/", "ShanEvenBeta", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=26.5, height=10, res=400, unit="cm")
+p3
+dev.off()
+
+###################################################################################
 ##### Grasses #####
 # Shannon index, species richness and Eveness
 nsSpp3G$Shannon<-diversity(nsSpp3G[10:28], index = "shannon")
