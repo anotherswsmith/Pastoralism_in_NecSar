@@ -139,7 +139,7 @@ vare.dis<-vegdist(nsSpp3[,10:74],"bray")
 vare.dis2<-as.matrix(vare.dis)
 
 # Beta Dispersion
-nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment, sep="-")))
+nsSpp3$harvest_code<-as.factor(with(nsSpp3, paste(Livestockdensity,Treatment,Season, sep="-")))
 modTLiv <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("centroid"))
 modTLivM <- betadisper(vare.dis, nsSpp3$harvest_code,type = c("median"))
 
@@ -155,7 +155,7 @@ PermT<-adonis(vare.dis2 ~ Livestockdensity+Treatment+Season+#TotalBiomass1+
                 Season:Treatment+Livestockdensity:Season+
                 Livestockdensity:Treatment+#TotalBiomass1:Season+
                 #TotalBiomass1:Livestockdensity+#TotalBiomass1:Treatment+
-                Treatment:Livestockdensity:Season#+
+                Treatment:Livestockdensity:Season,#+
               #Treatment:Livestockdensity:TotalBiomass1,
               strata=as.numeric(nsSpp3$Block),#/as.numeric(nsSpp3$time_code),
               method = "bray",perm=999, data=nsSpp3)
