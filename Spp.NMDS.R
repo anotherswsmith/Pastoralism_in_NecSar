@@ -260,6 +260,9 @@ vec.sp.df$Livestockdensity<- factor(vec.sp.df$Livestockdensity, levels(vec.sp.df
 
 sizeLegend<-expression(paste("Biomass regrowth (g ",m^-2,")"))
 
+# Filling code
+vec.sp.df$LivTrt<-as.factor(with(vec.sp.df, paste(Livestockdensity , Treatment, sep="")))
+levels(vec.sp.df$LivTrt)
 # Plot centroids
 CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2))
 #CenPlot<-CenPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=Livestockdensity), size=1,show.legend=T)
@@ -272,14 +275,14 @@ CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label=expression(paste(" 
 CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label=expression(paste("88 g ",m^-2,"")), colour = "green4", size=4)
 CenPlot<-CenPlot+geom_errorbar(aes(colour=Livestockdensity,ymin=NMDS2-CenSd, ymax=NMDS2+CenSd),show.legend=F)
 CenPlot<-CenPlot+geom_errorbarh(aes(colour=Livestockdensity,xmin = NMDS1-CenSd,xmax = NMDS1+CenSd),show.legend=F)
-CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=Livestockdensity), stroke=1)
+CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=LivTrt), stroke=1)
 CenPlot<-CenPlot+geom_path(aes(group=harvest_code,colour=Livestockdensity),size=1,arrow = arrow(angle=25,length = unit(3.5, "mm")), show.legend = F)
 CenPlot<-CenPlot +geom_text(aes(label=Season),hjust=0, vjust=-.95, show.legend = F)
-CenPlot<-CenPlot +scale_colour_manual(values=c("grey50","grey80","black"))#"black","grey50","grey80"
-CenPlot<-CenPlot +scale_fill_manual(values=c("grey50","grey80","black")) #"black","grey50","grey80"
+CenPlot<-CenPlot +scale_colour_manual(values=c("grey70","grey35","black"))#"black","grey50","grey80"
+CenPlot<-CenPlot +scale_fill_manual(values=c("black","white","grey70","white","grey35","white")) #"black","grey50","grey80"
 CenPlot<-CenPlot +scale_radius(sizeLegend,range=c(1,8))
 #CenPlot<-CenPlot +scale_alpha_manual(values=c(.75,.95))
-CenPlot<-CenPlot +scale_shape_manual(values=c(21,22))
+CenPlot<-CenPlot +scale_shape_manual(values=c(21,21))
 #CenPlot<-CenPlot +ggtitle("Total biomass")
 CenPlot<-CenPlot + #theme_bw() +
   theme(rect = element_rect(fill ="transparent")
@@ -312,11 +315,9 @@ CenPlot<-CenPlot + #theme_bw() +
         ,legend.justification = "top"
         ,legend.direction="vertical"
         ,legend.key.width = unit(1.2,"cm"))
-CenPlot
-
 CenPlot<- CenPlot+guides(linetype=F, fill=F,#size=T,
-                         colour = guide_legend("Livestock density",override.aes = list(shape=c(21), size=3.5,fill=c("black","grey50","grey80"),col=c("black","grey50","grey80"), stroke=1)),
-                         shape = guide_legend("Treatment",override.aes = list(shape=c(21,22), size=3.5,fill=NA,col="grey30", stroke=1)))
+                         colour = guide_legend("Livestock density",override.aes = list(shape=c(21), size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1)),
+                         shape = guide_legend("Treatment",override.aes = list(shape=c(21,21), size=3.5,fill=c("white","grey50"),col="grey30", stroke=1)))
       # size = guide_legend((expression(paste("Biomass ( kg ",m^-2,")"))),override.aes = list(shape=c(21),fill=c("grey30"),col=c("grey30"), stroke=1)))
 CenPlot
 
@@ -1958,10 +1959,10 @@ ShanP<-ggplot(ShanX, aes(x=Season, y=Shannon,colour=Livestockdensity,shape=Lives
 ShanP<-ShanP+geom_errorbar(aes(x = Season, ymin=Shannon-SEM,ymax=Shannon+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
 ShanP<-ShanP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
 ShanP<-ShanP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
-ShanP<-ShanP+scale_shape_manual(values=c(21,24,22))
+ShanP<-ShanP+scale_shape_manual(values=c(21,21,21))
 ShanP<-ShanP+scale_alpha_manual(values=c(1,1))
 ShanP<-ShanP+scale_colour_manual(values=c("grey70","grey35","black"))
-ShanP<-ShanP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+ShanP<-ShanP+scale_fill_manual(values=c("black","white","grey70","white","grey35","white"))
 ShanP<-ShanP+ylab("Shannon Diversity")+xlab("")
 ShanP<-ShanP+#theme_bw() +
   theme(rect = element_rect(fill ="transparent")
@@ -1996,7 +1997,7 @@ ShanP<-ShanP+#theme_bw() +
         ,legend.key.width = unit(1.2,"cm"))
 # Here we override the legend, it needs to be legend= T to work!
 ShanP<- ShanP +guides(fill=F,shape=F, 
-colour = guide_legend("Livestock density",override.aes = list(shape=c(21,24,22),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
+colour = guide_legend("Livestock density",override.aes = list(shape=c(21,21,21),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
 alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
 ShanP
 
@@ -2006,10 +2007,10 @@ EvenP<-ggplot(EvenX, aes(x=Season, y=eveness,colour=Livestockdensity,shape=Lives
 EvenP<-EvenP+geom_errorbar(aes(x = Season, ymin=eveness-SEM,ymax=eveness+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
 EvenP<-EvenP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
 EvenP<-EvenP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
-EvenP<-EvenP+scale_shape_manual(values=c(21,24,22))
+EvenP<-EvenP+scale_shape_manual(values=c(21,21,21))
 EvenP<-EvenP+scale_alpha_manual(values=c(1,1))
 EvenP<-EvenP+scale_colour_manual(values=c("grey70","grey35","black"))
-EvenP<-EvenP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+EvenP<-EvenP+scale_fill_manual(values=c("black","white","grey70","white","grey35","white"))
 EvenP<-EvenP+ylab("Evenness")
 EvenP<-EvenP+#theme_bw() +
   theme(rect = element_rect(fill ="transparent")
@@ -2054,10 +2055,10 @@ BetaP<-ggplot(BetaSX, aes(x=Season, y=beta.sor,colour=Livestockdensity,shape=Liv
 BetaP<-BetaP+geom_errorbar(aes(x = Season, ymin=beta.sor-SEM,ymax=beta.sor+SEM),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
 BetaP<-BetaP+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
 BetaP<-BetaP+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
-BetaP<-BetaP+scale_shape_manual(values=c(21,24,22))
+BetaP<-BetaP+scale_shape_manual(values=c(21,21,21))
 BetaP<-BetaP+scale_alpha_manual(values=c(1,1))
 BetaP<-BetaP+scale_colour_manual(values=c("grey70","grey35","black"))
-BetaP<-BetaP+scale_fill_manual(values=c("white","black","white","grey70","white","grey35"))
+BetaP<-BetaP+scale_fill_manual(values=c("black","white","grey70","white","grey35","white"))
 BetaP<-BetaP+ylab((expression(italic(beta)~"- diversity")))+xlab("")
 BetaP<-BetaP+#theme_bw() +
   theme(rect = element_rect(fill ="transparent")
@@ -2093,24 +2094,17 @@ BetaP<-BetaP+#theme_bw() +
 # Here we override the legend, it needs to be legend= T to work!
 BetaP
 BetaP<- BetaP +guides(fill=F,shape=F, 
-                      colour = guide_legend("Livestock density",override.aes = list(shape=c(21,24,22),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
+                      colour = guide_legend("Livestock density",override.aes = list(shape=c(21,21,21),size=3.5,fill=c("grey70","grey35","black"),col=c("grey70","grey35","black"), stroke=1,linetype=NA)),
                       alpha = guide_legend(override.aes = list(shape=c(21,21),size=3.5,fill=c("white","grey50"),col=c("grey 50","grey 50"), stroke=1,linetype=NA)))
 BetaP
 
 # Combine plots into panel
+library(ggpubr)
 library(grid)
 library(gridExtra)
 library(egg)
 
-# Extra legend from legend plot
-library(ggpubr)
-legend <- get_legend(ShanP)
-arrangeGrob(legend)
-
-p3 <- arrangeGrob(legend,p,dp,bp, ncol=3, nrow=2,widths=c(1,1,1), heights=c(1,1.4),layout_matrix = cbind(c(1,4), c(2,4),c(3,4))) #common.legend = T)
-grid.arrange(p3)
-
-egg::ggarrange(ShanP+ theme(legend.position="none"),EvenP+ theme(legend.position="none"),BetaP, ncol=3) #common.legend = T)
+p3<-egg::ggarrange(ShanP+ theme(legend.position="none"),EvenP+ theme(legend.position="none"),BetaP, ncol=3) #common.legend = T)
 
 filename <- paste0("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/", "ShanEvenBeta", "_",Sys.Date(), ".jpeg" )
 jpeg (filename, width=26.5, height=10, res=400, unit="cm")
