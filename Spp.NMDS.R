@@ -322,8 +322,8 @@ CenPlot<- CenPlot+guides(linetype=F, fill=F,#size=T,
 CenPlot
 
 # Export ggplot
-ggsave("NMDS2.ordsurf.jpeg",width= 15, height = 12,units ="cm", bg ="transparent",
-       dpi = 600, limitsize = TRUE)
+#ggsave("NMDS2.ordsurf.jpeg",width= 15, height = 12,units ="cm", bg ="transparent",
+#       dpi = 600, limitsize = TRUE)
 
 # CHECKING NUMBERS FOR ordisurf line
 library(directlabels)
@@ -609,9 +609,6 @@ Bcdist2<-glmmadmb(Bcdist2~Livestockdensity+Season+Treatment+
 summary(Bcdist2)
 drop1(Bcdist2)
 
-
-
-
 #Contrast: High_Low                      average
 #BothriochloainsculptaHochstExARichACamus 1.440e-01 # 0.144
 #ChrysopogonplumulosusHochst              1.281e-01
@@ -645,7 +642,6 @@ simT <- with(nsSpp3.envI, simper(nsSpp3I[,10:74],nsSpp3I$Liv_Trt),permutations=9
 SimpSum<-summary(simT,ordered = TRUE)
 #sink("SIMPER.summary.txt")
 #print(SimpSum)
-
 
 #Contrast: High_Medium 
 #                                           average        sd  ratio       ava       avb cumsum
@@ -706,6 +702,9 @@ nsSpp3Cp<-nsSpp3[nsSpp3$ChrysopogonplumulosusHochs!=0,]
 mean(nsSpp3Cp$ChrysopogonplumulosusHochs) # 19.0% 
 sd(nsSpp3Cp$ChrysopogonplumulosusHochs) # 16.3% 
 nrow(nsSpp3[nsSpp3$ChrysopogonplumulosusHochs>0.01,])/270*100 # 80 %
+names(nsSpp3Cp)
+
+aggregate(ChrysopogonplumulosusHochst~Livestockdensity+Treatment,nsSpp3Cp,mean)
 
 # Bot ins
 BotIns<-ggplot(nsSpp3I,aes(x=plot_codeX,y=BothriochloainsculptaHochstExARichACamus,shape=Treatment,colour=Livestockdensity, linetype=Season))
@@ -720,6 +719,8 @@ mean(nsSpp3Bi$BothriochloainsculptaHochstExARichACamus) # 24.7%
 sd(nsSpp3Bi$BothriochloainsculptaHochstExARichACamus) # 22.5% 
 nrow(nsSpp3[nsSpp3$BothriochloainsculptaHochstExARichACamus>0.01,])/270*100 # 74.1 %
 
+aggregate(BothriochloainsculptaHochstExARichACamus~Livestockdensity+Treatment,nsSpp3Bi,mean)
+
 # Dig mac
 Digmac<-ggplot(nsSpp3I,aes(x=plot_codeX,y=DigitariamacroblepharaHackStapf  ,shape=Treatment,colour=Livestockdensity, linetype=Season))
 Digmac<-Digmac+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -733,6 +734,9 @@ mean(nsSpp3Dm$DigitariamacroblepharaHackStapf) # 4.9%
 sd(nsSpp3Dm$DigitariamacroblepharaHackStapf) # 4.0% 
 nrow(nsSpp3[nsSpp3$DigitariamacroblepharaHackStapf>0.01,])/270*100 # 33.3 %
 
+aggregate(DigitariamacroblepharaHackStapf~Livestockdensity+Treatment,nsSpp3Dm,mean)
+
+
 # HetCon
 HetCon<-ggplot(nsSpp3I,aes(x=plot_codeX,y=HeteropogoncontortusLRoemSchult,shape=Treatment,colour=Livestockdensity, linetype=Season))
 HetCon<-HetCon+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -744,6 +748,8 @@ nsSpp3Hc<-nsSpp3[nsSpp3$HeteropogoncontortusLRoemSchult!=0,]
 mean(nsSpp3Hc$HeteropogoncontortusLRoemSchult) # 19.7%
 sd(nsSpp3Hc$HeteropogoncontortusLRoemSchult) # 30.0% 
 nrow(nsSpp3[nsSpp3$HeteropogoncontortusLRoemSchult>0.01,])/270*100 # 25.2 %
+
+aggregate(HeteropogoncontortusLRoemSchult~Livestockdensity+Treatment,nsSpp3Hc,mean)
 
 #CynNle
 CynNle<-ggplot(nsSpp3I,aes(x=plot_codeX,y=CynodonnlemfuensisVanderyst,shape=Treatment,colour=Livestockdensity, linetype=Season))
@@ -762,6 +768,8 @@ mean(nsSpp3Cn$CynodonnlemfuensisVanderyst) # 27.4%
 sd(nsSpp3Cn$CynodonnlemfuensisVanderyst) # 29.5% 
 nrow(nsSpp3[nsSpp3$CynodonnlemfuensisVanderyst>0.01,])/270*100 # 21.1 %
 
+aggregate(CynodonnlemfuensisVanderyst~Livestockdensity+Treatment,nsSpp3Cn,mean)
+
 #Lin ton
 Linton<-ggplot(nsSpp3I,aes(x=plot_codeX,y=LintonianutansStapf,shape=Treatment,colour=Livestockdensity, linetype=Season))
 Linton<-Linton+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -771,6 +779,8 @@ nsSpp3Lt<-nsSpp3[nsSpp3$LintonianutansStapf!=0,]
 mean(nsSpp3Lt$LintonianutansStapf) #6.2%
 sd(nsSpp3Lt$LintonianutansStapf) # 10.5% 
 nrow(nsSpp3[nsSpp3$LintonianutansStapf>0.01,])/270*100 # 21.5 %
+
+aggregate(LintonianutansStapf~Livestockdensity+Treatment,nsSpp3Lt,mean)
 
 #AriKen
 AriKen<-ggplot(nsSpp3I,aes(x=plot_codeX,y=AristidakenyensisHenr,shape=Treatment,colour=Livestockdensity, linetype=Season))
@@ -783,6 +793,8 @@ mean(nsSpp3Ak$AristidakenyensisHenr) # 13.3%
 sd(nsSpp3Ak$AristidakenyensisHenr) # 17.0% 
 nrow(nsSpp3[nsSpp3$AristidakenyensisHenr>0.01,])/270*100 # 7.8 %
 
+aggregate(AristidakenyensisHenr~Livestockdensity+Treatment,nsSpp3Ak,mean)
+
 #Tetvil
 Tetvil<-ggplot(nsSpp3I,aes(x=plot_codeX,y=TetrapogonvillosusDesj,shape=Treatment,colour=Livestockdensity, linetype=Season))
 Tetvil<-Tetvil+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -793,7 +805,7 @@ mean(nsSpp3Tv$TetrapogonvillosusDesj) # 19.5%
 sd(nsSpp3Tv$TetrapogonvillosusDesj) # 23.0% 
 nrow(nsSpp3[nsSpp3$TetrapogonvillosusDesj>0.01,])/270*100 # 10.7 %
 
-aggregate(TetrapogonvillosusDesj~Livestockdensity+Treatment+Season,nsSpp3Tv,mean)
+aggregate(TetrapogonvillosusDesj~Livestockdensity+Treatment,nsSpp3Tv,mean)
 
 #Setinc
 SetariaincrassataHochstWild
@@ -801,6 +813,8 @@ nsSpp3Si<-nsSpp3[nsSpp3$SetariaincrassataHochstWild!=0,]
 mean(nsSpp3Si$SetariaincrassataHochstWild) # 22.6%
 sd(nsSpp3Si$SetariaincrassataHochstWild) # 30.9% 
 nrow(nsSpp3[nsSpp3$SetariaincrassataHochstWild>0.01,])/270*100 # 3.3 %
+
+aggregate(SetariaincrassataHochstWild~Livestockdensity+Treatment,nsSpp3Si,mean)
 
 #### Forbs ####
 #RhyMin
@@ -813,6 +827,8 @@ mean(nsSpp3Rm$RhynchosiaminimaLDC) # 3.9%
 sd(nsSpp3Rm$RhynchosiaminimaLDC) # 6.0% 
 nrow(nsSpp3[nsSpp3$RhynchosiaminimaLDC>0.01,])/270*100 # 45.6 %
 
+aggregate(RhynchosiaminimaLDC~Livestockdensity+Treatment,nsSpp3Rm,mean)
+
 #DysRad
 DysRad<-ggplot(nsSpp3I,aes(x=plot_codeX,y=DyschoristeradicansNees,shape=Treatment,colour=Livestockdensity, linetype=Season))
 DysRad<-DysRad+geom_boxplot(outlier.shape=NA,fill=NA,show.legend=F)+geom_jitter(size=2.5,stroke=1,show.legend=T)
@@ -822,6 +838,8 @@ nsSpp3Dr<-nsSpp3[nsSpp3$DyschoristeradicansNees!=0,]
 mean(nsSpp3Dr$DyschoristeradicansNees) # 4.0%
 sd(nsSpp3Dr$DyschoristeradicansNees) # 4.8% 
 nrow(nsSpp3[nsSpp3$DyschoristeradicansNees>0.01,])/270*100 # 18.1 %
+
+aggregate(DyschoristeradicansNees~Livestockdensity+Treatment,nsSpp3Dr,mean)
 
 #Barhom
 nsSpp3Bh<-nsSpp3[nsSpp3$BarleriahomoiotrichaCBClarke!=0,]
@@ -840,8 +858,9 @@ mean(nsSpp3Tf$TriumfettaflavescensHochst) # 7.5%
 sd(nsSpp3Tf$TriumfettaflavescensHochst) # 22.5% 
 nrow(nsSpp3I[nsSpp3I$TriumfettaflavescensHochst>0.01,])/270*100 # 57.8 %
 
+aggregate(TriumfettaflavescensHochst~Livestockdensity+Treatment,nsSpp3Tf,mean)
 
-### Species occurence
+#### Species occurence ####
 library(dplyr)
 library(tidyr)
 library(reshape)
