@@ -234,6 +234,7 @@ levels(nsReharvestAll0$Reharvest.date2)<-c("Short I", "Long", "Short II")
 
 aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
 
+
 # Harvest treatment code
 nsReharvestAll$harvest_trt<-as.factor(with(nsReharvestAll, paste(Harvest,Treatment,Livestock.density, sep="-")))
 nsReharvestAll0$harvest_trt<-as.factor(with(nsReharvestAll0, paste(Harvest,Treatment,Livestock.density, sep="-")))
@@ -246,16 +247,36 @@ levels(ReHavTot0$Livestock.density)<-c("Low livestock","Medium Livestock","High 
 levels(ReHavTot$Treatment)<-c("Open","Exclosed")  
 levels(ReHavTot0$Treatment)<-c("Open","Exclosed") 
 
+# Adding second axis for rainfall
+rainavg<-aggregate(rain.mm~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb, mean)
+rainsem<-aggregate(rain.mm~Harvest+Reharvest.date+Treatment+Livestock.density+harvest_code,nsReharvestb,sem)
+rainavg2<-cbind(rainavg,rainsem[6])
+colnames(rainavg2)[6]<-"rain.mm"
+colnames(rainavg2)[7]<-"se"
+rainavg2$fxgroup<-"Total"
+
+rainavg2$Reharvest.date2<-as.factor(rainavg2$Reharvest.date)
+levels(rainavg2$Reharvest.date2)<-c("Short I", "Long", "Short II")
+rainavg2$Livestock.density<- factor(rainavg2$Livestock.density, levels = c("Low","Medium","High"))
+levels(rainavg2$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
+levels(rainavg2$Treatment)<-c("Open","Exclosed")  
+
+scaleFactor <- mean(rainavg2$rain.mm,na.rm=T)/mean(ReHavTot$Biomass,na.rm=T)
+
 # Position dodge
 pd <- position_dodge(0.5)
 
 # Filling code
 ReHavTot$LivTrt<-as.factor(with(ReHavTot, paste(Livestock.density , Treatment, sep="")))
 ReHavTot0$LivTrt<-as.factor(with(ReHavTot0, paste(Livestock.density , Treatment, sep="")))
+rainavg2$LivTrt<-as.factor(with(rainavg2, paste(Livestock.density , Treatment, sep="")))
 
 # Total Biomass Only 
 Regrow<-ggplot(ReHavTot, aes(x=Reharvest.date2, y=Biomass,
                                    group=Harvest,linetype=Harvest,shape=Treatment,colour=Livestock.density,fill=LivTrt)) 
+
+#Regrow<-Regrow+geom_smooth(data=rainavg2,aes(y=(rain.mm+100)/1.4),method="loess",span=.9, se=F,linetype="dotted",colour="dodgerblue1", size=1,show.legend=F, alpha=.76)
+#Regrow<-Regrow+geom_point(data=rainavg2,aes(y=(rain.mm+100)/1.4),fill="dodgerblue1",colour="dodgerblue1", size=3.5,show.legend=F, size=2,alpha=.65)
 Regrow<-Regrow+geom_line(position=pd,stat = "identity",size=.75,show.legend = T) 
 Regrow<-Regrow+geom_errorbar(aes(x = Reharvest.date2, ymin=Biomass-se,ymax=Biomass+se),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)
 Regrow<-Regrow+geom_point(position=pd,stat = "identity",size=3.5, stroke=1)
@@ -267,6 +288,7 @@ Regrow<-Regrow+geom_errorbar(data=ReHavTot0,aes(x = Reharvest.date2, ymin=Biomas
 Regrow<-Regrow+geom_point(data=ReHavTot0,size=3.5,stroke=1,alpha=.99,colour="black", fill="orangered3",shape=22,show.legend=F)
 Regrow<-Regrow+scale_linetype_manual(values =c("double" ="solid", single="dotted"))
 Regrow<-Regrow+xlab("Rainy season") + ylab(expression(paste("Biomass (g ",m^-2,")")))
+#Regrow<-Regrow+scale_y_continuous(limits=c(0,275),sec.axis = sec_axis(~ . *1.4, breaks = c(100,200,300,400), labels = c(0,100,200,300), name = "Rainfall (mm)"),expand=c(0,0))
 Regrow<-Regrow+ 
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
@@ -295,6 +317,7 @@ Regrow<-Regrow+
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 Regrow<- Regrow+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 Regrow<- Regrow+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
@@ -343,8 +366,8 @@ ReHavG<-nsReharvestAll[nsReharvestAll$fxgroup=="Grass",]
 ReHavG0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Grass",]
 levels(ReHavG$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
 levels(ReHavG0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
-levels(ReHavG$Treatment)<-c("Herbivory","No herbivory")  
-levels(ReHavG0$Treatment)<-c("Herbivory","No herbivory") 
+levels(ReHavG$Treatment)<-c("Open","Exclosed")  
+levels(ReHavG0$Treatment)<-c("Open","Exclosed")
 
 # Filling code
 ReHavG$LivTrt<-as.factor(with(ReHavG, paste(Livestock.density , Treatment, sep="")))
@@ -392,6 +415,7 @@ RegrowG<-RegrowG+
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 RegrowG<-RegrowG+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 RegrowG<-RegrowG+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
@@ -439,8 +463,8 @@ ReHavH<-nsReharvestAll[nsReharvestAll$fxgroup=="Herb & Climber",]
 ReHavH0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Herb & Climber",]
 levels(ReHavH$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
 levels(ReHavH0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
-levels(ReHavH$Treatment)<-c("Herbivory","No herbivory")  
-levels(ReHavH0$Treatment)<-c("Herbivory","No herbivory") 
+levels(ReHavH$Treatment)<-c("Open","Exclosed")  
+levels(ReHavH0$Treatment)<-c("Open","Exclosed") 
 
 # Filling code
 ReHavH$LivTrt<-as.factor(with(ReHavH, paste(Livestock.density , Treatment, sep="")))
@@ -488,6 +512,7 @@ RegrowH<-RegrowH+
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 RegrowH<-RegrowH+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 RegrowH<-RegrowH+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
@@ -534,8 +559,8 @@ ReHavW<-nsReharvestAll[nsReharvestAll$fxgroup=="Woody",]
 ReHavW0<-nsReharvestAll0[nsReharvestAll0$fxgroup=="Woody",]
 levels(ReHavW$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
 levels(ReHavW0$Livestock.density)<-c("Low livestock","Medium Livestock","High Livestock")  
-levels(ReHavW$Treatment)<-c("Herbivory","No herbivory")  
-levels(ReHavW0$Treatment)<-c("Herbivory","No herbivory") 
+levels(ReHavW$Treatment)<-c("Open","Exclosed")  
+levels(ReHavW0$Treatment)<-c("Open","Exclosed") 
 
 # Filling code
 ReHavW$LivTrt<-as.factor(with(ReHavW, paste(Livestock.density , Treatment, sep="")))
@@ -583,6 +608,7 @@ RegrowW<-RegrowW+
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 RegrowW<-RegrowW+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 RegrowW<-RegrowW+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 
@@ -667,6 +693,7 @@ RegrowW<-RegrowW+#theme_bw() +
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 RegrowW<-RegrowW+annotate(geom = 'segment', y =-Inf, yend =-Inf, color = 'black', x =  -Inf, xend = Inf, size = .75) 
 RegrowW<-RegrowW+annotate(geom = 'segment', x =-Inf, xend =-Inf, color = 'black', y =  -Inf, yend = Inf, size = .75) 

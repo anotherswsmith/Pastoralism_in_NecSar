@@ -269,10 +269,10 @@ CenPlot<-ggplot(vec.sp.df[order(vec.sp.df$Season),],aes(x=NMDS1,y=NMDS2))
 CenPlot<-CenPlot +scale_x_continuous(limits = c(-0.2,.2), expand = c(0,0))
 CenPlot<-CenPlot +scale_y_continuous(limits = c(-0.2,.25), expand = c(0,0))
 CenPlot<-CenPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = rain.mm, size=TotalBiomass1,alpha= (..level..)),colour = "green4", #colour = rev(..level..),
-             binwidth = 2, show.legend = F)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.16, label=expression(paste("70 g ",m^-2,"")), colour = "green4", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.047, label=expression(paste("     80 g ",m^-2,"")), colour = "green4", size=4)
-CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.21, label=expression(paste("88 g ",m^-2,"")), colour = "green4", size=4)
+             binwidth = 2, lwd=1,show.legend = F)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=-0.128, label=expression(paste("     70 g ",m^-2,"")), colour = "green4", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.042, label=expression(paste("     80 g ",m^-2,"")), colour = "green4", size=4)
+CenPlot<-CenPlot+annotate(geom="text",x=-0.0, y=0.185, label=expression(paste("      88 g ",m^-2,"")), colour = "green4", size=4)
 CenPlot<-CenPlot+geom_errorbar(aes(colour=Livestockdensity,ymin=NMDS2-CenSd, ymax=NMDS2+CenSd),show.legend=F)
 CenPlot<-CenPlot+geom_errorbarh(aes(colour=Livestockdensity,xmin = NMDS1-CenSd,xmax = NMDS1+CenSd),show.legend=F)
 CenPlot<-CenPlot+geom_point(aes(shape=Treatment,size=TotalBiomass1,colour=Livestockdensity,fill=LivTrt), stroke=1)
@@ -310,6 +310,7 @@ CenPlot<-CenPlot + #theme_bw() +
         ,legend.background=element_blank()
         ,panel.spacing = unit(.1, "lines")
         ,legend.text=element_text(size=12)
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.title=element_text(size=12)
         ,legend.position = "right"
         ,legend.justification = "top"
@@ -2013,6 +2014,7 @@ ShanP<-ShanP+#theme_bw() +
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 # Here we override the legend, it needs to be legend= T to work!
 ShanP<- ShanP +guides(fill=F,shape=F, 
@@ -2061,6 +2063,7 @@ EvenP<-EvenP+#theme_bw() +
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 # Here we override the legend, it needs to be legend= T to work!
 EvenP<- EvenP +guides(fill=F,shape=F, 
@@ -2109,6 +2112,7 @@ BetaP<-BetaP+#theme_bw() +
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 # Here we override the legend, it needs to be legend= T to work!
 BetaP
