@@ -51,6 +51,8 @@ names(Ex_location)
 levels(Ex_location$OtherName)
 colnames(Ex_location)[7]<-"Trt.name"
 
+with(plot(Y~X,Ex_location))
+
 #### Join regrowth and dung data ####
 # Regrowth biomass
 nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
@@ -90,9 +92,9 @@ nsReharvest<-nsreharvest3locHerb
 
 #### Alternative - create krigging maps of herbivores ####
 #### Create krigging maps of herbivore metabolic biomass ####
-#coordinates(nsherb3) <- ~ Xcent + Ycent
-#nsherb3.grid<-nsreharvest3locHerb
-#coordinates(nsherb3.grid) <- ~ X + Y
+coordinates(nsherb3) <- ~ Xcent + Ycent
+nsherb3.grid<-nsreharvest3locHerb
+coordinates(nsherb3.grid) <- ~ X + Y
 
 # Cattle variogram
 #cattle.vgm <- variogram(CattleMetBio~1, nsherb3)
@@ -102,8 +104,8 @@ nsReharvest<-nsreharvest3locHerb
 #cattle.kriged <- krige(CattleMetBio ~ 1, nsherb3, nsherb3.grid, model=cattle.fit)
 
 #cattle.kriged %>% as.data.frame %>%
-#  ggplot(aes(x=X, y=Y)) + geom_tile(aes(fill=var1.pred), height=500,width=500) + coord_equal() +
-#  scale_fill_gradient(low = "yellow", high="red") +
+ #ggplot(aes(x=X, y=Y)) + geom_tile(aes(fill=var1.pred), height=500,width=500) + coord_equal() +
+ # scale_fill_gradient(low = "yellow", high="red") +
 #  theme_bw()
 # Largerly under-estimates biomass values of cattle - 
 # Max value ~250...due to plateau in semi-variogram
@@ -811,6 +813,17 @@ nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
 
 #B Collinearity X
 
+# Herbivore covariates
+names(nsReharvestb)
+TotalHerb<-cbind(nsReharvestb$Burchells_ZebraMetBio,
+nsReharvestb$CattleMetBio,nsReharvestb$Grants_GazelleMetBio,
+nsReharvestb$Greater_KuduMetBio,nsReharvestb$Swaynes_HartebeestMetBio)
+WildHerb<-cbind(nsReharvestb$Burchells_ZebraMetBio,nsReharvestb$Grants_GazelleMetBio,
+                 nsReharvestb$Greater_KuduMetBio,nsReharvestb$Swaynes_HartebeestMetBio)
+
+nsReharvestb$TotalHerb<-rowSums(TotalHerb, na.rm=T)
+nsReharvestb$WildHerb<-rowSums(WildHerb, na.rm=T)
+
 # Boxplot for factors
 names(nsReharvestb)
 par(mfrow = c(1, 1), mar = c(4, 3, 3, 2))
@@ -882,18 +895,75 @@ nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
 #corMatrix(cs1AR1.)
 nsReharvestH1T<- nsReharvestH1[is.finite(nsReharvestH1$Tot.Per.diff),]
 
+# Herbivore covariates
+names(nsReharvestH1)
+TotalHerb<-cbind(nsReharvestH1$Burchells_ZebraMetBio,
+                 nsReharvestH1$CattleMetBio,nsReharvestH1$Grants_GazelleMetBio,
+                 nsReharvestH1$Greater_KuduMetBio,nsReharvestH1$Swaynes_HartebeestMetBio)
+WildHerb<-cbind(nsReharvestH1$Burchells_ZebraMetBio,nsReharvestH1$Grants_GazelleMetBio,
+                nsReharvestH1$Greater_KuduMetBio,nsReharvestH1$Swaynes_HartebeestMetBio)
+nsReharvestH1$TotalHerb<-rowSums(TotalHerb, na.rm=T)
+nsReharvestH1$WildHerb<-rowSums(WildHerb, na.rm=T)
+
+
 #### TOTAL BIOMASS REGROWTH MODEL ####
 # Regrowth  - only double harvest
-Tot1<-lme(TotalBiomass1~Livestock.density+Treatment+Harvest.date+
-            Harvest.date:Treatment+Livestock.density:Harvest.date+
-            Livestock.density:Treatment+
-            Treatment:Livestock.density:Harvest.date, #TotalBiomass0,
-           random= ~ 1|fBlock, method="ML",data=nsReharvestH1)
+names(nsReharvestH1)
+nsReharvestH1$CattleMetBio
+plot(TotalHerb~WildHerb,nsReharvestH1)
+Tot1<-lme(TotalBiomass1~Treatment+Harvest.date+Livestock.density:Harvest.date+
+           Livestock.density:Treatment+
+           Treatment:Livestock.density:Harvest.date
+          , #TotalBiomass0,
+           random= list(fBlock=~ 1,rain.mm=~ 1), method="ML",data=nsReharvestH1)
           #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
+
 summary(Tot1)
 anova(Tot1)
 AIC(Tot1) #1739.536
 plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
+
+
+Tot1W<-lme(TotalBiomass1~Treatment+Harvest.date+WildHerb+
+             WildHerb:Harvest.date+
+             WildHerb:Treatment+
+             Treatment:WildHerb:Harvest.date
+           , #TotalBiomass0,
+          random= list(fBlock=~ 1,rain.mm=~ 1), method="ML",data=nsReharvestH1)
+#correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
+
+summary(Tot1W)
+anova(Tot1W)
+
+Tot1C<-lme(TotalBiomass1~Treatment+Harvest.date+CattleMetBio+
+             #CattleMetBio:Harvest.date+
+             CattleMetBio:Treatment,
+             #Treatment:CattleMetBio:Harvest.date, #TotalBiomass0,
+           random= list(fBlock=~ 1,rain.mm=~ 1), method="ML",data=nsReharvestH1)
+
+
+plot(WildHerb~CattleMetBio,nsReharvestH1)
+
+# Split exclosure and open
+
+nsReharvestH1C<-nsReharvestH1[nsReharvestH1$Treatment=="Control",]
+nsReharvestH1C<-nsReharvestH1[nsReharvestH1$Treatment=="Exclosure",]
+library(MuMIn)
+r.squaredGLMM(Tot1)
+
+nsReharvestH1Con<-rbind(#LabileMain<-r.squaredGLMM(LabileMainModFINAL),
+  r.squaredGLMM(Tot1), 
+  r.squaredGLMM(Tot1W),
+  r.squaredGLMM(Tot1C))
+
+summary(Tot1)
+anova(Tot1)
+AIC(Tot1) #1739.536
+plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
+
+ 
+xyplot(TotalBiomass1~WildHerb|Treatment*Harvest.date,nsReharvestH1)
+plot(TotalBiomass1~Greater_KuduMetBio,nsReharvestH1)
 
 plot(Tot1) # Potential issue very small residuals at low fitted values
 
