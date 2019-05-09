@@ -843,18 +843,23 @@ bwplot(rain.mm~Season|Livestock.density,nsReharvestb)
 
 #corvif
 library(car)
-GRAZE.lm1<-lm(TotalBiomass1~Livestock.density+Treatment+Harvest.date+rain.mm, data = nsReharvestb)
+names(nsReharvestb)
+GRAZE.lm1<-lm(TotalBiomass1~Treatment+Harvest.date+rain.mm+
+                Burchells_ZebraMetBio+CattleMetBio+Grants_GazelleMetBio+
+                Greater_KuduMetBio+Swaynes_HartebeestMetBio, data = nsReharvestb)
 vif(GRAZE.lm1)
-#                       GVIF Df GVIF^(1/(2*Df))
-#Livestock.density   1.06597  2         1.01610
-#Treatment           1.00000  1         1.00000
-#Harvest.date      830.76014  1        28.82291
-#rain.mm           830.82611  1        28.82405 # Cannot use rainfall and season in the same model
+# Cannot use rainfall and season in the same model
+#Treatment             Harvest.date                  rain.mm    Burchells_ZebraMetBio 
+#1.000000              1727.356013              1702.018066                 1.859672 
+#CattleMetBio     Grants_GazelleMetBio       Greater_KuduMetBio Swaynes_HartebeestMetBio 
+#2.073992                 1.523146                 2.387375                 1.486234 mm           
 
 # C Collinearity Y
 names(nsReharvestb)
 MyVar<-c("GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1",
-         "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1")
+         "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1",
+         "Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio",
+         "Swaynes_HartebeestMetBio" )
 pairs(nsReharvestb[,MyVar],lower.panel = panel.cor)
 # Poor correlation between functional group regrowth biomass
 
@@ -888,6 +893,9 @@ nsReharvestH1$Harvest
 nsReharvestH1$fBlock<-as.factor(nsReharvestH1$Block)
 nsReharvestH1$fPlot.ID<-as.factor(nsReharvestH1$Plot.ID)
 
+nsReharvestbH1_2$fBlock<-as.factor(nsReharvestbH1_2$Block)
+nsReharvestbH1_2$fPlot.ID<-as.factor(nsReharvestbH1_2$Plot.ID)
+
 # Testing whether auto-correlation structure is necessary
 # Auto correlation structure - unneccessary
 #cs1AR1 <- corAR1(0.2, form = ~Reharvest.date|fBlock/fPlot.ID)
@@ -911,15 +919,74 @@ nsReharvestH1$WildHerb<-rowSums(WildHerb, na.rm=T)
 names(nsReharvestH1)
 nsReharvestH1$CattleMetBio
 plot(TotalHerb~WildHerb,nsReharvestH1)
-Tot1<-lme(TotalBiomass1~Treatment+Harvest.date+Livestock.density:Harvest.date+
-           Livestock.density:Treatment+
-           Treatment:Livestock.density:Harvest.date
-          , #TotalBiomass0,
-           random= list(fBlock=~ 1,rain.mm=~ 1), method="ML",data=nsReharvestH1)
-          #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
 
+Tot1<-lmer(TotalBiomass1~Treatment+
+             +poly(Burchells_ZebraMetBio,2)+CattleMetBio+                 
+            +Grants_GazelleMetBio+Swaynes_HartebeestMetBio+ #Greater_KuduMetBio
+             #+poly(Burchells_ZebraMetBio,2):Treatment+CattleMetBio:Treatment+                 
+            # +Grants_GazelleMetBio:Treatment+Greater_KuduMetBio:Treatment+
+             #Swaynes_HartebeestMetBio:Treatment+ 
+          (1|fBlock)+(1|rain.mm),data=nsReharvestH1)
+          #correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
 summary(Tot1)
 anova(Tot1)
+
+#Inspect chosen model for homogeneity:
+E1 <- resid(Tot1, type ="pearson")
+F1 <- fitted(Tot1)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1, 
+     y = E1,
+     xlab = "Fitted values",
+     ylab = "Residuals")
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 1)
+
+drop1(Tot1, test="Chisq")
+
+library(MuMIn)
+r.squaredGLMM(Tot1)
+
+Zeb<-ggplot(nsReharvestH1,aes(y=TotalBiomass1, x=Burchells_ZebraMetBio))
+Zeb<-Zeb+geom_point(data=nsReharvestbH1_2,aes(y=TotalBiomass0, x=Burchells_ZebraMetBio),size=3, colour="light grey", alpha=.5)
+Zeb<-Zeb+geom_point(size =3,col="dark grey")
+Zeb<-Zeb+facet_wrap(~Treatment)
+Zeb<-Zeb+theme_classic()
+Zeb
+
+# Standing biomass - i.e. no regrowth
+Tot1b<-lmer(TotalBiomass0~Treatment+
+             +Burchells_ZebraMetBio+#CattleMetBio+                 
+             +Grants_GazelleMetBio+Swaynes_HartebeestMetBio+ #Greater_KuduMetBio
+             +Burchells_ZebraMetBio:Treatment+#CattleMetBio:Treatment+                 
+             # +Grants_GazelleMetBio:Treatment+Greater_KuduMetBio:Treatment+
+             #Swaynes_HartebeestMetBio:Treatment+ 
+             (1|fBlock)+(1|rain.mm),data=nsReharvestbH1_2)
+#correlation=corAR1(0.2, form=~Harvest.date|fBlock/fPlot.ID),data=nsReharvestH1)
+
+summary(Tot1b)
+anova(Tot1b)
+
+#Inspect chosen model for homogeneity:
+E1 <- resid(Tot1b, type ="pearson")
+F1 <- fitted(Tot1b)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F1, 
+     y = E1,
+     xlab = "Fitted values",
+     ylab = "Residuals")
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 1)
+
+drop1(Tot1b, test="Chisq")
+
+library(MuMIn)
+r.squaredGLMM(Tot1)
+
+
+
 AIC(Tot1) #1739.536
 plot(ACF(Tot1),alpha=0.05) # Nothing systematic 
 

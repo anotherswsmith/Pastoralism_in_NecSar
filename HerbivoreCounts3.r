@@ -1,3 +1,163 @@
+#####################################################
+# Nech Sar - Herbivore observation data
+rm(list=ls())
+library(MASS)
+library(vegan)
+library(ggplot2)
+library(plyr)
+library(rgeos)
+library(sp)
+library(raster)
+library(rgdal)
+library(dplyr)
+library(Matrix)
+library(ggplot2)
+library(glmmADMB)
+library(glmmTMB)
+library(multcomp)
+library(lme4)
+
+#####################################################
+# All herbivore count dat
+#####################################################
+
+# Herbivore probability
+HerbProb<-read.csv(file="AllHerbivoreCounts_3prob.csv", sep=",",header=TRUE)
+names(HerbProb)
+str(HerbProb)
+head(HerbProb)
+tail(HerbProb)
+
+levels(HerbProb$Species)
+#[1] "Burchells_Zebra"    "Cattle"             "Grants_Gazelle"     "Greater_Kudu"       "Pastoralist"       
+#[6] "Swaynes_Hartebeest"
+
+
+# Remove pastoralist
+HerbProbTp<-droplevels(HerbProb[!HerbProb$Species=="Pastoralist",])
+
+
+# Convert to binary data - presence vs absence and probability of detection
+HerbProbTp$PresAb<-HerbProbTp$Total
+HerbProbTp$PresAb[HerbProbTp$PresAb>0]<-1
+
+# Binominal probablity
+HPmod<- glm(PresAb~Species+Zone1+Species:Zone1,data=HerbProbTp,family=binomial())
+summary(HPmod)
+anova(HPmod)
+
+# Binominal probability with mixed model with date 
+HPmod<-glmmadmb(PresAb~Species+Zone1+Species:Zone1+
+                  (1|date), 
+                family="binomial",#zeroInflation = TRUE,
+                #admb.opts=admbControl(shess=FALSE,noinit=FALSE),
+                admb.opts=admbControl(shess=FALSE,noinit=FALSE, impSamp=200,maxfn=500,imaxfn=500,maxph=5),
+                data=HerbProbTp)
+summary(HPmod)
+
+#Model matrix
+MyData <- expand.grid(Species = levels(HerbProbTp$Species),
+                      Zone1 = levels(HerbProbTp$Zone1))
+head(MyData)
+
+#Convert the covariate values into an X matrix
+Xp <- model.matrix(~ Species+Zone1+Species:Zone1, data = MyData)
+
+#Extract parameters and parameter covariance matrix
+betas    <- fixef(HPmod)
+Covbetas <- vcov(HPmod)
+
+#Calculate the fitted values in the predictor scale
+MyData$eta <- Xp %*% betas
+MyData$Pi  <- exp(MyData$eta) / (1 + exp(MyData$eta))
+
+#Calculate the SEs on the scale of the predictor function
+MyData$se    <- sqrt(diag(Xp %*% Covbetas %*% t(Xp)))
+MyData$SeUp  <- exp(MyData$eta + 1.96 *MyData$se) / 
+  (1 + exp(MyData$eta  + 1.96 *MyData$se))
+MyData$SeLo  <- exp(MyData$eta - 1.96 *MyData$se) / 
+  (1 + exp(MyData$eta  - 1.96 *MyData$se))
+
+MyData
+
+
+ggplot(MyData, aes(y=Pi, x=Zone1, colour =Species, fill=Species))+geom_point()+theme_classic()
+MyData$WildLiv<-MyData$Species
+levels(MyData$WildLiv)<-c("Wildlife","Cattle","Wildlife","Wildlife","Wildlife")
+Mydata<-aggregate(Pi~WildLiv+Zone1,MyData, mean)
+ggplot(Mydata, aes(y=V1, x=Zone1, colour=WildLiv, fill=WildLiv))+geom_hline(yintercept=.5)+
+  geom_point(size=4)+theme_classic()
+
+####################################################################################
+## Calculate metabolic biomass per herbivore per zone per time ###
+### Sum total metabilic biomass per zone ###
+### Divide species metabolic biomass per zone by total metabolic biomass per zone ###
+
+# Aggregate herbivore count per Zone1 per herbivore/pastoralist
+HerbProbT<-HerbProb %>% 
+  group_by(Species,Zone1) %>% 
+  summarise(Total = sum(Total))
+
+HerbProbTbz<-HerbProbT[HerbProbT$Species=="Burchells_Zebra",]
+HerbProbTbz$Bio<-HerbProbTbz$Total*215
+HerbProbTbz$MetBio<-HerbProbTbz$Bio^.75
+
+HerbProbTc<-HerbProbT[HerbProbT$Species=="Cattle",]
+HerbProbTc$Bio<-HerbProbTc$Total*250
+HerbProbTc$MetBio<-HerbProbTc$Bio^.75
+
+HerbProbTgg<-HerbProbT[HerbProbT$Species=="Grants_Gazelle",]
+HerbProbTgg$Bio<-HerbProbTgg$Total*50
+HerbProbTgg$MetBio<-HerbProbTgg$Bio^.75
+
+HerbProbTgk<-HerbProbT[HerbProbT$Species=="Greater_Kudu",]
+HerbProbTgk$Bio<-HerbProbTgk$Total*200
+HerbProbTgk$MetBio<-HerbProbTgk$Bio^.75
+
+HerbProbTsh<-HerbProbT[HerbProbT$Species=="Swaynes_Hartebeest",]
+HerbProbTsh$Bio<-HerbProbTsh$Total*171
+HerbProbTsh$MetBio<-HerbProbTsh$Bio^.75
+
+TotalWildMetBio<-cbind(HerbProbTbz$MetBio,HerbProbTgg$MetBio,
+      HerbProbTgk$MetBio,HerbProbTsh$MetBio)
+
+HerbProbTbz$TotalWildMetBio<-rowSums(TotalWildMetBio)
+HerbProbTc$TotalWildMetBio<-rowSums(TotalWildMetBio)
+HerbProbTgg$TotalWildMetBio<-rowSums(TotalWildMetBio)
+HerbProbTgk$TotalWildMetBio<-rowSums(TotalWildMetBio)
+HerbProbTsh$TotalWildMetBio<-rowSums(TotalWildMetBio)
+
+HerbProbMetBio<-rbind(HerbProbTbz,HerbProbTc,HerbProbTgg,HerbProbTgk,HerbProbTsh)
+#HerbProbMetBio$PerBio<-(HerbProbMetBio$MetBio/HerbProbMetBio$TotalMetBio)
+#HerbProbMetBio$PerBio[is.na(HerbProbMetBio$PerBio)]<-0
+
+# Plot herbivore biomass across zones through time
+names(HerbProbMetBio)
+HBioT<-ggplot(HerbProbMetBio, aes(y=MetBio, x=Zone1))
+HBioT<-HBioT+facet_wrap(~Species)
+HBioT<-HBioT+geom_point()
+HBioT<-HBioT+theme_classic()
+HBioT
+
+####################################################################################
+dim(MyData) # 85
+dim(HerbProbMetBio) # 85
+head(MyData)
+head(HerbProbMetBio)
+HPMB<-left_join(HerbProbMetBio, MyData, by=c("Species","Zone1"))
+
+names(HPMB)
+HPMB$PiBio<-HPMB$Pi*HPMB$PerBio
+
+Mydata2<-aggregate(TotalWildMetBio~WildLiv+Zone1,HPMB, mean)
+Mydata$TotalWildMetBio<-Mydata2$TotalWildMetBio
+ggplot(Mydata, aes(y=V1, x=Zone1, colour=WildLiv, fill=WildLiv, size=TotalWildMetBio))+geom_hline(yintercept=.5)+
+  geom_point()+theme_classic()
+
+
+#####################################################################################################
+#### James old script #####
+#####################################################################################################
 #Herbivore count analysis after 3rd count
 
 herbcounts3<-read.table("AllHerbivoreCounts_3.txt",header=T,sep="\t")
