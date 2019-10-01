@@ -1,0 +1,25 @@
+Treatment,SetupBy,Livestock density,Transect,Name,Block,OtherName,Altitude,X,Y
+Exclosure,DesJames,High,1,T1HighEx,1,B1Ex1,1241,352629,657160
+ControlPair,DesJames,High,1,T1HighControlPair,1,B1Cp1,1242,352624,657098
+Enclosure,Simon,High,1,T1HighEnc,1,B1En1,1225,352893,656700
+Exclosure,DesJames,Medium,1,T1MedEx,1,B1Ex2,1279,352085,657284
+ControlPair,DesJames,Medium,1,T1MedControlPair,1,B1Ex2Cp1,1280,352124,657337
+ControlTriangle,Simon,High,1,T1HighControlTrianglePairntrol,1,B1C1,1252,352394,656698
+Exclosure,DesJames,High,2,T2HighEx,2,B2Ex1,1191,352814,655104
+ControlPair,DesJames,High,2,T2HighControlPair,2,B2Ex1Cp1,1194,352869,655119
+Enclosure,Simon,Medium,2,T2MedEnc,2,B2En1,1234,352102,655034
+ControlTriangle,Simon,Medium,2,T2MedControlTrianglePairntrol,2,B2C1,1223,352269,655191
+Exclosure,DesJames,Medium,2,T2MedEx,2,B2Ex2,1245,352253,655441
+ControlPair,DesJames,Medium,2,T2MedControlPair,2,B2Ex2Cp1,1243,352173,655485
+Exclosure,DesJames,Low,1,T1LowEx,6,B6Ex1,1351,350375,658603
+ControlPair,DesJames,Low,1,T1LowControlPair,6,B6Ex1Cp1,1386,350317,658624
+Exclosure,DesJames,Low,2,T2LowEx,5,B5Ex1,1349,350971,656320
+ControlPair,DesJames,Low,2,T2LowControlPair,5,B5Ex1Cp1,1347,350989,656253
+Exclosure,DesJames,Low,3,T3LowEx,4,B4Ex1,1312,350088,654328
+ControlPair,DesJames,Low,3,T3LowControlPair,4,B4Ex1Cp1,1318,350086,654385
+Enclosure,Simon,High,3,T3HighEnc,3,B3En1,1230,351545,652550
+ControlTriangle,Simon,High,3,T3HighControlTrianglePairntrol,3,B3C1,1215,352028,652611
+Exclosure,DesJames,High,3,T3HighEx,3,B3Ex1,1232,351707,652973
+ControlPair,DesJames,High,3,T3HighControlPair,3,B3Ex1Cp1,1231,351749,653028
+Exclosure,DesJames,Medium,3,T3MedEx,3,B3Ex2,1260,351268,653499
+ControlPair,DesJames,Medium,3,T3MedControlPair,3,B3Ex2Cp1,1261,351224,653359
