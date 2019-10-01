@@ -16,12 +16,13 @@ library(glmmADMB)
 library(glmmTMB)
 library(multcomp)
 library(lme4)
+library(INLA)
 
 #####################################################
-# All herbivore count dat
+# All herbivore count data
 #####################################################
 
-# Herbivore probability
+# Herbivore counts and metabolic biomass
 HerbProb<-read.csv(file="AllHerbivoreCounts_3prob.csv", sep=",",header=TRUE)
 names(HerbProb)
 str(HerbProb)
@@ -32,10 +33,232 @@ levels(HerbProb$Species)
 #[1] "Burchells_Zebra"    "Cattle"             "Grants_Gazelle"     "Greater_Kudu"       "Pastoralist"       
 #[6] "Swaynes_Hartebeest"
 
-
 # Remove pastoralist
 HerbProbTp<-droplevels(HerbProb[!HerbProb$Species=="Pastoralist",])
 
+# Join to distance from boma
+ZoneDist<-read.csv(file="BomaZoneDistance.csv", sep=",",header=TRUE)
+
+ZoneDist2<-ZoneDist[,c("Zone","NEAR_DIST")]
+colnames(ZoneDist2)[1]<-"Zone1"
+HerbProbTp2<-left_join(HerbProbTp,ZoneDist2,by=c("Zone1"))
+
+# Join zone area
+zonearea<-read.table("CountZonePolys3.txt",header=T,sep="\t")
+colnames(zonearea)[2]<-"Zone1"
+
+HerbProbTp3<-left_join(HerbProbTp2,zonearea,by=c("Zone1"))
+
+HerbProbTp3$Density<-HerbProbTp3$Total/HerbProbTp3$Area_km2
+HerbProbTp3$MetBioDensity<-HerbProbTp3$MetBio/HerbProbTp3$Area_km2
+
+HerbProbTp3$Dist.km<-HerbProbTp3$NEAR_DIST/1000
+
+ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST, colour=Species, fill=Species))+geom_point()
+ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+ggplot(HerbProbTp3, aes(y=Density,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+ggplot(HerbProbTp3, aes(y=MetBio,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+ggplot(HerbProbTp3, aes(y=MetBioDensity,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+
+# Aggregate herbivore count per Zone1 per herbivore/pastoralist
+HerbProbTp5<-HerbProbTp3%>% 
+  group_by(Species,Zone1,NEAR_DIST, Area_km2) %>% 
+  summarise(Total = sum(Total))
+
+names(HerbProbTp5)
+HerbProbTp5$Density<-HerbProbTp5$Total/HerbProbTp5$Area_km2
+
+ggplot(HerbProbTp5, aes(y=Total,x=NEAR_DIST))+geom_point()
+nrow(HerbProbTp5)
+
+BomaDist<-read.table(file="DistanceToBomaCell1.txt",header=T,sep="\t")
+ggplot(data=BomaDist, aes(x=XCoord, y=YCoord, colour=CORE))+geom_point()+theme_bw()
+
+###############################################################################################
+#### Number of individuals ####
+###############################################################################################
+
+# Remove Swaynes - only one occurence
+HerbProbTp4<-droplevels(HerbProbTp3[!HerbProbTp3$Species=="Swaynes_Hartebeest",])
+HerbProbZ<-droplevels(HerbProbTp3[HerbProbTp3$Species=="Burchells_Zebra",])
+
+
+1/HerbProbTp4$Area_km2
+M1<-glm.nb(Total~NEAR_DIST+Species+NEAR_DIST:Species+offset(1/Area_km2),data=HerbProbTp4)
+M1b<-glm.nb(Total~NEAR_DIST+offset(1/Area_km2),data=HerbProbTp5)
+summary(M1)
+anova(M1)
+anova(M1b)
+
+# Dispersion statistic:
+E2 <- resid(M1, type = "pearson")
+N  <- nrow(HerbProbTp4)
+p  <- length(coef(M1)) + 1  # '+1' is due to theta # Need to add plus extra parameter that is theta
+
+sum(E2^2) / (N - p) # 1.35 # Overdispersed
+
+library(pscl)
+library(lmtest)
+
+M4 <- zeroinfl(Total ~ NEAR_DIST+Species+NEAR_DIST:Species+offset(1/Area_km2) | 
+                 NEAR_DIST+Species+NEAR_DIST:Species+offset(1/Area_km2), 
+               dist = 'negbin',data = HerbProbTp4)
+
+M4b <- zeroinfl(Total ~ NEAR_DIST+Species+offset(1/Area_km2) | 
+                 NEAR_DIST+Species+offset(1/Area_km2), 
+               dist = 'negbin',data = HerbProbTp4)
+
+M4c <- zeroinfl(Total ~ Species+offset(1/Area_km2) | 
+                  Species+offset(1/Area_km2), 
+                dist = 'negbin',data = HerbProbTp4)
+
+summary(M4)
+lrtest(M4,M4b)
+lrtest(M4b,M4c)
+
+# Dispersion statistic:
+E2 <- resid(M4, type = "pearson")
+N  <- nrow(HerbProbTp4)
+p  <- length(coef(M4)) + 1  # '+1' is due to theta # Need to add plus extra parameter that is theta
+
+sum(E2^2) / (N - p) # 1.099759 # Very slight overdisp
+
+drop1(M4, test="Chisq")
+
+
+
+#Model interpretation of the NB GLM
+#Sketch the fitted values
+
+par(mfrow = c(1,1), mar = c(5,5,2,2))
+plot(x = HerbProbTp4$NEAR_DIST, 
+     y = HerbProbTp4$Total,
+     xlab = "Distance",
+     ylab = "Number of herbivores",
+     cex.lab = 2,
+     pch = 16, 
+     type = "p")
+
+# Create an artifical grid of covariate values
+M1<-glm.nb(Total~NEAR_DIST+Species+NEAR_DIST:Species+offset(1/Area_km2),data=HerbProbTp4)
+MyData <- expand.grid(NEAR_DIST = seq(from  = min(HerbProbTp4$NEAR_DIST),to= max(HerbProbTp4$NEAR_DIST),length = 25),
+                      Area_km2 = seq(from  = min(HerbProbTp4$Area_km2),to= max(HerbProbTp4$Area_km2),length = 25),
+                                     Species=levels(HerbProbTp4$Species))
+M1<-glm.nb(Total~NEAR_DIST,data=HerbProbTp4)
+#MyData <- expand.grid(NEAR_DIST = seq(from  = min(HerbProbTp4$NEAR_DIST),to= max(HerbProbTp4$NEAR_DIST),length = 25))
+# Predict the expected squirrel values                                       
+P1 <- predict(M1, newdata = MyData, type = "link", se = TRUE)
+lines(x = MyData$NEAR_DIST, 
+      y = exp(P1$fit), 
+      lwd = 3)
+lines(x = MyData$NEAR_DIST, 
+      y = exp(P1$fit + 1.96 * P1$se.fit), 
+      lwd = 3, 
+      lty = 2)
+lines(x = MyData$NEAR_DIST, 
+      y = exp(P1$fit - 1.96 * P1$se.fit), 
+      lwd = 3, 
+      lty = 2)
+
+
+
+HerbProbTp4$ZoneID<-as.numeric(HerbProbTp4$Zone1)
+f1A <- Density ~ f(NEAR_DIST,model="rw2")+Species+NEAR_DIST:Species +f(Date, model="ar1", replicate=ZoneID)
+f1B <- MetBioDensity~ NEAR_DIST+Species+NEAR_DIST:Species +f(Date, model="ar1", replicate=ZoneID)
+RM1<-inla(f1A, data=HerbProbTp4, family="gaussian", # zeroinflatednbinomial0
+        control.compute=list(dic=T)) #quantiles = c(0.25,0975))
+RM2<-inla(f1B, data=HerbProbTp4, family="gaussian", # zeroinflatednbinomial0
+          control.compute=list(dic=T)) #quantiles = c(0.25,0975))
+
+
+summary(RM1)
+bri.hyperpar.plot(RM1)
+bri.fixed.plot(RM1)
+bri.fixed.plot(RM2)
+
+# Neg Bin dist on count data
+M1 <- gamm(Density ~ NEAR_DIST+Species+NEAR_DIST:Species+Date,random=list(Zone1=~1),data = HerbProbTp4)
+summary(M1)
+
+(inla.models()$likelihood)
+
+M1s <- gam(Density ~ NEAR_DIST,data = HerbProbTp4)
+summary(M1s)
+
+
+
+par(mfrow = c(1,2),mar = c(5,5,2,2)) # Nonlinear pattern distance
+plot(M1, cex.lab = 1.5,  shade = TRUE)
+
+names(HerbProbTp4)
+HerbProbTp4$Dist.km<-HerbProbTp4$NEAR_DIST/1000
+M2<-lmer(Density ~Dist.km+Species+#Dist.km:Species+
+           (1|Zone1), #          (1|Zone1),
+          HerbProbTp4)
+summary(M2)
+anova(M2)
+drop1(M2, test="Chisq")
+?lmer
+# Dispersion statistic:
+E2 <- resid(M2, type = "pearson")
+N  <- nrow(HerbProbTp2)
+p  <- length(coef(M2)) + 1  # '+1' is due to theta # Need to add plus extra parameter that is theta
+
+sum(E2^2) / (N - p) # 0.894216
+summary(M2)
+anova(M2)
+
+# Plot residuals vs fitted values
+F3 <- fitted(M2)
+E3 <- resid(M2, type = "pearson") # person residuals similar to 
+par(mfrow = c(1,1), mar = c(5,5,2,2))
+plot(x = F3, 
+     y = E3,
+     xlab = "Fitted values",
+     ylab = "Pearson residuals",
+     cex.lab = 1.5)
+abline(h = 0, lty = 2)
+
+
+###############################################################################################
+#### Metabolic biomass #####
+###############################################################################################
+
+####################################################################################
+## Calculate metabolic biomass per herbivore per zone per time ###
+### Sum total metabilic biomass per zone ###
+### Divide species metabolic biomass per zone by total metabolic biomass per zone ###
+
+# Aggregate herbivore count per Zone1 per herbivore/pastoralist
+HerbProbTp4<-HerbProbTp2%>% 
+  group_by(Species,Zone1) %>% 
+  summarise(Total = sum(Total))
+
+HerbProbTbz<-HerbProbT[HerbProbT$Species=="Burchells_Zebra",]
+HerbProbTbz$Bio<-HerbProbTbz$Total*215
+HerbProbTbz$MetBio<-HerbProbTbz$Bio^.75
+
+HerbProbTc<-HerbProbT[HerbProbT$Species=="Cattle",]
+HerbProbTc$Bio<-HerbProbTc$Total*250
+HerbProbTc$MetBio<-HerbProbTc$Bio^.75
+
+HerbProbTgg<-HerbProbT[HerbProbT$Species=="Grants_Gazelle",]
+HerbProbTgg$Bio<-HerbProbTgg$Total*50
+HerbProbTgg$MetBio<-HerbProbTgg$Bio^.75
+
+HerbProbTgk<-HerbProbT[HerbProbT$Species=="Greater_Kudu",]
+HerbProbTgk$Bio<-HerbProbTgk$Total*200
+HerbProbTgk$MetBio<-HerbProbTgk$Bio^.75
+
+HerbProbTsh<-HerbProbT[HerbProbT$Species=="Swaynes_Hartebeest",]
+HerbProbTsh$Bio<-HerbProbTsh$Total*171
+HerbProbTsh$MetBio<-HerbProbTsh$Bio^.75
+
+# Neg Bin dist on count data
+M3 <- lm(MetBio ~ NEAR_DIST+Species+NEAR_DIST:Species+offset(1/Area_km2),data = HerbProbTp4)
+summary(M3)
+anova(M3)
+drop1(M3,test="Chisq")
 
 # Convert to binary data - presence vs absence and probability of detection
 HerbProbTp$PresAb<-HerbProbTp$Total
