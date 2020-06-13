@@ -23,6 +23,7 @@ library(INLA)
 #####################################################
 
 # Herbivore counts and metabolic biomass
+setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
 HerbProb<-read.csv(file="AllHerbivoreCounts_3prob.csv", sep=",",header=TRUE)
 names(HerbProb)
 str(HerbProb)
@@ -36,43 +37,85 @@ levels(HerbProb$Species)
 # Remove pastoralist
 HerbProbTp<-droplevels(HerbProb[!HerbProb$Species=="Pastoralist",])
 
-# Join to distance from boma
-ZoneDist<-read.csv(file="BomaZoneDistance.csv", sep=",",header=TRUE)
-
-ZoneDist2<-ZoneDist[,c("Zone","NEAR_DIST")]
-colnames(ZoneDist2)[1]<-"Zone1"
-HerbProbTp2<-left_join(HerbProbTp,ZoneDist2,by=c("Zone1"))
-
-# Join zone area
-zonearea<-read.table("CountZonePolys3.txt",header=T,sep="\t")
-colnames(zonearea)[2]<-"Zone1"
-
-HerbProbTp3<-left_join(HerbProbTp2,zonearea,by=c("Zone1"))
-
-HerbProbTp3$Density<-HerbProbTp3$Total/HerbProbTp3$Area_km2
-HerbProbTp3$MetBioDensity<-HerbProbTp3$MetBio/HerbProbTp3$Area_km2
-
-HerbProbTp3$Dist.km<-HerbProbTp3$NEAR_DIST/1000
-
-ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST, colour=Species, fill=Species))+geom_point()
-ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
-ggplot(HerbProbTp3, aes(y=Density,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
-ggplot(HerbProbTp3, aes(y=MetBio,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
-ggplot(HerbProbTp3, aes(y=MetBioDensity,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+###############################################################################################
+#### Number of animals #####
+###############################################################################################
+## Calculate metabolic biomass per herbivore ###
+### Mean metabilic biomass per species ###
 
 # Aggregate herbivore count per Zone1 per herbivore/pastoralist
-HerbProbTp5<-HerbProbTp3%>% 
-  group_by(Species,Zone1,NEAR_DIST, Area_km2) %>% 
+names(HerbProbTp)
+
+# Sum all counts per species
+HerbProb2<-HerbProbTp%>% 
+  group_by(Species,date) %>% 
   summarise(Total = sum(Total))
 
-names(HerbProbTp5)
-HerbProbTp5$Density<-HerbProbTp5$Total/HerbProbTp5$Area_km2
+# Divide by total area of grassland km2
+HerbProb2$No.km2<-HerbProb2$Total/44.5
 
-ggplot(HerbProbTp5, aes(y=Total,x=NEAR_DIST))+geom_point()
-nrow(HerbProbTp5)
+aggregate(No.km2~Species, HerbProb2,mean)
+#            Species     No.km2
+#1    Burchells_Zebra 8.06741573
+#2             Cattle 1.36329588
+#3     Grants_Gazelle 1.00374532
+#4       Greater_Kudu 0.32958801
+#5 Swaynes_Hartebeest 0.05992509
 
-BomaDist<-read.table(file="DistanceToBomaCell1.txt",header=T,sep="\t")
-ggplot(data=BomaDist, aes(x=XCoord, y=YCoord, colour=CORE))+geom_point()+theme_bw()
+
+#### Metabolic biomass ###
+HerbProbTbz<-HerbProbTp[HerbProbTp$Species=="Burchells_Zebra",]
+HerbProbTbz$Bio<-HerbProbTbz$Total*215
+HerbProbTbz$MetBio<-HerbProbTbz$Bio^.75
+
+HerbProbTc<-HerbProbT[HerbProbT$Species=="Cattle",]
+HerbProbTc$Bio<-HerbProbTc$Total*250
+HerbProbTc$MetBio<-HerbProbTc$Bio^.75
+
+HerbProbTgg<-HerbProbT[HerbProbT$Species=="Grants_Gazelle",]
+HerbProbTgg$Bio<-HerbProbTgg$Total*50
+HerbProbTgg$MetBio<-HerbProbTgg$Bio^.75
+
+HerbProbTgk<-HerbProbT[HerbProbT$Species=="Greater_Kudu",]
+HerbProbTgk$Bio<-HerbProbTgk$Total*200
+HerbProbTgk$MetBio<-HerbProbTgk$Bio^.75
+
+HerbProbTsh<-HerbProbT[HerbProbT$Species=="Swaynes_Hartebeest",]
+HerbProbTsh$Bio<-HerbProbTsh$Total*171
+HerbProbTsh$MetBio<-HerbProbTsh$Bio^.75
+
+
+####################################################################################
+
+# Join to distance from boma
+#ZoneDist<-read.csv(file="BomaZoneDistance.csv", sep=",",header=TRUE)
+#ZoneDist2<-ZoneDist[,c("Zone","NEAR_DIST")]
+#colnames(ZoneDist2)[1]<-"Zone1"
+#HerbProbTp2<-left_join(HerbProbTp,ZoneDist2,by=c("Zone1"))
+
+# Join zone area
+#zonearea<-read.table("CountZonePolys3.txt",header=T,sep="\t")
+#colnames(zonearea)[2]<-"Zone1"
+#HerbProbTp3<-left_join(HerbProbTp2,zonearea,by=c("Zone1"))
+#HerbProbTp3$Density<-HerbProbTp3$Total/HerbProbTp3$Area_km2
+#HerbProbTp3$MetBioDensity<-HerbProbTp3$MetBio/HerbProbTp3$Area_km2
+#HerbProbTp3$Dist.km<-HerbProbTp3$NEAR_DIST/1000
+#ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST, colour=Species, fill=Species))+geom_point()
+#ggplot(HerbProbTp3, aes(y=Total,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+#ggplot(HerbProbTp3, aes(y=Density,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+#ggplot(HerbProbTp3, aes(y=MetBio,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+#ggplot(HerbProbTp3, aes(y=MetBioDensity,x=NEAR_DIST))+geom_point()+facet_wrap(~Species, ncol=5)
+
+# Aggregate herbivore count per Zone1 per herbivore/pastoralist
+#HerbProbTp5<-HerbProbTp3%>% 
+#  group_by(Species,Zone1,NEAR_DIST, Area_km2) %>% 
+#  summarise(Total = sum(Total))
+
+#names(HerbProbTp5)
+#HerbProbTp5$Density<-HerbProbTp5$Total/HerbProbTp5$Area_km2
+#ggplot(HerbProbTp5, aes(y=Total,x=NEAR_DIST))+geom_point()
+#BomaDist<-read.table(file="DistanceToBomaCell1.txt",header=T,sep="\t")
+#ggplot(data=BomaDist, aes(x=XCoord, y=YCoord, colour=CORE))+geom_point()+theme_bw()
 
 ###############################################################################################
 #### Number of individuals ####
