@@ -15,6 +15,7 @@ library(maptools)
 #### Exclosure biomass ####
 #########################################################################
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth/")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 nsbiomass3<-read.table("BiomassSeason3a.txt",header=T,sep="\t")
 
 # Structure of data
@@ -51,6 +52,7 @@ nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
 names(nsreharvest3)
 
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
 Ex_location<-read.csv(file="PlotNames.csv", sep=",",header=TRUE)
 names(Ex_location)
 levels(Ex_location$OtherName)
@@ -61,6 +63,7 @@ with(plot(Y~X,Ex_location))
 #### Join regrowth and dung data ####
 # Regrowth biomass
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
 nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
 names(nsherb3)
 
@@ -84,6 +87,7 @@ dim(nsreharvest3loc) #630
 
 #### Pastoral settlements - surveyed by Kjirsten ####
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
 bomas<-readOGR(dsn=".", "boma_points")
 bomas_proj <-bomas
 latlongproj<-("+proj=longlat +datum=WGS84")
@@ -135,6 +139,7 @@ area(NechSarGrassland) #33914.14
 
 ### Water features ####
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Mapping/GLWD-level1")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Mapping/GLWD-level1")
 Lakes2<- readOGR(dsn=".", "glwd_1")
 Lakes_proj<-Lakes2
 proj4string(Lakes_proj)<-latlongproj
@@ -1330,19 +1335,63 @@ colnames(BiomassMeansG)[4]<-"Biomass"
 colnames(BiomassMeansF)[4]<-"Biomass"
 colnames(BiomassMeansW)[4]<-"Biomass"
 BiomassMeans$FxGroup<-"Total"
-BiomassMeansG$FxGroup<-"Grasses"
-BiomassMeansF$FxGroup<-"Forbs"
+BiomassMeansG$FxGroup<-"Graminoid"
+BiomassMeansF$FxGroup<-"Forb"
 BiomassMeansW$FxGroup<-"Woody"
 
+# Combine functional groups
 BiomassMeansALL<-rbind(BiomassMeans,BiomassMeansG,BiomassMeansF,BiomassMeansW)
 BiomassMeansALL$FxGroup<-as.factor(BiomassMeansALL$FxGroup)
-levels(BiomassMeansALL$FxGroup)<-c("Forbs","Grasses","Total","Woody")
-BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Grasses","Forbs","Woody"))
 
-BioGraph<-ggplot(BiomassMeansALL, aes(y=Biomass, x=Boma.density, colour=Harvest, shape=Treatment))+
- geom_errorbar(aes(ymin=Biomass-sd, ymax=Biomass+sd),width=.1,lwd=1,position=position_dodge(width=.65),show.legend=F)+
-  facet_wrap(~FxGroup, ncol=1, scale="free")+
-  geom_point(size=4.5,position=position_dodge(width=.65))+theme_classic()
+#Relabel levels
+levels(BiomassMeansALL$FxGroup)<-c("Forb","Graminoid","Total","Woody")
+BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Woody"))
+levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
+levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
+levels(BiomassMeansALL$Harvest)<-c("Unclipped","Single clipped", "Double clipped")
+
+# Biomass and regrowth raw biomass
+library(lemon)
+BioGraph<-ggplot(BiomassMeansALL, aes(y=Biomass, x=Boma.density,fill=Treatment, shape=Harvest))
+BioGraph<-BioGraph+geom_errorbar(aes(ymin=Biomass-sd, ymax=Biomass+sd),width=.05,lwd=.5,position=position_dodge(width=.65),show.legend=F)
+BioGraph<-BioGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y",repeat.tick.labels = FALSE)
+BioGraph<-BioGraph+scale_y_continuous(expand=c(0,0))
+BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke=1)
+BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
+BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
+BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
+BioGraph<-BioGraph+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & Regrowth (g/",m^2,"/season)")))
+BioGraph<-BioGraph+theme_classic()
+BioGraph<-BioGraph+theme(plot.background = element_blank()
+                #,panel.grid.major = element_blank()
+                ,panel.grid.minor = element_blank()
+                ,panel.border = element_blank()
+                ,panel.grid.major.x = element_blank()
+                ,panel.grid.major.y = element_blank()
+                ,axis.text=element_text(size=12,color="black")
+                ,axis.title.y=element_text(size=12,color="black")
+                ,axis.title.x=element_text(size=12,vjust=-.4,color="black")
+                ,axis.text.x = element_text(size=12,color="black",
+                                            margin=margin(2.5,2.5,2.5,2.5,"mm"))
+                ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+                ,legend.text=element_text(size=12,color="black")
+                ,axis.ticks.length=unit(-1.5, "mm")
+                ,axis.line.y = element_line(color="black", size = .5)
+                ,axis.line.x = element_line(color="black", size = .5)
+                ,plot.margin = unit(c(8,5,5,5), "mm")
+                ,strip.background = element_blank()
+                ,strip.text.x = element_text(size = 12, hjust=0.05,colour = "black")
+                ,legend.title=element_text(size = 12,colour = "black")
+                #,legend.text = element_text(size=12,color="black")
+                #,legend.key = element_rect(colour = NA, fill = NA)
+                ,legend.position = "right"
+                ,legend.justification = "top"
+                ,legend.direction="vertical")
+               # ,legend.spacing.y = unit(-0.5, "mm"))
+#BioGraph<-BioGraph+annotate(geom = 'segment', y =-10, yend =-10, color = 'black', x = -Inf, xend = Inf, size = .75) 
+BioGraph<-BioGraph+guides(colour=F, linetype=F, shape = guide_legend("Harvest",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("white"),col="black", stroke=1)),
+                          fill= guide_legend("Exclosures",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+BioGraph
 
 # Regrowth
 colnames(RegrowMeans)[4]<-"Regrow"
@@ -1355,28 +1404,72 @@ colnames(RegrowMeansF)[6]<-"Biomass"
 colnames(RegrowMeansW)[6]<-"Biomass"
 
 RegrowMeans$FxGroup<-"Total"
-RegrowMeansG$FxGroup<-"Grasses"
-RegrowMeansF$FxGroup<-"Forbs"
+RegrowMeansG$FxGroup<-"Graminoid"
+RegrowMeansF$FxGroup<-"Forb"
 RegrowMeansW$FxGroup<-"Woody"
 
-
+#Relabel levels
 RegrowMeansALL<-rbind(RegrowMeans,RegrowMeansG,RegrowMeansF,RegrowMeansW)
 RegrowMeansALL$FxGroup<-as.factor(RegrowMeansALL$FxGroup)
-levels(RegrowMeansALL$FxGroup)<-c("Forbs","Grasses","Total","Woody")
-RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Grasses","Forbs","Woody"))
+levels(RegrowMeansALL$FxGroup)<-c("Forb","Graminoid","Total","Woody")
+RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Woody"))
+levels(RegrowMeansALL$Boma.density)<-c("Near to","Far from")
+levels(RegrowMeansALL$Harvest)<-c("Single clipped", "Double clipped")
 
-RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density, col=Harvest,shape=Treatment, size=Biomass))+
-  geom_hline(yintercept =0, col="grey", linetype="dashed")+
-  geom_errorbar(aes(ymin=Regrow-sd, ymax=Regrow+sd),width=.1,lwd=1,position=position_dodge(width=.65),show.legend=F)+
-  geom_point(position=position_dodge(width=.65))+scale_radius(range=c(2,8))+
-  facet_wrap(~FxGroup, ncol=1, scale="free")+
-  theme_classic()
+
+# Difference between biomass and regrowth
+RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest, size=Biomass))
+RegrowGraph<-RegrowGraph+geom_hline(yintercept =0, col="grey", linetype="dashed")
+RegrowGraph<-RegrowGraph+geom_errorbar(aes(ymin=Regrow-sd, ymax=Regrow+sd),width=.05,lwd=.5,position=position_dodge(width=.65),show.legend=F)
+RegrowGraph<-RegrowGraph+geom_point(position=position_dodge(width=.65),stroke=1,show.legend=F)
+RegrowGraph<-RegrowGraph+scale_radius(range=c(2,8))
+RegrowGraph<-RegrowGraph+scale_colour_manual(values=c("grey50", "grey25"))
+RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
+RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
+RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
+RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
+RegrowGraph<-RegrowGraph+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - Biomass (g/",m^2,"/season)")))
+RegrowGraph<-RegrowGraph+theme_classic()
+RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
+                         #,panel.grid.major = element_blank()
+                         ,panel.grid.minor = element_blank()
+                         ,panel.border = element_blank()
+                         ,panel.grid.major.x = element_blank()
+                         ,panel.grid.major.y = element_blank()
+                         ,axis.text=element_text(size=12,color="black")
+                         ,axis.title.y=element_text(size=12,color="black")
+                         ,axis.title.x=element_text(size=12,vjust=-.4,color="black")
+                         ,axis.text.x = element_text(size=12,color="black",
+                                                     margin=margin(2.5,2.5,2.5,2.5,"mm"))
+                         ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+                         ,legend.text=element_text(size=12,color="black")
+                         ,axis.ticks.length=unit(-1.5, "mm")
+                         ,axis.line.y = element_line(color="black", size = .5)
+                         ,axis.line.x = element_line(color="black", size = .5)
+                         ,plot.margin = unit(c(8,5,5,5), "mm")
+                         ,strip.background = element_blank()
+                         ,strip.text.x = element_text(size = 12, hjust=0.05,colour = "black")
+                         ,legend.title=element_blank()
+                         #,legend.text = element_text(size=12,color="black")
+                         #,legend.key = element_rect(colour = NA, fill = NA)
+                         ,legend.position = "right"
+                         ,legend.justification = "top"
+                         ,legend.direction="vertical"
+                         ,legend.spacing.y = unit(-0.5, "mm"))
+RegrowGraph
 
 library(grid)
 library(gridExtra)
 library(egg)
+library(ggpubr)
 
 egg::ggarrange(BioGraph,RegrowGraph, ncol = 2) # common.legend = T,legend="right")
+grid.arrange(BioGraph,RegrowGraph,ncol=2)
+             
+# Extract legend
+mylegendBio<-get_legend(BioGraph)
+
+RegrowGraph3 <- arrangeGrob(grid.arrange(BioGraph+ theme(legend.position="none"), RegrowGraph+ theme(legend.position="none"), ncol=2)) 
 
 ######################################################################
 #### Biomass regrowth - plotting data ####

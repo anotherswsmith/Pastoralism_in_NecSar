@@ -10,12 +10,14 @@ library(lattice)
 library(MASS)
 library(tidyr)
 library(lubridate)
+library(reshape2)
 library(vegan)
 library(ggplot2)
 library(nlme)
 library(dplyr)
 ############################################################################
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 nsSpp<-read.csv("VegCompSeason3.csv",header=T,sep=",")
 
 names(nsSpp)
@@ -116,7 +118,6 @@ covers13.log <- log(nsSpp3[,11:75] + 1)
 covers13.hel <- vegan::decostand(covers13.log, method = "hellinger")
 mdsNS.hel<-metaMDS(covers13.hel, k=3, trymax=100,trace =F) 
 mdsNS.hel #0.1968121
-
 
 # Stressplot
 vare.dis<-vegdist(covers13.hel) 
@@ -993,20 +994,83 @@ BSimSpLongSD<-melt(BSimSD, id.vars=c("Season","Bomadensity","Treatment" ))
 BSimSpLong$sd<-BSimSpLongSD$value
 plot(BSimSpLong$value~BSimSpLong$sd)
 
+
+# Relabel levels
 levels(BSimSpLong$variable)<-c("Bot.ins","Chr.plu","Cyn.nle","Het.con","Tri.fla",
                                "Tet.vill","Dig.mac","Rhy.min","Lin.nut","Ari.ken")
 
-#### SIMPER PLANT COVER ####
-pd <- position_dodge(0.5) # Dodge term 
-ggplot(BSimSpLong,aes(x=variable, y=value,colour=Treatment,shape=Treatment))+
-  geom_errorbar(aes(x = variable, ymin=value-sd,ymax=value+sd),position=pd,stat = "identity",linetype="solid",width=.2,show.legend=F)+
-  geom_point(size=3.5,position=pd)+
-  facet_wrap(~Bomadensity+Season)+ylab("Cover (%)")+xlab("Species")+
-  scale_colour_manual(values=c("grey50","grey10"))+
-  theme_classic()+theme(
-    strip.background = element_blank(),
-    strip.text.x =element_text(size=11),
-    axis.text.x= element_text(size=11,angle=90, hjust=1))
+BSimSpLong$Species<-BSimSpLong$variable
+levels(BSimSpLong$Species)<-c("Bothriochloa insculpta","Chrysopogon plumulosus","Cynodon nlemfuensis","Heteropogon contortus,","Triumfetta flavescens",
+                               "Tetrapogon villosus,","Digitaria macroblephara","Rhynchosia minima","Lintonia nutans","Aristida kenyensis")
+
+levels(BSimSpLong$Treatment)<-c("Grazed","Exclosed")
+levels(BSimSpLong$Season)<-c("Seaon I","Season II", "Season III")
+levels(BSimSpLong$Bomadensity)<-c("Near to high density pastoral settlements","Far from high density pastoral settlements")
+
+BSimSpLong$SeasonTukuls<-as.factor(with(BSimSpLong, paste(Bomadensity,Season, sep="_")))
+levels(BSimSpLong$SeasonTukuls)<-c(
+"Far from high density pastoral settlements \n Seaon I",   
+"                                            \n Season II",
+"                                            \n Season III",
+"Near to high density pastoral settlements \n Seaon I",    
+"                                          \n Season II",  
+"                                          \n Season III")
+
+BSimSpLong$SeasonTukuls<- factor(BSimSpLong$SeasonTukuls, levels = c(
+  "Near to high density pastoral settlements \n Seaon I",    
+  "                                          \n Season II",  
+  "                                          \n Season III",
+  "Far from high density pastoral settlements \n Seaon I",   
+  "                                            \n Season II",
+  "                                            \n Season III"))
+
+
+#### Publication graph: Simper plant cover ####
+library(lemon)
+pd <- position_dodge(0.65) # Dodge term 
+SimNechSar<-ggplot(BSimSpLong,aes(x=Species, y=value,fill=Treatment))
+SimNechSar<-SimNechSar+geom_errorbar(aes(x =Species, ymin=value-sd,ymax=value+sd),width=.05,lwd=.5,position=pd,stat = "identity",linetype="solid",show.legend=F)
+SimNechSar<-SimNechSar+geom_point(size=3.5,shape=21, colour="black",stroke=1,position=pd)
+SimNechSar<-SimNechSar+facet_rep_wrap(~SeasonTukuls, scales="fixed")
+SimNechSar<-SimNechSar+ylab("Plant cover (%)")+xlab("Species")
+SimNechSar<-SimNechSar+scale_x_discrete(limits = rev(levels(BSimSpLong$Species)))
+SimNechSar<-SimNechSar+scale_fill_manual("Exclosures",values=c("black","white"))
+SimNechSar<-SimNechSar+coord_flip()
+SimNechSar<-SimNechSar+theme_classic()
+SimNechSar<-SimNechSar+theme(plot.background = element_blank()
+      #,panel.grid.major = element_blank()
+      ,panel.grid.minor = element_blank()
+      ,panel.border = element_blank()
+      ,panel.grid.major.x = element_blank()
+      ,panel.grid.major.y = element_blank()
+      ,axis.text=element_text(size=12,color="black")
+      ,axis.title.y=element_text(size=12,color="black")
+      ,axis.title.x=element_text(size=12,vjust=-.4,color="black")
+      ,axis.text.x = element_text(size=12,color="black", 
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+      ,axis.text.y = element_text(size=12,color="black", hjust=1, face="italic",
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+      ,legend.text=element_text(size=12,color="black")
+      ,axis.ticks.length=unit(-1.5, "mm")
+      ,axis.line.y = element_line(color="black", size = .5)
+      ,axis.line.x = element_line(color="black", size = .5)
+      ,plot.margin = unit(c(8,5,5,5), "mm")
+      ,strip.background = element_blank()
+      ,strip.text.x = element_text(size = 13, hjust=0.05,colour = "black")
+      ,legend.title= element_text(size = 13,colour = "black")
+      #,legend.text = element_text(size=12,color="black")
+      #,legend.key = element_rect(colour = NA, fill = NA)
+      ,legend.position = "right"
+      ,legend.justification = "top"
+      ,legend.direction="vertical")
+SimNechSar<-SimNechSar+guides(colour=F, linetype=F, shape =F,
+                          fill= guide_legend("Exclosures",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+
+SimNechSar
+
+ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth/SIMPERcover.jpeg",
+       width= 37, height = 18,units ="cm",
+       dpi = 600, limitsize = TRUE)
 
 #### DOMINANT VS CO-DOMINANT SPECIES ####
 names(nsSpp3)
