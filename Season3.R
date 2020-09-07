@@ -11,12 +11,16 @@ library(raster)
 library(rgdal)
 library(spatstat)
 library(maptools)
+library(foreign)
+library(rasterVis)
+#?rgdal::set_thin_PROJ6_warnings()
 ########################################################################
 #### Exclosure biomass ####
 #########################################################################
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth/")
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
-nsbiomass3<-read.table("BiomassSeason3a.txt",header=T,sep="\t")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth/")
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+list.files(path = ".")
+nsbiomass3<-read.table("Exclosures_spp_regrowth/BiomassSeason3a.txt",header=T,sep="\t")
 
 # Structure of data
 names(nsbiomass3)
@@ -47,24 +51,23 @@ with(nsbiomass3orig,tapply(TotalSeason3,list(Treatment,Boma.density),mean))
 ########################################################################
 ##### Combine dung and biomass regrowth exclosure xy coordinates ####
 ########################################################################
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
-nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+nsreharvest3<-read.table("Exclosures_spp_regrowth/ProductivitySeason3.txt",header=T,sep="\t")
 names(nsreharvest3)
 
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
-Ex_location<-read.csv(file="PlotNames.csv", sep=",",header=TRUE)
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+Ex_location<-read.csv(file="GIS/PlotNames.csv", sep=",",header=TRUE)
 names(Ex_location)
 levels(Ex_location$OtherName)
 colnames(Ex_location)[7]<-"Trt.name"
-
 with(plot(Y~X,Ex_location))
 
 #### Join regrowth and dung data ####
 # Regrowth biomass
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
-nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_count")
+nsherb3<-read.table("Herbivore_count/CountAverageFeb13_Date.txt",header=T,sep="\t")
 names(nsherb3)
 
 myvars <- c("Trt.name", "X", "Y")
@@ -86,9 +89,9 @@ dim(Biosp) # 630
 dim(nsreharvest3loc) #630
 
 #### Pastoral settlements - surveyed by Kjirsten ####
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
-bomas<-readOGR(dsn=".", "boma_points")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+bomas<-readOGR(dsn="GIS/.", "boma_points")
 bomas_proj <-bomas
 latlongproj<-("+proj=longlat +datum=WGS84")
 utmproj<-"+proj=utm +north +zone=37 +init=EPSG:32637"
@@ -113,80 +116,101 @@ EXCLcord<-coordinates(excl_proj)
 EXCLcord<-EXCLcord[,1:2]
 
 #### Nech Sar outline ####
-NechSar<-readOGR(dsn=".", "NSNPboundary")
+NechSar<-readOGR(dsn="GIS/.", "NSNPboundary")
 NechSar_proj <-NechSar
 proj4string(NechSar_proj)<-utmproj
+NechSar_proj<-spTransform(NechSar_proj,latlongproj)
+NechSar<-NechSar_proj
 area(NechSar) #391202776 = 514 km2
 514/391202776
 391202776*1.313897e-06
 
 #### Grassland outline ####
-NechSarGrassland<-readOGR(dsn=".", "HerbivoreCountZonest")
-plot(NechSarGrassland)
-
-#### Smooth buffer around grassland ####
-NechSarBuff<-buffer(NechSarGrassland, width=175, dissolve=T)
-NechSarBuff2<-gBuffer(NechSarGrassland, width = 174, byid = T)
-BuffDiff<- gDifference(NechSarBuff, NechSarBuff2)
-plot(BuffDiff)
-plot(NechSarGrassland, add=T, col="red") # Adds 175 buffer
-NechSarGrassland<-BuffDiff
+list.files(path = "GIS/.")
+read.dbf("GIS/NechSarPlains.dbf")
+NechSarGrassland<-readOGR(dsn="GIS/.", "NechSarPlains")
 NechSarGrassland_proj<-NechSarGrassland
-proj4string(NechSarGrassland_proj)<-utmproj
+proj4string(NechSarGrassland_proj)<-latlongproj
+#NechSarGrassland_proj<-spTransform(NechSarGrassland_proj,utmproj)
+NechSarGrassland<-NechSarGrassland_proj
 plot(NechSarGrassland)
-area(NechSarGrassland) #33914.14
-33914.14*1.313897e-03#grassland is 44.5 km2
+area(NechSarGrassland) #80603606 in m
+105.9048/80603606 # 105.9048 km2
+80603606*1.313897e-06
 
-### Water features ####
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Mapping/GLWD-level1")
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Mapping/GLWD-level1")
-Lakes2<- readOGR(dsn=".", "glwd_1")
-Lakes_proj<-Lakes2
-proj4string(Lakes_proj)<-latlongproj
-LakesLAT<-spTransform(NechSar_proj,latlongproj)
-bb<-extent(LakesLAT)
-Lake<-crop(Lakes_proj,LakesLAT)
-Lakes<-spTransform(Lake,utmproj)
+### Water features - Lake and Rivers ####
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Mapping/GLWD-level1")
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Data/VegSoil_AfricanBioServices/AfricanBioServices-Vegetation-and-Soils/Termites/Mapping/GLWD-level1")
+LakesChamo<- readOGR(dsn="GIS/.", "Lakes_nearby_chamo")
+LakesRiver<- readOGR(dsn="GIS/.", "chamo_rivers")
+LakesChamo<-LakesChamo[!LakesChamo$ETLAKE01CO==5,]
+LakesChamo<-LakesChamo[!LakesChamo$ETLAKE01CO==34,]
+LakesChamo<-LakesChamo[!LakesChamo$ETLAKE01CO==39,]
+LakesChamo_proj<-LakesChamo
+LakesRiver_proj<-LakesRiver
+proj4string(LakesChamo_proj)<-utmproj
+proj4string(LakesRiver_proj)<-utmproj
+LakesChamo<-spTransform(LakesChamo_proj,latlongproj)
+LakesRiver<-spTransform(LakesRiver_proj,latlongproj)
 
-### Rivers ####
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
-Rivers<-readOGR(dsn=".","chamo_rivers") 
-Rivers_proj<-Rivers
-proj4string(Rivers_proj)<-utmproj
-River<-crop(Rivers_proj,NechSar_proj)
-plot(River)
+#Arba Minch
+ArbaMinch<- readOGR(dsn="GIS/.", "Arba_Minch")
+ArbaMinch_proj<-ArbaMinch
+proj4string(ArbaMinch_proj)<-latlongproj
+#ArbaMinch<-spTransform(ArbaMinch_proj,utmproj)
+ArbaMinch<-ArbaMinch_proj
+ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitude = coordinates(ArbaMinch)[, 2]) 
+#37.55105 6.021655
 
-#### Interplote  ####
-NechSarOWIN<-as.owin(NechSar)
-NechSarGrasslandOWIN<-as.owin(NechSarGrassland)
-class(NechSarOWIN)
-plot(NechSarOWIN)
-plot(NechSarGrassland,col="green",add=T)
-plot(Lakes,col="dodgerblue",add=T)
-plot(River,col="dodgerblue",lwd=2,add=T)
-plot(bomas_projutm, pch=21,add=T)
-plot(excl_proj, add=T,pch=16, col="red")
-pts<-coordinates(bomas_projutm)[,1:2]
-head(pts)
-extent(NechSar)
+list.files(path = "GIS/.")
+Elevation<- raster("GIS/Elevation.tif")
+crs(Elevation)<-utmproj
+Elevation<-projectRaster(Elevation, crs=latlongproj)
+plot(Elevation)
 
 #Bounding box
-coords = matrix(c(34.07309 , -3.426145 ,
-                  34.07309 , -1.629324,
-                  35.6555, -1.629324,
-                  35.6555, -3.426145 ,
-                  34.07309 , -3.426145 ), 
+extent(NechSar)
+NechSarBB = matrix(c(37.52, 5.82,
+                  37.52, 6.1,
+                  37.80, 6.1,
+                  37.80, 5.82  ,
+                  37.52, 5.82 ), 
                 ncol = 2, byrow = TRUE)
+NechSarBB <- Polygon(NechSarBB)
+NechSarBB <- SpatialPolygons(list(Polygons(list(NechSarBB), ID = "a")), proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+plot(NechSarBB)
 
-coords = matrix(c(338260.1 , 645081.5,
-                  338260.1 , 673426.7,
-                  365575.2, 673426.7,
-                  365575.2, 645081.5,
-                  338260.1 , 645081.5), 
-                ncol = 2, byrow = TRUE)
-P1 <- Polygon(coords)
-bb <- SpatialPolygons(list(Polygons(list(P1), ID = "a")), proj4string=CRS("+proj=utm +north +zone=37 +init=EPSG:32637"))
-NechSarBB<-as.owin(bb)
+plot(LakesChamo, col="blue")
+plot(NechSar,add=T)
+plot(NechSarGrassland,add=T)
+plot(LakesRiver, col="light blue", add=T)
+plot(ArbaMinch, col="grey", add=T)
+plot(NechSarBB, col=makeTransparent("white"), lwd=1, add=T)
+
+#coords = matrix(c(337000.1 , 644000.5,
+#                  337000.1 , 675000.7,
+#                  366900.2, 675000.7,
+#                  366900.2, 644000.5,
+#                  337000.1 , 644000.5), 
+#                ncol = 2, byrow = TRUE)
+#P1 <- Polygon(coords)
+#bb <- SpatialPolygons(list(Polygons(list(P1), ID = "a")), proj4string=CRS("+proj=utm +north +zone=37 +init=EPSG:32637"))
+#NechSarBB2<-as.owin(bb)
+#plot(NechSarBB2)
+
+# Check plots
+plot(LakesChamo, col="blue")
+plot(NechSar,add=T)
+plot(NechSarGrassland,add=T)
+plot(LakesRiver, col="light blue", add=T)
+plot(NechSarBB, col=makeTransparent("white"), lwd=1, add=T)
+
+#### Interplote ####
+NechSarUTM<-spTransform(NechSar_proj,utmproj)
+NechSarGrasslandUTM<-spTransform(NechSarGrassland_proj,utmproj)
+NechSarOWIN<-as.owin(NechSarUTM)
+NechSarGrasslandOWIN<-as.owin(NechSarGrasslandUTM)
+pts<-coordinates(bomas_projutm)[,1:2]
 
 ####ppp - point pattern ####
 p<-ppp(pts[,1],pts[,2], window=NechSarBB) # 30 points outside boundary
@@ -213,36 +237,100 @@ p2<-ppp(pts2[,1],pts2[,2], window=NechSarOWIN)
 nsreharvest3loc$boma_density<-ds[p2,drop=TRUE, tight=FALSE, raster=NULL, rescue=is.owin(p2)]
 
 # Create random points and display blocks in probability distibution of points on map
-pts <- spsample(NechSar, 9999, type = 'random')
+pts <- spsample(NechSarUTM, 9999, type = 'random')
 pRand<-coordinates(pts)[,1:2]
 pRand2<-ppp(pRand[,1],pRand[,2], window=NechSarOWIN)
 BomaRandom<-ds[pRand2,drop=TRUE, tight=FALSE, raster=NULL, rescue=is.owin(pRand2)]
 
-ptsG <- spsample(NechSarGrassland, 9999, type = 'random')
+ptsG <- spsample(NechSarGrasslandUTM, 9999, type = 'random')
 pRandG<-coordinates(ptsG)[,1:2]
 pRandG2<-ppp(pRandG[,1],pRandG[,2], window=NechSarGrasslandOWIN)
 BomaRandomGrassland<-ds[pRandG2,drop=TRUE, tight=FALSE, raster=NULL, rescue=is.owin(pRandG2)]
 
-plot(pRandG2)
-plot(NechSarGrassland_proj,add=T)
-plot(bomas_projutm, pch=21,add=T)
-plot(excl_proj, add=T,pch=16, col="red")
-
 #### Settlement density - Nech Sar ####
 x <- BomaRandom
 df <- approxfun(density(x))
+#BomaRandom2<-BomaRandom*(1000*1000)
 plot(density(BomaRandom))
 xnew <- aggregate(boma_density~Plot.pair,nsreharvest3loc, mean)
+#xnew$boma_density<-xnew$boma_density*(1000*1000)
 #xnew<-c(0.00001,0.00002,0.00003)
-points(xnew$boma_density,df(xnew$boma_density),pch=21,bg="red",col="dark red", cex=1.5)
+points((xnew$boma_density),df(xnew$boma_density),pch=21,bg="red",col="dark red", cex=1.5)
 
 #### Settlement density - Nech Sar Grassland ####
-xG <- BomaRandomGrassland
+xG <- BomaRandomGrassland #/(1000*1000)
 dfG <- approxfun(density(xG))
 plot(density(BomaRandomGrassland))
 xnewG <- aggregate(boma_density~Plot.pair,nsreharvest3loc, mean)
 #xnew<-c(0.00001,0.00002,0.00003)
-points(xnewG$boma_density,dfG(xnewG$boma_density),pch=21,bg="red",col="dark red", cex=1.5)
+points((xnewG$boma_density),dfG(xnewG$boma_density),pch=21,bg="red",col="dark red", cex=1.5)
+2e+06/(1000*1000)
+xnewG$boma_density*(1000*1000)
+mean(2.908951, 2.352152,2.485859,2.301226) #2.9 settlements km2
+mean(1.388506, 1.241557, 0.836311, 1.465779,1.101417) #1.3 settlements km2 
+
+BomaRandomGrassData<-(density(BomaRandomGrassland))
+str(BomaRandomGrassData)
+sum((BomaRandomGrassData$y)/80603606)*100 #101.4 slightly out 100%, but area fx has errror
+BomaRandomGrassData<-cbind(BomaRandomGrassData$x,BomaRandomGrassData$y)
+BomaRandomGrassData<-as.data.frame(BomaRandomGrassData)
+colnames(BomaRandomGrassData)[1]<-"Settlement.density.km2"
+colnames(BomaRandomGrassData)[2]<-"Density"
+BomaRandomGrassData$Settlement.density.km2<-BomaRandomGrassData$Settlement.density.km2*(10000*1000)
+BomaRandomGrassData$Density<-(BomaRandomGrassData$Density/80603606)*100
+BomaRandomGrassData<-BomaRandomGrassData[BomaRandomGrassData$Settlement.density.km2<51 & BomaRandomGrassData$Settlement.density.km2>0 ,]
+sum(BomaRandomGrassData$Density) # 99.53285
+xnewG$Settlement.density.km2<-xnewG$boma_density*(10000*1000)
+xnewG$Density<-(dfG(xnewG$boma_density)/80603606)*100
+xnewGFar<-xnewG[xnewG$Settlement.density.km2<15,]
+xnewGNear<-xnewG[xnewG$Settlement.density.km2>20,]
+
+xnewGFar$Density<-xnewGFar$Density+.05
+xnewGNear$Density<-xnewGNear$Density+.04
+
+BomaRandomGrassData$Settlement.density.km2
+# Density plot
+SettDensity<-ggplot(data=BomaRandomGrassData,aes(x=Settlement.density.km2,y=Density))
+SettDensity<-SettDensity+geom_segment(data = BomaRandomGrassData2,
+             aes(x = Settlement.density.km2, xend = Settlement.density.km2,
+                 y = -Inf, yend = Inf, colour = Settlement.density.km2),
+             show.legend = FALSE)
+SettDensity<-SettDensity+scale_colour_gradientn(colours=c('white',"palegoldenrod","gold","goldenrod","darkgoldenrod1","darkgoldenrod2"))
+SettDensity<-SettDensity+geom_line(color="grey20", lwd=1, alpha=.8)
+SettDensity<-SettDensity+geom_jitter(data=xnewGFar, shape="F",color="black",size=5, stroke=2)
+SettDensity<-SettDensity+geom_jitter(data=xnewGNear, shape="N",color="black", size=5,stroke=2)
+SettDensity<-SettDensity+scale_y_continuous(limits=c(0,.66),expand=c(0,0))
+SettDensity<-SettDensity+scale_x_continuous(limits=c(0,51),expand=c(0,0))
+SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Density (%)")
+SettDensity<-SettDensity+ggtitle("Grassland plains settlement densities")
+SettDensity<-SettDensity+
+  theme(rect = element_rect(fill ="transparent")
+        ,panel.background=element_rect(fill="transparent")
+        ,plot.background=element_rect(fill="transparent",colour=NA)
+        ,panel.grid.minor = element_blank()
+        ,panel.border = element_blank()
+        ,panel.grid.major.x = element_blank()
+        ,panel.grid.major.y = element_blank()
+        ,axis.text=element_text(size=12,color="black")
+        ,axis.title.y=element_text(size=13,color="black")
+        ,axis.title.x=element_text(size=13,color="black")
+        ,axis.text.x=element_text(size=12,color="black",#hjust=1,vjust=.5,
+                                  margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.ticks.length=unit(-1.5, "mm")
+        ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.text.y.right =element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
+        ,axis.line.y = element_line(color="black", size = .5)
+        ,axis.line.x = element_line(color="black", size = .5)
+        ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
+        ,panel.spacing = unit(.1, "lines")
+        ,legend.text=element_text(size=12)
+        ,legend.title=element_text(size=12)
+        ,legend.position = "right"
+        ,legend.justification = "top"
+        ,legend.direction="vertical"
+        ,legend.key=element_rect(colour = NA, fill = NA)
+        ,legend.key.width = unit(1.2,"cm"))
+SettDensity
 
 # Testing alternative kernel densities
 #ds<-density(p,kernel = c("gaussian"))
@@ -267,10 +355,7 @@ points(xnewG$boma_density,dfG(xnewG$boma_density),pch=21,bg="red",col="dark red"
 
 #distH<-gDistance(excl_proj,bomas_projutm,byid=T)
 #min_distHerbs<-apply(dist, 2, min)
-
 nsreharvest3loc$nearest_in_set2<-min_constructionDistance
-plot(TotalBiomass1~nearest_in_set2,nsreharvest3loc)
-plot(TotalBiomass1~boma_density,nsreharvest3loc)
 
 #### Join herbivore biomass ####
 MyHerb<-c("nearest_in_set2","Date","Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
@@ -333,11 +418,12 @@ boxplot(boma_density~Block,nsReharvestb)
 ggplot(nsreharvest3b,aes(y=boma_density,x=Plot.pair, colour=Block))+
   geom_boxplot(size=2)+theme_classic()#+coord_flip()
 
-
 #### Grass and tin roof settlements - surveyed by Aramde Fetene et al. 2019 ####
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS/Fetene_settlements")
-tinroof<-readOGR(dsn=".", "Tin_roof")
-grassroof<-readOGR(dsn=".", "Grass_roof")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS/Fetene_settlements")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS/Fetene_settlements")
+list.files(path = ".")
+tinroof<-readOGR(dsn="GIS/Fetene_settlements/.", "Tin_roof")
+grassroof<-readOGR(dsn="GIS/Fetene_settlements/.", "Grass_roof")
 tinroof_proj <-tinroof
 grassroof_proj <-grassroof
 latlongproj<-("+proj=longlat +datum=WGS84")
@@ -348,7 +434,6 @@ proj4string(tinroof_proj)<-latlongproj
 proj4string(grassroof_proj)<-latlongproj
 tinroof_projutm<-spTransform(tinroof_proj,utmproj)
 grassroof_projutm<-spTransform(grassroof_proj,utmproj)
-
 
 plot(bomas_projutm,pch=16)
 plot(tinroof_projutm, add=T,pch=16, col="blue")
@@ -389,6 +474,22 @@ BomaRandomGrassland679F<-dsF[pRandG679b,drop=TRUE, tight=FALSE, raster=NULL, res
 
 str(BomaRandomGrassland679)
 plot(BomaRandomGrassland679~BomaRandomGrassland679F)
+BomaRandomGrassland679<-as.data.frame(BomaRandomGrassland679)
+BomaRandomGrassland679F<-as.data.frame(BomaRandomGrassland679F)
+BomaRandomGrassland679$Year<-"2012"
+BomaRandomGrassland679F$Year<-"2014"
+colnames(BomaRandomGrassland679)[1]<-"settlement_density2012"
+colnames(BomaRandomGrassland679F)[1]<-"settlement_density2014"
+
+satellitedensities<-cbind(BomaRandomGrassland679,BomaRandomGrassland679F)
+names(satellitedensities)
+cor.test(~settlement_density2012+settlement_density2014,data=satellitedensities, method = "spearman",
+          continuity = FALSE,
+          conf.level = 0.95)
+#S = 3.564e+09, p-value < 2.2e-16
+#  rho 
+#0.9786098
+
 summary(lm(BomaRandomGrassland679~BomaRandomGrassland679F))
 #Estimate Std. Error t value Pr(>|t|)    
 #(Intercept)             2.653e-07  1.540e-08   17.23   <2e-16 ***
@@ -396,7 +497,6 @@ summary(lm(BomaRandomGrassland679~BomaRandomGrassland679F))
 #Residual standard error: 2.776e-07 on 677 degrees of freedom
 #Multiple R-squared:  0.9674,	Adjusted R-squared:  0.9673 
 #F-statistic: 2.008e+04 on 1 and 677 DF,  p-value: < 2.2e-16
-
 
 # TEST EXCLOSURE LOCATIONS
 plot(distinct_ns$boma_densityFetene~distinct_ns$boma_density)
@@ -406,7 +506,185 @@ summary(lm(boma_densityFetene~boma_density,distinct_ns))
 RankSettlement<-wilcox.test(distinct_ns$boma_densityFetene,distinct_ns$boma_density, paired = TRUE)
 #RankSettlement
 
-######################################################################
+########################################################################
+#### Nech Sar map publication  ####
+########################################################################
+makeTransparent<-function(someColor, alpha=75)
+{
+  newColor<-col2rgb(someColor)
+  apply(newColor, 2, function(curcoldata){rgb(red=curcoldata[1], green=curcoldata[2],
+                                              blue=curcoldata[3],alpha=alpha, maxColorValue=255)})
+} #End function
+
+#### Nech Sar outline ####
+NechSar<-readOGR(dsn="GIS/.", "NSNPboundary")
+NechSar_proj <-NechSar
+proj4string(NechSar_proj)<-utmproj
+NechSar_proj<-spTransform(NechSar_proj,latlongproj)
+NechSar<-NechSar_proj
+
+#### Bounding box ####
+extent(NechSar)
+NechSarBB = matrix(c(37.52, 5.82,
+                     37.52, 6.1,
+                     37.80, 6.1,
+                     37.80, 5.82  ,
+                     37.52, 5.82 ), 
+                   ncol = 2, byrow = TRUE)
+NechSarBB <- Polygon(NechSarBB)
+NechSarBB <- SpatialPolygons(list(Polygons(list(NechSarBB), ID = "a")), proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+plot(NechSarBB)
+
+# Ethiopia map
+ccodes()
+et0<-raster::getData('GADM',country='ET',level=0)#Level = 0 for country, # Ethiopia
+so0<-raster::getData('GADM',country='SO',level=0)#Level = 0 for country, # Somalia
+ss0<-raster::getData('GADM',country='SS',level=0)#Level = 0 for country, # South Sudan
+er0<-raster::getData('GADM',country='ER',level=0)#Level = 0 for country, # Eritera
+ke0<-raster::getData('GADM',country='KE',level=0)#Level = 0 for country, # Kenya
+dj0<-raster::getData('GADM',country='DJ',level=0)#Level = 0 for country, # Dji
+
+# Crop bordering countries to the extent of Ethiopia
+# Crop bordering countries to the extent of Tz0 map
+extent(et0)
+coordsK = matrix(c(47.95823, 3.398823 ,
+                   47.95823, 14.84548,
+                   33.00154, 14.84548,
+                   33.00154, 3.398823 ,
+                   47.95823, 3.398823 ),ncol = 2, byrow = TRUE)
+Pk <- Polygon(coordsK)
+bbK <- SpatialPolygons(list(Polygons(list(Pk), ID = "a")), proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"))
+extent(bbK)
+so0c<-crop(so0,bbK)
+ss0c<-crop(ss0,bbK)
+er0c<-crop(er0,bbK)
+ke0c<-crop(ke0,bbK)
+dj0c<-crop(dj0,bbK)
+
+# Lakes
+EtLakes<- readOGR(dsn="GIS/GLWD-level1/.", "glwd_1")
+EtLakesCrop<-crop(EtLakes,bbK)
+plot(EtLakesCrop, col="dodgerblue")
+
+# Margins of plot
+my.padding <- list(layout.heights = list( 
+  top.padding = 0, 
+  main.key.padding = 0, 
+  key.axis.padding = 0, 
+  axis.xlab.padding = 0, 
+  xlab.key.padding = 0, 
+  key.sub.padding = 0), 
+  layout.widths = list( 
+    left.padding = 0, 
+    key.ylab.padding = 0, 
+    ylab.axis.padding = 0, 
+    axis.key.padding = 0, 
+    right.padding = 0) 
+) 
+
+ptsF<-coordinates(FenteSettlements)[,1:2]
+ptsF<-spTransform(dsF,latlongproj)
+pF<-ppp(ptsF[,1],ptsF[,2], window=NechSarOWIN) # 30 points outside boundary
+plot(pF)
+ds<-density(p,kernel = c("gaussian"))
+RasterBoma<-raster(ds)
+crs(RasterBoma)<-utmproj
+RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
+
+RasterMASK<- mask(RasterBoma, NechSarBB)
+Rasteret0<-extend(RasterBoma,et0)
+
+p1<-levelplot(Rasteret0,margin=F,scales = list(draw = FALSE), colorkey=NULL,par.settings=list(axis.line = list(col = "white")), xlab =  NULL, ylab = NULL,main=list("Ethiopia", font=1))
+p1<-p1+layer(sp.polygons(et0))
+p1<-p1+layer(sp.polygons(so0c))
+p1<-p1+layer(sp.polygons(ss0c))
+p1<-p1+layer(sp.polygons(er0c))
+p1<-p1+layer(sp.polygons(ke0c))
+p1<-p1+layer(sp.polygons(dj0c))
+p1<-p1+layer(sp.polygons(EtLakesCrop, fill="dodgerblue"))
+p1<-p1+layer(sp.polygons(NechSarBB , col="black", lwd=2.5))
+p1
+
+# Colourkey
+my.at <- seq(0, 60, by = 5)
+my.at2 <- seq(0, 60, by = 10)
+
+# Set colour range for rain
+color_pallete_function <- colorRampPalette(
+  colors = c('white',"palegoldenrod","gold","goldenrod","darkgoldenrod1","darkgoldenrod2"),
+  space = "Lab" 
+  #alpha=c(0.8)
+)
+#'white',"darkgoldenrod1", "deepskyblue","dodgerblue1", "dodgerblue3","dodgerblue4","midnightblue"
+rain.seq<-seq(minValue(RasterBoma),maxValue(RasterBoma), length=50)
+num_colors <- nlevels(as.factor(rain.seq))
+num_colors
+diamond_color_colors <- color_pallete_function(num_colors)
+
+# Colourkey bar
+myColorkey <- list(space="right",at=my.at, ## where the colors change
+                   labels=list(axis.line = list(col = NA),my.at2), ## where to print labels
+                   tck = c(0,0), height=1,width=1.2, col=diamond_color_colors)
+
+mapTheme <- rasterTheme(region=c(diamond_color_colors))  
+
+# Settlements
+settlements<-readOGR(dsn="GIS/.", "boma_points")
+settlements_proj <-settlements
+latlongproj<-("+proj=longlat +datum=WGS84")
+proj4string(settlements_proj)<-latlongproj
+settlements<-settlements_proj
+
+RasterBoma<-raster(ds)
+crs(RasterBoma)<-utmproj
+RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
+RasterBoma@data@values<-RasterBoma@data@values*(1000*10000)
+
+
+
+#Add labels
+ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitude = coordinates(ArbaMinch)[, 2]) 
+LakesChamoBB<-crop(LakesChamo,NechSarBB)
+ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitude = coordinates(ArbaMinch)[, 2]) 
+LakesChamo.centroids<- data.frame(longitude = coordinates(LakesChamoBB)[, 1],latitude = coordinates(LakesChamoBB)[, 2]) 
+ArbaMinch.centroids
+LakesChamo.centroids
+longtitudeCent <- c(37.55105,37.67881,37.57831,37.6681)
+latitudeCent <- c(6.021655,6.059748,5.881109,5.971)
+sme.Cent<-cbind(longtitudeCent,latitudeCent)
+
+excl_projLAT<-excl_projLAT[excl_projLAT$Treatment=="Control" | excl_projLAT$Treatment=="Exclosure",]
+NearPts<-excl_projLAT[excl_projLAT$Boma.density=="High",]
+FarPts<-excl_projLAT[excl_projLAT$Boma.density=="Low",]
+
+p2<-levelplot(RasterBoma, margin=F,colorkey=NULL,par.settings=mapTheme)
+p2<-p2+contourplot(Elevation,contour=TRUE, col="grey", label.style="align",labels=c(Elevation,col="dark grey", cex=.75, alpha=.5))
+p2<-p2+layer(sp.polygons(LakesRiver, fill="deepskyblue1", col="deepskyblue2",lwd=1.5))
+p2<-p2+layer(sp.polygons(LakesChamo, fill="deepskyblue1", col="deepskyblue2",lwd=1.5))
+p2<-p2+layer(sp.polygons(ArbaMinch, fill="grey",col="dark grey",lwd=1.5)) #labels=c(sme@data$NAME)
+p2<-p2+layer(sp.polygons(NechSar, fill=NA,col="black",lwd=1.5))
+p2<-p2+layer(sp.polygons(NechSarGrassland, fill=NA,col="black",lwd=1.5, lty=2))
+p2<-p2+layer(sp.points(settlements, pch =21, cex =1, fill="white",col="black"))
+p2<-p2+layer(sp.points(NearPts, pch ="N", cex =1.65, fill="black",col="black"))
+p2<-p2+layer(sp.points(FarPts, pch ="F", cex =1.65, fill="black",col="black"))
+p2<-p2+layer(sp.text(coordinates(sme.Cent), txt = c("Arba Minch","Lake Abaya", "Lake Chamo","Central \n grassland"), scale=.85))
+p2<-p2+ layer({SpatialPolygonsRescale(layout.north.arrow(),offset = c(37.78,6.07), scale=.03) }) 
+
+p2<-p2+layer({ xs <- seq(37.555, 37.604, by=.01)  # 10 km
+
+grid.rect(x=xs, y=5.845,
+          width=.01, height=.005,
+          gp=gpar(fill=rep(c('transparent', 'black'), 1)),
+          default.units='native')
+grid.text(x= xs, y=5.852, c("0","","","","10 km"),
+          gp=gpar(cex=.8), rot=0,
+          default.units='native')
+})
+p2
+
+
+
+########################################################################
 #### Biomass + Regrowth - H1 and H2 ####
 ########################################################################
 names(nsReharvest)
@@ -1235,7 +1513,7 @@ anova(BioRegrowBW6,BioRegrowBW9) #
 #BioRegrowBW6  6 2171.6 2193.2 -1079.8   2159.6 1.4769      1     0.2243  #Treatment
 
 ######################################################################
-#### Biomass and regrowth - plotting data ####
+#### Graphs Biomass and regrowth ####
 ########################################################################
 
 ##### Grassland biomass #####
@@ -1327,9 +1605,9 @@ geom_errorbar(aes(ymin=RegrowWoody-sd, ymax=RegrowWoody+sd),width=.1,lwd=1,posit
 geom_point(position=position_dodge(width=.5))+scale_radius(range=c(2,8))+
 theme_classic()
 
+#### Publication Biomass and regrowth ####
 
 #### Combine datasets ####
-
 colnames(BiomassMeans)[4]<-"Biomass"
 colnames(BiomassMeansG)[4]<-"Biomass"
 colnames(BiomassMeansF)[4]<-"Biomass"
@@ -1337,15 +1615,15 @@ colnames(BiomassMeansW)[4]<-"Biomass"
 BiomassMeans$FxGroup<-"Total"
 BiomassMeansG$FxGroup<-"Graminoid"
 BiomassMeansF$FxGroup<-"Forb"
-BiomassMeansW$FxGroup<-"Woody"
+BiomassMeansW$FxGroup<-"Dwarf woody"
 
 # Combine functional groups
 BiomassMeansALL<-rbind(BiomassMeans,BiomassMeansG,BiomassMeansF,BiomassMeansW)
 BiomassMeansALL$FxGroup<-as.factor(BiomassMeansALL$FxGroup)
 
 #Relabel levels
-levels(BiomassMeansALL$FxGroup)<-c("Forb","Graminoid","Total","Woody")
-BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Woody"))
+levels(BiomassMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
+BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
 levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
 levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
 levels(BiomassMeansALL$Harvest)<-c("Unclipped","Single clipped", "Double clipped")
@@ -1360,7 +1638,7 @@ BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke
 BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
 BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
 BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
-BioGraph<-BioGraph+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & Regrowth (g/",m^2,"/season)")))
+BioGraph<-BioGraph+ggtitle("(a)")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
 BioGraph<-BioGraph+theme_classic()
 BioGraph<-BioGraph+theme(plot.background = element_blank()
                 #,panel.grid.major = element_blank()
@@ -1385,7 +1663,7 @@ BioGraph<-BioGraph+theme(plot.background = element_blank()
                 #,legend.text = element_text(size=12,color="black")
                 #,legend.key = element_rect(colour = NA, fill = NA)
                 ,legend.position = "right"
-                ,legend.justification = "top"
+                ,legend.justification = "center"
                 ,legend.direction="vertical")
                # ,legend.spacing.y = unit(-0.5, "mm"))
 #BioGraph<-BioGraph+annotate(geom = 'segment', y =-10, yend =-10, color = 'black', x = -Inf, xend = Inf, size = .75) 
@@ -1406,16 +1684,15 @@ colnames(RegrowMeansW)[6]<-"Biomass"
 RegrowMeans$FxGroup<-"Total"
 RegrowMeansG$FxGroup<-"Graminoid"
 RegrowMeansF$FxGroup<-"Forb"
-RegrowMeansW$FxGroup<-"Woody"
+RegrowMeansW$FxGroup<-"Dwarf woody"
 
 #Relabel levels
 RegrowMeansALL<-rbind(RegrowMeans,RegrowMeansG,RegrowMeansF,RegrowMeansW)
 RegrowMeansALL$FxGroup<-as.factor(RegrowMeansALL$FxGroup)
-levels(RegrowMeansALL$FxGroup)<-c("Forb","Graminoid","Total","Woody")
-RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Woody"))
+levels(RegrowMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
+RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
 levels(RegrowMeansALL$Boma.density)<-c("Near to","Far from")
 levels(RegrowMeansALL$Harvest)<-c("Single clipped", "Double clipped")
-
 
 # Difference between biomass and regrowth
 RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest, size=Biomass))
@@ -1428,7 +1705,7 @@ RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
 RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
 RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
 RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
-RegrowGraph<-RegrowGraph+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - Biomass (g/",m^2,"/season)")))
+RegrowGraph<-RegrowGraph+ggtitle("(b)")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
 RegrowGraph<-RegrowGraph+theme_classic()
 RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
                          #,panel.grid.major = element_blank()
@@ -1469,7 +1746,12 @@ grid.arrange(BioGraph,RegrowGraph,ncol=2)
 # Extract legend
 mylegendBio<-get_legend(BioGraph)
 
-RegrowGraph3 <- arrangeGrob(grid.arrange(BioGraph+ theme(legend.position="none"), RegrowGraph+ theme(legend.position="none"), ncol=2)) 
+filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/", "RegrowGraph3", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=32, height=18, res=600, unit="cm")
+RegrowGraph3 <- arrangeGrob(grid.arrange(BioGraph+ theme(legend.position="none"), RegrowGraph+ theme(legend.position="none"),mylegendBio, ncol=3,widths = c(1,1,.4))) 
+dev.off()
+#ggsave("BioRegrowNechSar.jpeg",width= 20, height = 18,units ="cm", bg ="transparent",
+#      dpi = 600, limitsize = TRUE)
 
 ######################################################################
 #### Biomass regrowth - plotting data ####
