@@ -213,7 +213,9 @@ NechSarGrasslandOWIN<-as.owin(NechSarGrasslandUTM)
 pts<-coordinates(bomas_projutm)[,1:2]
 
 ####ppp - point pattern ####
-p<-ppp(pts[,1],pts[,2], window=NechSarBB) # 30 points outside boundary
+NechSarBButm<-spTransform(NechSarBB,utmproj)
+NechSarBBOWIN<-as.owin(NechSarBButm)
+p<-ppp(pts[,1],pts[,2], window=NechSarBBOWIN) # 30 points outside boundary
 plot(p)
 
 #### Kernel density pastoral settlements - Kmeans ####
@@ -279,30 +281,45 @@ colnames(BomaRandomGrassData)[2]<-"Density"
 BomaRandomGrassData$Settlement.density.km2<-BomaRandomGrassData$Settlement.density.km2*(10000*1000)
 BomaRandomGrassData$Density<-(BomaRandomGrassData$Density/80603606)*100
 BomaRandomGrassData<-BomaRandomGrassData[BomaRandomGrassData$Settlement.density.km2<51 & BomaRandomGrassData$Settlement.density.km2>0 ,]
+
+BomaRandomGrassData$boundaries<-"Nech Sar National Park"
+BomaRandomGrassData$pts<-"Settlements"
+BomaRandomGrassData2<-BomaRandomGrassData
+BomaRandomGrassData2$boundaries<-"Central grassland plains"
+BomaRandomGrassData2$pts<-"Plots"
+BomaRandomGrassData3<-rbind(BomaRandomGrassData,BomaRandomGrassData2)
+levels(as.factor(BomaRandomGrassData3$boundaries))
+
 sum(BomaRandomGrassData$Density) # 99.53285
 xnewG$Settlement.density.km2<-xnewG$boma_density*(10000*1000)
 xnewG$Density<-(dfG(xnewG$boma_density)/80603606)*100
+xnewG$boundaries<-c("Nech Sar National Park","Central grassland plains","Nech Sar National Park")
+xnewG$pts<-c("Settlements","Plots","Settlements")
 xnewGFar<-xnewG[xnewG$Settlement.density.km2<15,]
 xnewGNear<-xnewG[xnewG$Settlement.density.km2>20,]
+xnewGFar2<-xnewG[xnewG$Settlement.density.km2<15,]
+xnewGNear2<-xnewG[xnewG$Settlement.density.km2>20,]
+xnewGFar$Density<-xnewGFar$Density
+xnewGNear$Density<-xnewGNear$Density
+xnewGFar2$Density<-xnewGFar$Density+.05
+xnewGNear2$Density<-xnewGNear$Density+.04
 
-xnewGFar$Density<-xnewGFar$Density+.05
-xnewGNear$Density<-xnewGNear$Density+.04
-
-BomaRandomGrassData$Settlement.density.km2
 # Density plot
-SettDensity<-ggplot(data=BomaRandomGrassData,aes(x=Settlement.density.km2,y=Density))
-SettDensity<-SettDensity+geom_segment(data = BomaRandomGrassData2,
+SettDensity<-ggplot(data=BomaRandomGrassData3,aes(x=Settlement.density.km2,y=Density, linetype=boundaries,fill=pts))
+SettDensity<-SettDensity+geom_segment(data = BomaRandomGrassData3,
              aes(x = Settlement.density.km2, xend = Settlement.density.km2,
                  y = -Inf, yend = Inf, colour = Settlement.density.km2),
              show.legend = FALSE)
 SettDensity<-SettDensity+scale_colour_gradientn(colours=c('white',"palegoldenrod","gold","goldenrod","darkgoldenrod1","darkgoldenrod2"))
-SettDensity<-SettDensity+geom_line(color="grey20", lwd=1, alpha=.8)
-SettDensity<-SettDensity+geom_jitter(data=xnewGFar, shape="F",color="black",size=5, stroke=2)
-SettDensity<-SettDensity+geom_jitter(data=xnewGNear, shape="N",color="black", size=5,stroke=2)
+SettDensity<-SettDensity+geom_line(data=BomaRandomGrassData3,color="grey20", lwd=1,show.legend = T)
+SettDensity<-SettDensity+geom_point(data=xnewGFar, shape=21,color="black",fill="black",size=2.5, stroke=1,show.legend = T)
+SettDensity<-SettDensity+geom_point(data=xnewGNear, shape=21,color="black", fill="black", size=2.5,stroke=1)
+SettDensity<-SettDensity+geom_jitter(data=xnewGFar2, shape="F",color="black",size=5, stroke=2)
+SettDensity<-SettDensity+geom_jitter(data=xnewGNear2, shape="N",color="black", size=5,stroke=2)
 SettDensity<-SettDensity+scale_y_continuous(limits=c(0,.66),expand=c(0,0))
 SettDensity<-SettDensity+scale_x_continuous(limits=c(0,51),expand=c(0,0))
 SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Density (%)")
-SettDensity<-SettDensity+ggtitle("Grassland plains settlement densities")
+SettDensity<-SettDensity+ggtitle("(c) Interploated settlement densities")
 SettDensity<-SettDensity+
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
@@ -314,7 +331,7 @@ SettDensity<-SettDensity+
         ,axis.text=element_text(size=12,color="black")
         ,axis.title.y=element_text(size=13,color="black")
         ,axis.title.x=element_text(size=13,color="black")
-        ,axis.text.x=element_text(size=12,color="black",#hjust=1,vjust=.5,
+        ,axis.text.x=element_text(size=13,color="black",#hjust=1,vjust=.5,
                                   margin=margin(2.5,2.5,2.5,2.5,"mm"))
         ,axis.ticks.length=unit(-1.5, "mm")
         ,axis.text.y = element_text(margin=margin(2.5,2.5,2.5,2.5,"mm"))
@@ -324,12 +341,17 @@ SettDensity<-SettDensity+
         ,plot.margin = unit(c(2.5,2.5,2.5,2.5), "mm")
         ,panel.spacing = unit(.1, "lines")
         ,legend.text=element_text(size=12)
-        ,legend.title=element_text(size=12)
+        ,legend.title=element_text(size=14)
+        ,plot.title = element_text(size = 13, face = "bold")
         ,legend.position = "right"
         ,legend.justification = "top"
         ,legend.direction="vertical"
         ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
+
+SettDensity<- SettDensity+guides(linetype=guide_legend("Legend symbols \n \n Boundaries",order=2,override.aes=list(lwd=1, linetype=c("dashed","solid"),col="black", pch=NA)),
+  fill=guide_legend("Points",order = 2, override.aes=list(shape=c(21,21),linetype=F,size=3.5,fill=c("black","white"),col=c("black"), stroke=1)))
+
 SettDensity
 
 # Testing alternative kernel densities
@@ -543,6 +565,7 @@ ss0<-raster::getData('GADM',country='SS',level=0)#Level = 0 for country, # South
 er0<-raster::getData('GADM',country='ER',level=0)#Level = 0 for country, # Eritera
 ke0<-raster::getData('GADM',country='KE',level=0)#Level = 0 for country, # Kenya
 dj0<-raster::getData('GADM',country='DJ',level=0)#Level = 0 for country, # Dji
+sd0<-raster::getData('GADM',country='SD',level=0)#Level = 0 for country, # Sudan
 
 # Crop bordering countries to the extent of Ethiopia
 # Crop bordering countries to the extent of Tz0 map
@@ -560,6 +583,22 @@ ss0c<-crop(ss0,bbK)
 er0c<-crop(er0,bbK)
 ke0c<-crop(ke0,bbK)
 dj0c<-crop(dj0,bbK)
+sd0c<-crop(sd0,bbK)
+
+
+et0.centroids<- data.frame(longitude = coordinates(et0)[, 1],latitude = coordinates(et0)[, 2]) 
+so0c.centroids<- data.frame(longitude = coordinates(so0c)[, 1],latitude = coordinates(so0c)[, 2]) 
+ss0c.centroids<- data.frame(longitude = coordinates(ss0c)[, 1],latitude = coordinates(ss0c)[, 2]) 
+er0c.centroids<- data.frame(longitude = coordinates(er0c)[, 1],latitude = coordinates(er0c)[, 2]) 
+ke0c.centroids<- data.frame(longitude = coordinates(ke0c)[, 1],latitude = coordinates(ke0c)[, 2]) 
+dj0c.centroids<- data.frame(longitude = coordinates(dj0c)[, 1],latitude = coordinates(dj0c)[, 2]) 
+dj0c.centroids<- data.frame(longitude = coordinates(dj0c)[, 1],latitude = coordinates(dj0c)[, 2]) 
+sd0c.centroids<- data.frame(longitude = coordinates(sd0c)[, 1],latitude = coordinates(sd0c)[, 2]) 
+
+longCountryCent <- c(39.6262,45.75408,33.96262,40.26132,37.03785,42.57155,34.49341 )
+latCountryCent <- c(8.629764,8.629764,5.727417,14.06418,3.921116,11.74185,12.96202 )
+
+eth0.Cent<-cbind(longCountryCent,latCountryCent)
 
 # Lakes
 EtLakes<- readOGR(dsn="GIS/GLWD-level1/.", "glwd_1")
@@ -594,7 +633,7 @@ RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
 RasterMASK<- mask(RasterBoma, NechSarBB)
 Rasteret0<-extend(RasterBoma,et0)
 
-p1<-levelplot(Rasteret0,margin=F,scales = list(draw = FALSE), colorkey=NULL,par.settings=list(axis.line = list(col = "white")), xlab =  NULL, ylab = NULL,main=list("Ethiopia", font=1))
+p1<-levelplot(Rasteret0,margin=F,scales = list(draw = FALSE), colorkey=NULL,main="(a) East Africa",par.settings=list(axis.line = list(col = "white")), xlab =  NULL, ylab = NULL) #list("(a) East Africa", font=1, cex=1.5)
 p1<-p1+layer(sp.polygons(et0))
 p1<-p1+layer(sp.polygons(so0c))
 p1<-p1+layer(sp.polygons(ss0c))
@@ -603,6 +642,7 @@ p1<-p1+layer(sp.polygons(ke0c))
 p1<-p1+layer(sp.polygons(dj0c))
 p1<-p1+layer(sp.polygons(EtLakesCrop, fill="dodgerblue"))
 p1<-p1+layer(sp.polygons(NechSarBB , col="black", lwd=2.5))
+p1<-p1+layer(sp.text(coordinates(eth0.Cent), txt = c("Ethiopia","Somalia", "South \n Sundan","Eritrea", "Kenya","Djibouti","Sudan"), scale=.85))
 p1
 
 # Colourkey
@@ -627,6 +667,8 @@ myColorkey <- list(space="right",at=my.at, ## where the colors change
                    tck = c(0,0), height=1,width=1.2, col=diamond_color_colors)
 
 mapTheme <- rasterTheme(region=c(diamond_color_colors))  
+names(mapTheme)
+mapTheme$par.main.text
 
 # Settlements
 settlements<-readOGR(dsn="GIS/.", "boma_points")
@@ -640,8 +682,6 @@ crs(RasterBoma)<-utmproj
 RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
 RasterBoma@data@values<-RasterBoma@data@values*(1000*10000)
 
-
-
 #Add labels
 ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitude = coordinates(ArbaMinch)[, 2]) 
 LakesChamoBB<-crop(LakesChamo,NechSarBB)
@@ -649,15 +689,25 @@ ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitud
 LakesChamo.centroids<- data.frame(longitude = coordinates(LakesChamoBB)[, 1],latitude = coordinates(LakesChamoBB)[, 2]) 
 ArbaMinch.centroids
 LakesChamo.centroids
-longtitudeCent <- c(37.55105,37.67881,37.57831,37.6681)
-latitudeCent <- c(6.021655,6.059748,5.881109,5.971)
+longtitudeCent <- c(37.55105,37.67881,37.57831) #,37.6681
+latitudeCent <- c(6.021655,6.059748,5.881109) #,5.971
 sme.Cent<-cbind(longtitudeCent,latitudeCent)
 
 excl_projLAT<-excl_projLAT[excl_projLAT$Treatment=="Control" | excl_projLAT$Treatment=="Exclosure",]
 NearPts<-excl_projLAT[excl_projLAT$Boma.density=="High",]
 FarPts<-excl_projLAT[excl_projLAT$Boma.density=="Low",]
 
-p2<-levelplot(RasterBoma, margin=F,colorkey=NULL,par.settings=mapTheme)
+NearPts2<-as.data.frame(NearPts)
+FarPts2<-as.data.frame(FarPts)
+NearPts2$X<-NearPts2$X+.005
+FarPts2$X<-FarPts2$X+.005
+names(NearPts2)
+xy <- NearPts2[,c(28,29)]
+xy2 <- FarPts2[,c(28,29)]
+NearPts2<-SpatialPointsDataFrame(coords = xy,data=NearPts2)
+FarPts2<-SpatialPointsDataFrame(coords = xy2,data=FarPts2)
+
+p2<-levelplot(RasterBoma, margin=F,colorkey=NULL,par.settings=mapTheme,main="(b) Nech Sar National Park" )
 p2<-p2+contourplot(Elevation,contour=TRUE, col="grey", label.style="align",labels=c(Elevation,col="dark grey", cex=.75, alpha=.5))
 p2<-p2+layer(sp.polygons(LakesRiver, fill="deepskyblue1", col="deepskyblue2",lwd=1.5))
 p2<-p2+layer(sp.polygons(LakesChamo, fill="deepskyblue1", col="deepskyblue2",lwd=1.5))
@@ -665,9 +715,11 @@ p2<-p2+layer(sp.polygons(ArbaMinch, fill="grey",col="dark grey",lwd=1.5)) #label
 p2<-p2+layer(sp.polygons(NechSar, fill=NA,col="black",lwd=1.5))
 p2<-p2+layer(sp.polygons(NechSarGrassland, fill=NA,col="black",lwd=1.5, lty=2))
 p2<-p2+layer(sp.points(settlements, pch =21, cex =1, fill="white",col="black"))
-p2<-p2+layer(sp.points(NearPts, pch ="N", cex =1.65, fill="black",col="black"))
-p2<-p2+layer(sp.points(FarPts, pch ="F", cex =1.65, fill="black",col="black"))
-p2<-p2+layer(sp.text(coordinates(sme.Cent), txt = c("Arba Minch","Lake Abaya", "Lake Chamo","Central \n grassland"), scale=.85))
+p2<-p2+layer(sp.points(NearPts, pch =21, cex =1, fill="black",col="black"))
+p2<-p2+layer(sp.points(FarPts, pch =21, cex =1, fill="black",col="black"))
+p2<-p2+layer(sp.points(NearPts2, pch ="N", cex =1.65,col="black"))
+p2<-p2+layer(sp.points(FarPts2, pch ="F", cex =1.65,col="black"))
+p2<-p2+layer(sp.text(coordinates(sme.Cent), txt = c("Arba Minch","Lake Abaya", "Lake Chamo"), scale=.85)) #"Central \n grassland"
 p2<-p2+ layer({SpatialPolygonsRescale(layout.north.arrow(),offset = c(37.78,6.07), scale=.03) }) 
 
 p2<-p2+layer({ xs <- seq(37.555, 37.604, by=.01)  # 10 km
@@ -682,6 +734,39 @@ grid.text(x= xs, y=5.852, c("0","","","","10 km"),
 })
 p2
 
+
+#########################
+# Grid arrange 
+#########################
+
+# Combined graphs
+library(grid)
+library(gridExtra)
+library(egg)
+library(ggpubr)
+
+lattice.options(
+  layout.heights=list(bottom.padding=list(x=0), top.padding=list(x=0)),
+  layout.widths=list(left.padding=list(x=1), right.padding=list(x=.1)))
+
+# Export - remember to set working directory
+#filename <- paste0("/Users/anotherswsmith/Documents/AfricanBioServices/Publications/TBI_landuse/", "TBI.site.map", "_",Sys.Date(), ".jpeg" )
+#jpeg (filename, width=18, height=16, res=400, unit="cm")
+#grid.arrange(p1,p2,p3, ncol=4, nrow=4, widths=c(1,1,1,1), heights=c(1,1,1,1),vp = grid::viewport(width=1,height=1),layout_matrix = cbind(c(1,1,2,2), c(1,1,2,2),c(3,3,2,2),c(3,3,2,2)))
+#grid.arrange(p1,p2,p3, ncol=3, nrow=2, widths=c(1,1,1), heights=c(.9,1),vp = grid::viewport(width=1.01,height=1),layout_matrix = cbind(c(1,3), c(2,2),c(2,2)))
+#dev.off()
+
+# Extract legend
+mylegend<-get_legend(SettDensity)
+#theme(legend.position="none")
+grid.arrange(p1,p2, SettDensity+theme(legend.position="none"),mylegend, ncol=4, nrow=4, widths=c(1.5,1.5,1,.9), heights=c(1,1,1,1),vp = grid::viewport(width=1,height=1),layout_matrix = cbind(c(1,1,3,3),c(2,2,2,2),c(2,2,2,2),c(NA,4,NA,NA)))
+
+# Export - remember to set working directory 2
+filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /", "NechSar_site_map", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=35.5, height=22.5, res=400, unit="cm")
+#grid.arrange(p1,p2,p3, ncol=4, nrow=4, widths=c(1,1,1,1), heights=c(1,1,1,1),vp = grid::viewport(width=1,height=1),layout_matrix = cbind(c(1,1,2,2), c(1,1,2,2),c(3,3,2,2),c(3,3,2,2)))
+grid.arrange(p1,p2, SettDensity+theme(legend.position="none"),mylegend, ncol=4, nrow=4, widths=c(1.5,1.5,1,.9), heights=c(1,1,1,1),vp = grid::viewport(width=1,height=1),layout_matrix = cbind(c(1,1,3,3),c(2,2,2,2),c(2,2,2,2),c(NA,4,NA,NA)))
+dev.off()
 
 
 ########################################################################
@@ -733,13 +818,17 @@ dim(TotalBiomass)
 dim(SingleBiomass)
 dim(DoubleBiomass)
 
+TotalBiomass$Harvest.date
+
 # Total biomass - change harvest name
-levels(TotalBiomass$Harvest)<-"biomass"
-levels(SingleBiomass$Harvest)<-c("regrowth-single","regrowth-single")
-levels(DoubleBiomass$Harvest)<-"regrowth-double"
+TotalBiomass$Harvest<-"biomass"
+SingleBiomass$Harvest<-"regrowth-single"
+DoubleBiomass$Harvest<-"regrowth-double"
 
 # Combined datasets
 NechSarBiomass<-rbind(TotalBiomass,SingleBiomass,DoubleBiomass)
+NechSarBiomass$Harvest<-as.factor(NechSarBiomass$Harvest)
+levels(NechSarBiomass$Harvest)
 
 # Graph biomass
 BiomassMeans<-aggregate(TotalBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,mean)
@@ -1562,6 +1651,7 @@ geom_point(position=position_dodge(width=.65))+scale_radius(range=c(2,8))+
 theme_classic()
 
 ##### Forb biomass #####
+NechSarBiomass$ForbNetReharvestBiomass<-NechSarBiomass$HerbNetReharvestBiomass+NechSarBiomass$ClimberNetReharvestBiomass
 BiomassMeansF<-aggregate(ForbNetReharvestBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,mean)
 BiomassFSD<-aggregate(ForbNetReharvestBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,sd)
 BiomassMeansF$sd<-BiomassFSD$ForbNetReharvestBiomass
@@ -1625,6 +1715,7 @@ BiomassMeansALL$FxGroup<-as.factor(BiomassMeansALL$FxGroup)
 levels(BiomassMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
 BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
 levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
+BiomassMeansALL$Treatment<-as.factor(BiomassMeansALL$Treatment)
 levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
 levels(BiomassMeansALL$Harvest)<-c("Unclipped","Single clipped", "Double clipped")
 
@@ -1667,8 +1758,8 @@ BioGraph<-BioGraph+theme(plot.background = element_blank()
                 ,legend.direction="vertical")
                # ,legend.spacing.y = unit(-0.5, "mm"))
 #BioGraph<-BioGraph+annotate(geom = 'segment', y =-10, yend =-10, color = 'black', x = -Inf, xend = Inf, size = .75) 
-BioGraph<-BioGraph+guides(colour=F, linetype=F, shape = guide_legend("Harvest",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("white"),col="black", stroke=1)),
-                          fill= guide_legend("Exclosures",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+BioGraph<-BioGraph+guides(colour=F, linetype=F, shape = guide_legend("Clipping",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("white"),col="black", stroke=1)),
+                          fill= guide_legend("Treatments \n \n Grazing ",order=1,override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
 BioGraph
 
 # Regrowth

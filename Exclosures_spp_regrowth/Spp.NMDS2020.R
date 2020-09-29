@@ -16,7 +16,7 @@ library(ggplot2)
 library(nlme)
 library(dplyr)
 ############################################################################
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 nsSpp<-read.csv("VegCompSeason3.csv",header=T,sep=",")
 
@@ -187,9 +187,10 @@ mantel(veg.dist, env.distT, method="spear")
 ############################################################################################################
 # Draw ordiellipse in ggplot2
 # NEEDS TO CONNECT TO SPP MULTIVARIATE SCRIPT...
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 AbbrSpp<-read.csv("VegSppAbbr.csv",header=T,sep=",")
-AbbrSpp$Abbr
+AbbrSpp$Abbr<-as.factor(AbbrSpp$Abbr)
 
 # Rename column names with abbreviations
 colnames(nsSpp3)[11:75]<-levels(AbbrSpp$Abbr)
@@ -275,7 +276,7 @@ NMDSdata$fSeason <- nsSpp3$fSeason
 NMDSdata$group<-NMDSdata$fTreatment
 NMDSdata$group<-as.factor(with(NMDSdata, paste(fBomadensity, fTreatment, sep="_")))
 levels(NMDSdata$group)
-levels(NMDSdata$group)<-c("Close", "Far away")
+levels(NMDSdata$group)<-c("Close_Exclosure", "Close_Open" , "Far away_Exclosure","Far away_Open" )
 
 # Extract species scores and site scores
 species.scores <- as.data.frame(scores(mdsNS, "species"))
@@ -349,24 +350,36 @@ TukulDensity<-tukulDensity.scores[tukulDensity.scores$Species=="boma_density",]
 TukulDistance$Species<-"Distance"
 TukulDensity$Species<-"Density"
 
-#
-#1-2
-#1-3  2-3
-#1-4  2-4 3-4
+#Relabel categories
+#Grazed vs exclosed
+# Near to and Far from 
+
+levels(NMDSdata$group)<-c("Near to settlements + exclosed",
+                          "Near to settlements + grazed",
+                          "Far from settlements + exclosed",
+                          "Far from settlements + grazed" )
+
+df_ell$group<-as.factor(df_ell$group)
+levels(df_ell$group)<-c("Near to settlements + exclosed",
+                        "Near to settlements + grazed",
+                        "Far from settlements + exclosed",
+                        "Far from settlements + grazed")
 
 # Ordination plot across canopy types and woodiness + species picked out of analysis
 BiPlot<-ggplot(NMDSdata, aes(x=NMDS1, y=NMDS2))
-BiPlot<-BiPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = TotalBiomass0, colour= (..level..)),#colour = "green4", #colour = rev(..level..),
-                              binwidth = 10, lwd=1,show.legend = F)
-BiPlot<-BiPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=group), size=1,show.legend=T)
+#BiPlot<-BiPlot+stat_contour(data = ordi.mite.na, aes(x = NMDS1, y = NMDS2, z = TotalBiomass0, colour= (..level..)),#colour = "green4", #colour = rev(..level..),
+#                              binwidth = 10, lwd=1,show.legend = F)
 #BiPlot<-BiPlot+scale_colour_gradient(low="darkgoldenrod1", high="dark green")
+BiPlot<-BiPlot+geom_path(data=df_ell, aes(x=NMDS1, y=NMDS2,linetype=group, colour=group),lwd=1.25,show.legend=T)
 BiPlot<-BiPlot+geom_text(data=species.scores,aes(x=NMDS1,y=NMDS2,label=species),colour="grey10",size=3.5,alpha=0.75)  # add the species labels
+BiPlot<-BiPlot+geom_text(x=1.65, y=1.29,label="Stress: 0.19",size=4.5,colour = "black")
 #BiPlot<-BiPlot+scale_linetype_manual("Proximity to high-density settlements",values =c("Close" ="dashed","Far away" ="solid"))
-BiPlot<-BiPlot+geom_text(x=1.2, y=1.29,label="Stress: 0.19",size=4.5,colour = "black")
-BiPlot<-BiPlot+geom_segment(data = tukulDist.scores,aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),arrow = arrow(length = unit(0.25, "cm")), size=1.75,colour = c( "green4")) #"dark green",
-BiPlot<-BiPlot+geom_segment(data = tukulDensity.scores,aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),arrow = arrow(length = unit(0.25, "cm")), size=1.75,colour = c( "darkgoldenrod2"))
-BiPlot<-BiPlot+geom_text(data= TukulDistance,aes(x=NMDS1+.1,y=NMDS2-.1,label=Species),nudge_x = -0.25,nudge_y = 0.05,size=5,colour = "green4") #"dark green"
-BiPlot<-BiPlot+geom_text(data= TukulDensity,aes(x=NMDS1+.1,y=NMDS2+.1,label=Species),nudge_x = -0.3,nudge_y = -0.1,size=5,colour = "darkgoldenrod2") 
+#BiPlot<-BiPlot+geom_segment(data = tukulDist.scores,aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),arrow = arrow(length = unit(0.25, "cm")), size=1.75,colour = c( "green4")) #"dark green",
+#BiPlot<-BiPlot+geom_segment(data = tukulDensity.scores,aes(x = 0, xend = NMDS1, y = 0, yend = NMDS2),arrow = arrow(length = unit(0.25, "cm")), size=1.75,colour = c( "darkgoldenrod2"))
+#BiPlot<-BiPlot+geom_text(data= TukulDistance,aes(x=NMDS1+.1,y=NMDS2-.1,label=Species),nudge_x = -0.25,nudge_y = 0.05,size=5,colour = "green4") #"dark green"
+#BiPlot<-BiPlot+geom_text(data= TukulDensity,aes(x=NMDS1+.1,y=NMDS2+.1,label=Species),nudge_x = -0.3,nudge_y = -0.1,size=5,colour = "darkgoldenrod2") 
+BiPlot<-BiPlot+scale_colour_manual(values=c("darkgoldenrod2","darkgoldenrod2","goldenrod","goldenrod"))
+BiPlot<-BiPlot+scale_linetype_manual(values=c("solid","longdash","dotdash","dotted"))
 BiPlot<-BiPlot+ #theme_bw() +
   theme(rect = element_rect(fill ="transparent")
         ,panel.background=element_rect(fill="transparent")
@@ -394,25 +407,21 @@ BiPlot<-BiPlot+ #theme_bw() +
         ,legend.direction="vertical"
         ,legend.title=element_text(size=12,color="black")
         ,legend.key = element_rect(colour = NA, fill = NA)
-        ,legend.justification="top" 
+        ,legend.justification="center" 
         ,legend.position ="right" 
         ,legend.spacing.y = unit(.1, "mm")
         ,legend.spacing.x = unit(.1, "mm")
         ,legend.key.width = unit(1.2,"cm"))
+
+BiPlot<-BiPlot+guides(colour=F, 
+                linetype=guide_legend("Proximity to high densities of settlements \n and exclosure treatments \n",
+                override.aes=list(lwd=1, linetype=c("solid","longdash","dotdash","dotted"),col=c("darkgoldenrod2","darkgoldenrod2","goldenrod","goldenrod"), pch=NA)))
+
 BiPlot
 
-
-#BiPlot<-BiPlot+geom_point(aes(fill=excl_open,colour=land_excl,shape=group),stroke=1,show.legend=T, alpha=.75)
-#BiPlot<-BiPlot+geom_text(data= woodyDensity,aes(x=NMDS1-.1,y=NMDS2+.1,label=Species),size=5,colour =  "orangered3")
-#BiPlot<-BiPlot+geom_text(data= Ac.pt,aes(x=MDS1,y=MDS2),label="Ach.asp",size=3.5,colour = "black", fontface="bold")
-#BiPlot<-BiPlot+scale_colour_manual(LanduseTitle,values=c("grey20","grey30","grey30","grey60"))
-#BiPlot<-BiPlot+scale_fill_manual(values=c("grey30","grey80","white","white"))
-#BiPlot<-BiPlot+scale_shape_manual(CanopyTitle,values=c(21,22,24))
-
-
-BiPlot<-BiPlot+guides(colour=F, fill=F,shape = guide_legend("Canopy",override.aes = list(shape=c(21,22,24), size=4,linetype=NA,fill=c("white"),col="grey30", stroke=1)),
-                      linetype = guide_legend("Canopy ",override.aes = list(shape=NA, size=1,linetype=c("solid","dashed","dotted"),fill=NA,col="grey30")) )
-BiPlot
+ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /NechSarBiPlot.jpeg",
+     width= 22, height = 16,units ="cm", bg ="transparent",
+     dpi = 600, limitsize = TRUE)
 
 
 #### PERMANOVA total biomass ####
@@ -1004,7 +1013,8 @@ levels(BSimSpLong$Species)<-c("Bothriochloa insculpta","Chrysopogon plumulosus",
                                "Tetrapogon villosus,","Digitaria macroblephara","Rhynchosia minima","Lintonia nutans","Aristida kenyensis")
 
 levels(BSimSpLong$Treatment)<-c("Grazed","Exclosed")
-levels(BSimSpLong$Season)<-c("Seaon I","Season II", "Season III")
+levels(BSimSpLong$Season)<-c("Seaon I","Season II", "Season III","Seaon I","Season II", "Season III")
+BSimSpLong$Bomadensity<-as.factor(BSimSpLong$Bomadensity)
 levels(BSimSpLong$Bomadensity)<-c("Near to high density pastoral settlements","Far from high density pastoral settlements")
 
 BSimSpLong$SeasonTukuls<-as.factor(with(BSimSpLong, paste(Bomadensity,Season, sep="_")))
@@ -1031,7 +1041,8 @@ pd <- position_dodge(0.65) # Dodge term
 SimNechSar<-ggplot(BSimSpLong,aes(x=Species, y=value,fill=Treatment))
 SimNechSar<-SimNechSar+geom_errorbar(aes(x =Species, ymin=value-sd,ymax=value+sd),width=.05,lwd=.5,position=pd,stat = "identity",linetype="solid",show.legend=F)
 SimNechSar<-SimNechSar+geom_point(size=3.5,shape=21, colour="black",stroke=1,position=pd)
-SimNechSar<-SimNechSar+facet_rep_wrap(~SeasonTukuls, scales="fixed")
+SimNechSar<-SimNechSar+facet_rep_wrap(~SeasonTukuls, scales="fixed",repeat.tick.labels='x')
+#SimNechSar<-SimNechSar+facet_wrap(~SeasonTukuls, scale="fixed")#repeat.tick.labels=F)
 SimNechSar<-SimNechSar+ylab("Plant cover (%)")+xlab("Species")
 SimNechSar<-SimNechSar+scale_x_discrete(limits = rev(levels(BSimSpLong$Species)))
 SimNechSar<-SimNechSar+scale_fill_manual("Exclosures",values=c("black","white"))
@@ -1044,8 +1055,8 @@ SimNechSar<-SimNechSar+theme(plot.background = element_blank()
       ,panel.grid.major.x = element_blank()
       ,panel.grid.major.y = element_blank()
       ,axis.text=element_text(size=12,color="black")
-      ,axis.title.y=element_text(size=12,color="black")
-      ,axis.title.x=element_text(size=12,vjust=-.4,color="black")
+      ,axis.title.y=element_text(size=13,color="black")
+      ,axis.title.x=element_text(size=13,vjust=-.4,color="black")
       ,axis.text.x = element_text(size=12,color="black", 
                                   margin=margin(2.5,2.5,2.5,2.5,"mm"))
       ,axis.text.y = element_text(size=12,color="black", hjust=1, face="italic",
@@ -1060,15 +1071,19 @@ SimNechSar<-SimNechSar+theme(plot.background = element_blank()
       ,legend.title= element_text(size = 13,colour = "black")
       #,legend.text = element_text(size=12,color="black")
       #,legend.key = element_rect(colour = NA, fill = NA)
+      ,panel.spacing.x = unit(c(-10), "lines")
+      #,plot.margin = unit(c(0,0,0,0), "lines")
       ,legend.position = "right"
       ,legend.justification = "top"
       ,legend.direction="vertical")
+#SimNechSar<-SimNechSar+annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf)+
+#  annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf)
 SimNechSar<-SimNechSar+guides(colour=F, linetype=F, shape =F,
-                          fill= guide_legend("Exclosures",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+                          fill= guide_legend("Treatments \n \n Grazing ",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
 
 SimNechSar
 
-ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth/SIMPERcover.jpeg",
+ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/SIMPERcover.jpeg",
        width= 37, height = 18,units ="cm",
        dpi = 600, limitsize = TRUE)
 

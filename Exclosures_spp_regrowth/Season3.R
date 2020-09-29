@@ -9,11 +9,11 @@ library(rgeos)
 library(sp)
 library(raster)
 library(rgdal)
-
 #####################################################
 #### Exclosure biomass ####
 #####################################################
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
 nsbiomass3<-read.table("BiomassSeason3a.txt",header=T,sep="\t")
 
 # Structure of data
@@ -47,6 +47,7 @@ nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
 names(nsreharvest3)
 
 setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/GIS")
 Ex_location<-read.csv(file="PlotNames.csv", sep=",",header=TRUE)
 names(Ex_location)
 levels(Ex_location$OtherName)
@@ -56,6 +57,7 @@ with(plot(Y~X,Ex_location))
 
 #### Join regrowth and dung data ####
 # Regrowth biomass
+setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Herbivore_Count")
 nsherb3<-read.table("CountAverageFeb13_Date.txt",header=T,sep="\t")
 names(nsherb3)
 
@@ -236,7 +238,6 @@ levels(nsReharvestAll$Reharvest.date2)<-c("Short I", "Long", "Short II")
 levels(nsReharvestAll0$Reharvest.date2)<-c("Short I", "Long", "Short II")
 
 aggregate(Biomass~Reharvest.date+Livestock.density+Treatment+fxgroup,nsReharvestAll,mean)
-
 
 # Harvest treatment code
 nsReharvestAll$harvest_trt<-as.factor(with(nsReharvestAll, paste(Harvest,Treatment,Livestock.density, sep="-")))
