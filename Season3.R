@@ -444,7 +444,7 @@ colnames(tinroof_projutm@data)[4]<-"settlements"
 
 FenteSettlements<-rbind(grassroof_projutm,tinroof_projutm)
 
-#### Extract maximum 
+#### Extract distance to densest area of settlements ####
 ds<-density(p,kernel = c("gaussian"))
 RasterBoma<-raster(ds)
 crs(RasterBoma)<-utmproj
