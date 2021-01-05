@@ -267,7 +267,7 @@ xnewG <- aggregate(boma_density~Plot.pair,nsreharvest3loc, mean)
 #xnew<-c(0.00001,0.00002,0.00003)
 points((xnewG$boma_density),dfG(xnewG$boma_density),pch=21,bg="red",col="dark red", cex=1.5)
 2e+06/(1000*1000)
-xnewG$boma_density*(1000*1000)
+xnewG$boma_density*(10000*1000)
 mean(2.908951, 2.352152,2.485859,2.301226) #2.9 settlements km2
 mean(1.388506, 1.241557, 0.836311, 1.465779,1.101417) #1.3 settlements km2 
 
@@ -286,7 +286,7 @@ BomaRandomGrassData$boundaries<-"Nech Sar National Park"
 BomaRandomGrassData$pts<-"Settlements"
 BomaRandomGrassData2<-BomaRandomGrassData
 BomaRandomGrassData2$boundaries<-"Central grassland plains"
-BomaRandomGrassData2$pts<-"Plots"
+BomaRandomGrassData2$pts<-"Plot-pairs"
 BomaRandomGrassData3<-rbind(BomaRandomGrassData,BomaRandomGrassData2)
 levels(as.factor(BomaRandomGrassData3$boundaries))
 
@@ -294,7 +294,7 @@ sum(BomaRandomGrassData$Density) # 99.53285
 xnewG$Settlement.density.km2<-xnewG$boma_density*(10000*1000)
 xnewG$Density<-(dfG(xnewG$boma_density)/80603606)*100
 xnewG$boundaries<-c("Nech Sar National Park","Central grassland plains","Nech Sar National Park")
-xnewG$pts<-c("Settlements","Plots","Settlements")
+xnewG$pts<-c("Settlements","Plot-pairs","Settlements")
 xnewGFar<-xnewG[xnewG$Settlement.density.km2<15,]
 xnewGNear<-xnewG[xnewG$Settlement.density.km2>20,]
 xnewGFar2<-xnewG[xnewG$Settlement.density.km2<15,]
@@ -303,6 +303,9 @@ xnewGFar$Density<-xnewGFar$Density
 xnewGNear$Density<-xnewGNear$Density
 xnewGFar2$Density<-xnewGFar$Density+.05
 xnewGNear2$Density<-xnewGNear$Density+.04
+
+
+BomaRandomGrassData3$pts
 
 # Density plot
 SettDensity<-ggplot(data=BomaRandomGrassData3,aes(x=Settlement.density.km2,y=Density, linetype=boundaries,fill=pts))
@@ -318,7 +321,7 @@ SettDensity<-SettDensity+geom_jitter(data=xnewGFar2, shape="F",color="black",siz
 SettDensity<-SettDensity+geom_jitter(data=xnewGNear2, shape="N",color="black", size=5,stroke=2)
 SettDensity<-SettDensity+scale_y_continuous(limits=c(0,.66),expand=c(0,0))
 SettDensity<-SettDensity+scale_x_continuous(limits=c(0,51),expand=c(0,0))
-SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Density (%)")
+SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Kernel Density Estimation")
 SettDensity<-SettDensity+ggtitle("(c) Interploated settlement densities")
 SettDensity<-SettDensity+
   theme(rect = element_rect(fill ="transparent")
@@ -378,32 +381,6 @@ SettDensity
 #distH<-gDistance(excl_proj,bomas_projutm,byid=T)
 #min_distHerbs<-apply(dist, 2, min)
 nsreharvest3loc$nearest_in_set2<-min_constructionDistance
-
-#### Join herbivore biomass ####
-MyHerb<-c("nearest_in_set2","Date","Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
-nsherb3sub<-nsherb3[MyHerb]
-
-nsreharvest3b<-droplevels(nsreharvest3[nsreharvest3$Treatment=="Control" | nsreharvest3$Treatment=="Exclosure",])
-dim(nsreharvest3)
-
-#### Recheck plot pairs ####
-nsbiomass3herbio<-left_join(nsreharvest3b,nsreharvest3loc, by=c("Plot.name","Reharvest.date","Harvest","rain.mm"),drop=T)
- #merge(nsreharvest3,nsreharvest3loc,by.x='Plot.name',by.y='Plot.name',all.x=T,all.y=F)
-nsbiomass3herbio$fX<-as.factor(nsbiomass3herbio$X)
-levels(nsbiomass3herbio$fX)<-c("B1","B2","B3","B4","B5","B6","B7","B8","B9")
-#write.table(nsbiomass3herbio, "nsbiomass3herbio.txt", row.name=F, sep="\t")
-dim(nsbiomass3herbio)
-
-# Regrowth and herbivore metabolic biomass
-levels(nsreharvest3loc$Reharvest.date) #"21.11.2013" "21.6.2013"  "25.11.2012"
-levels(nsherb3sub$Date)#25.3.2012 26.10.2012 8.2.2013 9.2.2013
-levels(nsherb3sub$Date)<-c("21.6.2013","21.6.2013" ,"21.11.2013", "21.11.2013")
-nsherb3sub$Reharvest.date<-nsherb3sub$Date
-nsherb3sub<-aggregate(.~Reharvest.date+nearest_in_set2,nsherb3sub,mean)
-
-library(dplyr)
-nsreharvest3locHerb<-left_join(nsreharvest3loc,nsherb3sub, by=c("Reharvest.date","nearest_in_set2"),drop=F)
-nsReharvest<-nsreharvest3locHerb
 
 #### Alternative - create krigging maps of herbivores ####
 #### Create krigging maps of herbivore metabolic biomass ####
@@ -467,9 +444,30 @@ colnames(tinroof_projutm@data)[4]<-"settlements"
 
 FenteSettlements<-rbind(grassroof_projutm,tinroof_projutm)
 
+#### Extract maximum 
+ds<-density(p,kernel = c("gaussian"))
+RasterBoma<-raster(ds)
+crs(RasterBoma)<-utmproj
+RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
+maxValue(RasterBoma) #4.749999e-06
+RasterBomaPts<-rasterToPoints(RasterBoma)
+library(dplyr)
+RasterBomaPtsD<-as.data.frame(RasterBomaPts)
+max(RasterBomaPtsD$layer)*(1000*1000)*10 # 47.49999 settlements per km2
+MaxBomaD<-RasterBomaPtsD %>% slice(which.max(layer))
+coordinates(MaxBomaD) <- ~ x + y
+proj4string(MaxBomaD)<-latlongproj
+MaxBomaD
+
+# Density gradient calculation - distance to densest settlement concentration
+MaxBomaDutm<-spTransform(tinroof_proj,utmproj)
+distMaxBoma<-gDistance(excl_proj,MaxBomaDutm,byid=T)
+max_distboma<-apply(distMaxBoma, 2, min)
+nsreharvest3loc$max_distbomas<-max_distboma
+
 #### Kernel density pastoral settlements - Kmeans ####
 ptsF<-coordinates(FenteSettlements)[,1:2]
-pF<-ppp(ptsF[,1],ptsF[,2], window=NechSarBB) # 30 points outside boundary
+pF<-ppp(ptsF[,1],ptsF[,2], window=NechSarOWIN) # 30 points outside boundary
 plot(pF)
 
 dsF<-density(pF,kernel = c("gaussian"))
@@ -485,6 +483,33 @@ nsreharvest3loc$boma_densityFetene<-dsF[p2,drop=TRUE, tight=FALSE, raster=NULL, 
 
 names(nsreharvest3loc)
 distinct_ns <-distinct(nsreharvest3loc , Y, .keep_all = TRUE)
+
+
+#### Join herbivore biomass ####
+MyHerb<-c("nearest_in_set2","Date","Burchells_ZebraMetBio","CattleMetBio","Grants_GazelleMetBio","Greater_KuduMetBio","Swaynes_HartebeestMetBio")
+nsherb3sub<-nsherb3[MyHerb]
+
+nsreharvest3b<-droplevels(nsreharvest3[nsreharvest3$Treatment=="Control" | nsreharvest3$Treatment=="Exclosure",])
+dim(nsreharvest3)
+
+#### Recheck plot pairs ####
+nsbiomass3herbio<-left_join(nsreharvest3b,nsreharvest3loc, by=c("Plot.name","Reharvest.date","Harvest","rain.mm"),drop=T)
+#merge(nsreharvest3,nsreharvest3loc,by.x='Plot.name',by.y='Plot.name',all.x=T,all.y=F)
+nsbiomass3herbio$fX<-as.factor(nsbiomass3herbio$X)
+levels(nsbiomass3herbio$fX)<-c("B1","B2","B3","B4","B5","B6","B7","B8","B9")
+#write.table(nsbiomass3herbio, "nsbiomass3herbio.txt", row.name=F, sep="\t")
+dim(nsbiomass3herbio)
+
+# Regrowth and herbivore metabolic biomass
+levels(nsreharvest3loc$Reharvest.date) #"21.11.2013" "21.6.2013"  "25.11.2012"
+levels(nsherb3sub$Date)#25.3.2012 26.10.2012 8.2.2013 9.2.2013
+levels(nsherb3sub$Date)<-c("21.6.2013","21.6.2013" ,"21.11.2013", "21.11.2013")
+nsherb3sub$Reharvest.date<-nsherb3sub$Date
+nsherb3sub<-aggregate(.~Reharvest.date+nearest_in_set2,nsherb3sub,mean)
+
+library(dplyr)
+nsreharvest3locHerb<-left_join(nsreharvest3loc,nsherb3sub, by=c("Reharvest.date","nearest_in_set2"),drop=F)
+nsReharvest<-nsreharvest3locHerb
 
 # TEST RANDOM SETTLEMENT POINTS IN GRASSLAND
 dim(bomas_proj) # 679
@@ -680,7 +705,7 @@ settlements<-settlements_proj
 RasterBoma<-raster(ds)
 crs(RasterBoma)<-utmproj
 RasterBoma <- projectRaster(RasterBoma, crs=latlongproj)
-RasterBoma@data@values<-RasterBoma@data@values*(1000*10000)
+RasterBoma@data@values<-RasterBoma@data@values*(10000*10000)
 
 #Add labels
 ArbaMinch.centroids<- data.frame(longitude = coordinates(ArbaMinch)[, 1],latitude = coordinates(ArbaMinch)[, 2]) 
@@ -770,9 +795,10 @@ dev.off()
 
 
 ########################################################################
-#### Biomass + Regrowth - H1 and H2 ####
+#### Biomass + Regrowth -  Statistical analysis ####
 ########################################################################
 names(nsReharvest)
+
 # Set up as date
 nsReharvest$Harvest.date<-as.Date(nsReharvest$Harvest.date,"%d.%m.%Y")
 nsReharvest$Reharvest.date<-as.Date(nsReharvest$Reharvest.date,"%d.%m.%Y")
@@ -796,11 +822,11 @@ nsReharvestDouble<- droplevels(nsReharvestb[nsReharvestb$Harvest!="double" & nsR
 names(nsReharvestb2)
 myvars<-c("X","Y","Harvest", "Harvest.date","Reharvest.date","Plot.name" ,"Trt.name","Treatment","Boma.density","Plot.pair",
          "GrassNetReharvestBiomass0","DwarfShrubNetReharvestBiomass0", "HerbNetReharvestBiomass0", "ClimberNetReharvestBiomass0",
-          "TotalBiomass0", "min_distExclosures","boma_density")
+          "TotalBiomass0", "min_distExclosures","boma_density","max_distbomas")
 
 myvars2<-c("X","Y","Harvest", "Harvest.date","Reharvest.date","Plot.name","Trt.name","Treatment","Boma.density","Plot.pair",
           "GrassNetReharvestBiomass1",  "DwarfShrubNetReharvestBiomass1", "HerbNetReharvestBiomass1", "ClimberNetReharvestBiomass1",
-          "TotalBiomass1", "min_distExclosures","boma_density")
+          "TotalBiomass1", "min_distExclosures","boma_density","max_distbomas")
 
 TotalBiomass<-nsReharvestb2[,myvars]
 SingleBiomass<-nsReharvestSingle[,myvars2]
@@ -830,6 +856,17 @@ NechSarBiomass<-rbind(TotalBiomass,SingleBiomass,DoubleBiomass)
 NechSarBiomass$Harvest<-as.factor(NechSarBiomass$Harvest)
 levels(NechSarBiomass$Harvest)
 
+# Check Maximum distance to densest boma compared to boma_density
+
+ggplot(NechSarBiomass, aes(x=(boma_density*10000000),y=max_distbomas))+
+  stat_smooth(method = "lm", col = "red")+geom_point(size=3,shape=21)+theme_classic()
+
+ggplot(NechSarBiomass, aes(x=min_distExclosures,y=max_distbomas))+
+  stat_smooth(method = "lm", col = "red",formula=y~0+x)+geom_point(size=3,shape=21)+theme_classic()
+
+summary(lm((boma_density*10000000)~max_distbomas,NechSarBiomass))
+summary(lm(min_distExclosures~0+max_distbomas,NechSarBiomass))
+
 # Graph biomass
 BiomassMeans<-aggregate(TotalBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,mean)
 BiomassSD<-aggregate(TotalBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,sd)
@@ -847,17 +884,16 @@ NechSarBiomass$Reharvest.date2<-as.factor(NechSarBiomass$Reharvest.date)
 levels(NechSarBiomass$Reharvest.date2)<-c("Short I", "Long", "Short II")
 
 NechSarBiomass$TotalBiomass[NechSarBiomass$TotalBiomass==0]<-0.1 # One zero!
-
 table(NechSarBiomass$fPlot.name,NechSarBiomass$fPlot.pair) # 6 in each plot
 
-# Total biomass model
+#### Total biomass model ####
+library(glmmADMB)
 BioRegrow<-glmmadmb(TotalBiomass~fBoma.density+Harvest+Treatment+
                 fBoma.density:Harvest+Harvest:Treatment+
                 fBoma.density:Treatment+
                 fBoma.density:Harvest:Treatment+
                 (1|fPlot.pair),family="Gamma", data=NechSarBiomass)
 summary(BioRegrow)
-anova(BioRegrow) 
 AIC(BioRegrow) # 5435.36
 
 # Residual vs fitted values
