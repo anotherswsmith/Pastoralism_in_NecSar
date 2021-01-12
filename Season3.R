@@ -321,7 +321,7 @@ SettDensity<-SettDensity+geom_jitter(data=xnewGFar2, shape="F",color="black",siz
 SettDensity<-SettDensity+geom_jitter(data=xnewGNear2, shape="N",color="black", size=5,stroke=2)
 SettDensity<-SettDensity+scale_y_continuous(limits=c(0,.66),expand=c(0,0))
 SettDensity<-SettDensity+scale_x_continuous(limits=c(0,51),expand=c(0,0))
-SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Kernel Density Estimation")
+SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Kernel density estimation")
 SettDensity<-SettDensity+ggtitle("(c) Interploated settlement densities")
 SettDensity<-SettDensity+
   theme(rect = element_rect(fill ="transparent")
@@ -352,7 +352,7 @@ SettDensity<-SettDensity+
         ,legend.key=element_rect(colour = NA, fill = NA)
         ,legend.key.width = unit(1.2,"cm"))
 
-SettDensity<- SettDensity+guides(linetype=guide_legend("Legend symbols \n \n Boundaries",order=2,override.aes=list(lwd=1, linetype=c("dashed","solid"),col="black", pch=NA)),
+SettDensity<- SettDensity+guides(linetype=guide_legend("Legend symbols \n \n Boundaries",order=1,override.aes=list(lwd=1, linetype=c("dashed","solid"),col="black", pch=NA)),
   fill=guide_legend("Points",order = 2, override.aes=list(shape=c(21,21),linetype=F,size=3.5,fill=c("black","white"),col=c("black"), stroke=1)))
 
 SettDensity
@@ -796,6 +796,8 @@ dev.off()
 
 ########################################################################
 #### Biomass + Regrowth -  Statistical analysis ####
+library(glmmADMB)
+library(lme4)
 ########################################################################
 names(nsReharvest)
 
@@ -857,15 +859,36 @@ NechSarBiomass$Harvest<-as.factor(NechSarBiomass$Harvest)
 levels(NechSarBiomass$Harvest)
 
 # Check Maximum distance to densest boma compared to boma_density
+NechSarBiomass$fBoma.density<-as.factor(NechSarBiomass$Boma.density)
+levels(NechSarBiomass$fBoma.density)<-c("Near to settlements","Far from settlements")
 
-ggplot(NechSarBiomass, aes(x=(boma_density*10000000),y=max_distbomas))+
-  stat_smooth(method = "lm", col = "red")+geom_point(size=3,shape=21)+theme_classic()
 
-ggplot(NechSarBiomass, aes(x=min_distExclosures,y=max_distbomas))+
-  stat_smooth(method = "lm", col = "red",formula=y~0+x)+geom_point(size=3,shape=21)+theme_classic()
+library(ggpubr)
+SettMaxD<-ggplot(NechSarBiomass, aes(x=(boma_density*10000000),y=max_distbomas))
+#SettMaxD<-SettMaxD+geom_hline(yintercept=4250, colour="grey")+  geom_hline(yintercept=4450, colour="black")
+SettMaxD<-SettMaxD+ stat_cor(method = "pearson", label.x = 20)#, label.y = 5800)
+SettMaxD<-SettMaxD+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Distance to densest pastoral settlement cluster (m)")
+SettMaxD<-SettMaxD+geom_point(aes(fill=fBoma.density),size=4.5,shape=21, stroke=.75)
+SettMaxD<-SettMaxD+scale_fill_manual("Proximity to settlements",values=c("darkgoldenrod2","white"))
+SettMaxD<-SettMaxD+theme_classic()
+SettMaxD
+
+ggsave("SettMaxD.jpeg",width= 16, height = 12,units ="cm", bg ="transparent",
+     dpi = 600, limitsize = TRUE)
+
+
+ggplot(NechSarBiomass, aes(x=(boma_density*10000000),y=min_distExclosures))+
+stat_cor(method = "pearson", label.x = 20)+
+geom_point(size=3,shape=21)+theme_classic()
 
 summary(lm((boma_density*10000000)~max_distbomas,NechSarBiomass))
 summary(lm(min_distExclosures~0+max_distbomas,NechSarBiomass))
+
+NSplotpairs<-droplevels(NechSarBiomass[!duplicated(NechSarBiomass$fPlot.pair),])
+
+densityMaxDist<-as.data.frame(cbind(NSplotpairs$boma_density,NSplotpairs$max_distboma))
+cor.test(~V1+V2,data=densityMaxDist, method = "pearson",continuity = FALSE,conf.level = 0.95)
+
 
 # Graph biomass
 BiomassMeans<-aggregate(TotalBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,mean)
@@ -887,7 +910,6 @@ NechSarBiomass$TotalBiomass[NechSarBiomass$TotalBiomass==0]<-0.1 # One zero!
 table(NechSarBiomass$fPlot.name,NechSarBiomass$fPlot.pair) # 6 in each plot
 
 #### Total biomass model ####
-library(glmmADMB)
 BioRegrow<-glmmadmb(TotalBiomass~fBoma.density+Harvest+Treatment+
                 fBoma.density:Harvest+Harvest:Treatment+
                 fBoma.density:Treatment+
@@ -978,7 +1000,7 @@ with(NechSarBiomass, {interaction.plot(Treatment,Harvest,TotalBiomass,
 
 #### Difference total biomass and regrowth ####
 myvars3<-c("X","Y","Harvest", "Harvest.date","Reharvest.date","Trt.name","Plot.name","Treatment","Boma.density","Plot.pair",
-           "min_distExclosures","boma_density","Regrow","RegrowGrass","RegrowWoody","RegrowForb")
+           "min_distExclosures","boma_density","max_distbomas","Regrow","RegrowGrass","RegrowWoody","RegrowForb")
 
 # Calculate differences total biomass - regrowth
 # Total
@@ -1146,6 +1168,7 @@ anova(Tot0modDIS6,Tot0modDIS9) #
 # Interaction / settlement density and season
 xyplot(TotalBiomass~min_distExclosures|Treatment*Harvest, NechSarBiomass)
 names(NechSarRegrow)
+
 # Distance to settlement regrowth difference
 BioRegrowDist<-lmer(Regrow~min_distExclosures+Harvest+Treatment+
                       Treatment:min_distExclosures+Treatment:Harvest+
@@ -1201,6 +1224,128 @@ anova(BioRegrowDist6,BioRegrowDist9) #
 #BioRegrowDist6  6 2875.2 2896.8 -1431.6   2863.2 0.379      1     0.5381 #Harvest
 #BioRegrowDist6  6 2875.2 2896.8 -1431.6   2863.2 2.7848      1    0.09516 . #min_distExclosures
 #BioRegrowDist6  6 2875.2 2896.8 -1431.6   2863.2 12.264      1  0.0004616 *** #Treatment
+
+
+#### Total -Mixed model with season as fixed factor - Distance to maximum settlement density ####
+names(NechSarBiomass)
+plot(aggregate(TotalBiomass~max_distbomas+Treatment, NechSarBiomass,mean))
+plot(aggregate(Regrow~max_distbomas+Treatment,NechSarRegrow,mean))
+
+TotMaxD<-glmmadmb(TotalBiomass~max_distbomas+Harvest+Treatment+
+                       Treatment:max_distbomas+Treatment:Harvest+
+                       Harvest:max_distbomas+
+                       Harvest:max_distbomas:Treatment+
+                       (1|fPlot.pair),family="Gamma", data=NechSarBiomass)
+summary(TotMaxD)
+AIC(TotMaxD) #5422.1
+
+# Residual vs fitted values
+E0 <- resid(TotMaxD, type ="pearson")
+F0 <- fitted(TotMaxD)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F0, 
+     y = E0,
+     xlab = "Fitted values",
+     ylab = "Residuals")
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 1) # OK
+
+drop1(TotMaxD, test="Chisq")
+
+# Generate pvalues
+TotMaxD1<-update(TotMaxD,~.-Treatment:max_distbomas:Harvest)
+TotMaxD2<-update(TotMaxD1,~.-Treatment:Harvest)
+TotMaxD3<-update(TotMaxD1,~.-Treatment:max_distbomas)
+TotMaxD4<-update(TotMaxD1,~.-Harvest:max_distbomas)
+TotMaxD5<-update(TotMaxD2,~.-Treatment:max_distbomas)
+TotMaxD6<-update(TotMaxD5,~.-Harvest:max_distbomas)
+
+TotMaxD7<-update(TotMaxD6,~.-Harvest)
+TotMaxD8<-update(TotMaxD6,~.-max_distbomas)
+TotMaxD9<-update(TotMaxD6,~.-Treatment)
+
+# Pvalues
+#NoPar  LogLik Df Deviance Pr(>Chi)
+anova(TotMaxD,TotMaxD1) #
+anova(TotMaxD1,TotMaxD2) # 
+anova(TotMaxD1,TotMaxD3) #
+anova(TotMaxD1,TotMaxD4) # 
+anova(TotMaxD6,TotMaxD7) #
+anova(TotMaxD6,TotMaxD8) #
+anova(TotMaxD6,TotMaxD9) #
+
+#  NoPar  LogLik Df Deviance Pr(>Chi)
+#2    14 -2699.5  2     2.34   0.3104 # Treatment:max_distbomas:Harvest
+#2    12 -2700.7  2     0.88    0.644  # Treatment:Harvest
+#2    12 -2700.7  1    11.46 0.0007111 *** #Treatment:max_distbomas
+#2    12 -2700.7  2     7.18   0.0276 * # Harvest:max_distbomas
+#2     7 -2710.0  2   207.04 < 2.2e-16 *** # Harvest
+#2     7 -2710.0  1     5.54  0.01859 * # max_distbomas
+#2     7 -2710.0  1    68.48 < 2.2e-16 *** # Treatment
+
+names(NechSarRegrow)
+
+# Distance to settlement regrowth difference
+RegrowMaxD<-lmer(Regrow~max_distbomas+Harvest+Treatment+
+                      Treatment:max_distbomas+Treatment:Harvest+
+                      Harvest:max_distbomas+
+                      Harvest:max_distbomas:Treatment+
+                      (1|fPlot.pair),
+                    data=NechSarRegrow)
+summary(RegrowMaxD)
+anova(RegrowMaxD) # Highly signficant
+AIC(RegrowMaxD) # 2877.921
+
+# Residual vs fitted values
+E02DM<- resid(RegrowMaxD, type ="pearson")
+F02DM <- fitted(RegrowMaxD)
+
+par(mfrow = c(1, 1), mar = c(5, 5, 2, 2), cex.lab = 1.5)
+plot(x = F02DM, 
+     y = E02DM,
+     xlab = "Fitted values",
+     ylab = "Residuals")
+abline(v = 0, lwd = 2, col = 2)
+abline(h = 0, lty = 2, col = 1) # Good
+
+#drop1(BioRegrowDist, test="Chisq")
+
+# Generate pvalues
+RegrowMaxD1<-update(RegrowMaxD,~.-max_distbomas:Harvest:Treatment)
+RegrowMaxD2<-update(RegrowMaxD1,~.-Harvest:Treatment)
+RegrowMaxD3<-update(RegrowMaxD1,~.-Treatment:max_distbomas)
+RegrowMaxD4<-update(RegrowMaxD1,~.-max_distbomas:Harvest)
+RegrowMaxD5<-update(RegrowMaxD2,~.-Treatment:max_distbomas)
+RegrowMaxD6<-update(RegrowMaxD5,~.-max_distbomas:Harvest)
+
+RegrowMaxD7<-update(RegrowMaxD6,~.-Harvest)
+RegrowMaxD8<-update(RegrowMaxD6,~.-max_distbomas)
+RegrowMaxD9<-update(RegrowMaxD6,~.-Treatment)
+
+# Pvalues
+#NoPar  LogLik Df Deviance Pr(>Chi)
+anova(RegrowMaxD,RegrowMaxD1) #
+anova(RegrowMaxD1,RegrowMaxD2) # 
+anova(RegrowMaxD1,RegrowMaxD3) #
+anova(RegrowMaxD1,RegrowMaxD4) # 
+anova(RegrowMaxD6,RegrowMaxD7) #
+anova(RegrowMaxD6,RegrowMaxD8) #
+anova(RegrowMaxD6,RegrowMaxD9) #
+
+#npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+#RegrowMaxD    10 2869.4 2905.4 -1424.7   2849.4 1.512  1     0.2188 # max_distbomas:Harvest:Treatment
+#RegrowMaxD1    9 2868.9 2901.3 -1425.5   2850.9 4.0543  1    0.04406 * # Harvest:Treatment
+#RegrowMaxD1    9 2868.9 2901.3 -1425.5   2850.9 0.3393  1     0.5602 # Treatment:max_distbomas
+#RegrowMaxD1    9 2868.9 2901.3 -1425.5   2850.9 9.709  1   0.001834 ** # max_distbomas:Harvest
+#RegrowMaxD6    6 2876.8 2898.4 -1432.4   2864.8 1.5194  1     0.2177 # Harvest
+#RegrowMaxD6    6 2876.8 2898.4 -1432.4   2864.8 0.0452  1     0.8317 # max_distbomas
+#RegrowMaxD6    6 2876.8 2898.4 -1432.4   2864.8 12.317  1  0.0004489 *** #Treatment
+
+
+# Interaction / rgrowth
+xyplot(Regrow~max_distbomas|Harvest, NechSarRegrow)
+
 
 
 ##### Graph grass biomass ####
@@ -1414,7 +1559,6 @@ anova(BioRegrowF6,BioRegrowF9) #
 # 2     7 -646.76  2    4.268   0.1184 #Harvest
 # 2     7 -646.76  1    6.116   0.0134 *#fBoma.density
 # 2     7 -646.76  1     5.38  0.02037 *#Treatment
-
 
 # Graph Forb regrowth
 names(NechSarRegrow)
@@ -1750,10 +1894,13 @@ BiomassMeansALL$FxGroup<-as.factor(BiomassMeansALL$FxGroup)
 #Relabel levels
 levels(BiomassMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
 BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
+BiomassMeansALL$Boma.density<-as.factor(BiomassMeansALL$Boma.density)
 levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
 BiomassMeansALL$Treatment<-as.factor(BiomassMeansALL$Treatment)
 levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
 levels(BiomassMeansALL$Harvest)<-c("Unclipped","Single clipped", "Double clipped")
+
+str(BiomassMeansALL)
 
 # Biomass and regrowth raw biomass
 library(lemon)
@@ -1765,7 +1912,7 @@ BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke
 BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
 BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
 BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
-BioGraph<-BioGraph+ggtitle("(a)")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
+BioGraph<-BioGraph+ggtitle("(a) Previously unclipped biomass vs regrowth after clipping ")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
 BioGraph<-BioGraph+theme_classic()
 BioGraph<-BioGraph+theme(plot.background = element_blank()
                 #,panel.grid.major = element_blank()
@@ -1818,21 +1965,23 @@ RegrowMeansALL<-rbind(RegrowMeans,RegrowMeansG,RegrowMeansF,RegrowMeansW)
 RegrowMeansALL$FxGroup<-as.factor(RegrowMeansALL$FxGroup)
 levels(RegrowMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
 RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
+RegrowMeansALL$Boma.density<-as.factor(RegrowMeansALL$Boma.density)
+RegrowMeansALL$Harvest<-as.factor(RegrowMeansALL$Harvest)
 levels(RegrowMeansALL$Boma.density)<-c("Near to","Far from")
 levels(RegrowMeansALL$Harvest)<-c("Single clipped", "Double clipped")
 
 # Difference between biomass and regrowth
-RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest, size=Biomass))
+RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest)) #,size=Biomass
 RegrowGraph<-RegrowGraph+geom_hline(yintercept =0, col="grey", linetype="dashed")
 RegrowGraph<-RegrowGraph+geom_errorbar(aes(ymin=Regrow-sd, ymax=Regrow+sd),width=.05,lwd=.5,position=position_dodge(width=.65),show.legend=F)
-RegrowGraph<-RegrowGraph+geom_point(position=position_dodge(width=.65),stroke=1,show.legend=F)
-RegrowGraph<-RegrowGraph+scale_radius(range=c(2,8))
+RegrowGraph<-RegrowGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke=1,show.legend=F)
+#RegrowGraph<-RegrowGraph+scale_radius(range=c(2,8))
 RegrowGraph<-RegrowGraph+scale_colour_manual(values=c("grey50", "grey25"))
 RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
 RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
 RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
 RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
-RegrowGraph<-RegrowGraph+ggtitle("(b)")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
+RegrowGraph<-RegrowGraph+ggtitle("(b) Regrowth minus previously unclipped biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
 RegrowGraph<-RegrowGraph+theme_classic()
 RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
                          #,panel.grid.major = element_blank()
@@ -1873,8 +2022,8 @@ grid.arrange(BioGraph,RegrowGraph,ncol=2)
 # Extract legend
 mylegendBio<-get_legend(BioGraph)
 
-filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/", "RegrowGraph3", "_",Sys.Date(), ".jpeg" )
-jpeg (filename, width=32, height=18, res=600, unit="cm")
+filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /", "RegrowGraph3", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=31, height=25, res=600, unit="cm")
 RegrowGraph3 <- arrangeGrob(grid.arrange(BioGraph+ theme(legend.position="none"), RegrowGraph+ theme(legend.position="none"),mylegendBio, ncol=3,widths = c(1,1,.4))) 
 dev.off()
 #ggsave("BioRegrowNechSar.jpeg",width= 20, height = 18,units ="cm", bg ="transparent",

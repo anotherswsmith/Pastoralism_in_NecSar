@@ -35,7 +35,8 @@ nsreharvest3<-droplevels(nsreharvest3[nsreharvest3$Treatment=="Control" | nsreha
 # Add regrowth data to species dataset
 nsreharvest3<-droplevels(nsreharvest3[!is.na(nsreharvest3$Harvest.date),])
 nsreharvest3<-droplevels(nsreharvest3[nsreharvest3$Harvest=="double",])
-nsreharvest3$Season<-nsreharvest3$Reharvest.date
+nsreharvest3$Season<-as.factor(nsreharvest3$Reharvest.date)
+nsSpp2$Season<-as.factor(nsSpp2$Season)
 levels(nsreharvest3$Season)<-c("Short II" ,  "Long" , "Short I")
 levels(nsSpp2$Season)<-c("Short I" ,  "Long" , "Short II")
 nsSpp2$Trt.name<-as.factor(nsSpp2$Trt.name)
@@ -45,7 +46,8 @@ nsSpp2$plot_code<-as.factor(with(nsSpp2, paste(Transect,Block,Trt.name,Season,Re
 nsreharvest3$plot_code<-as.factor(with(nsreharvest3, paste(Transect,Block,Trt.name,Season,Replicate, sep="_")))
 nsreharvest3b<-nsreharvest3[c("Transect","Block","Plot.pair","Treatment","Trt.name","Season","Replicate","plot_code","Boma.density","GrassNetReharvestBiomass1","DwarfShrubNetReharvestBiomass1",
                               "HerbNetReharvestBiomass1","ClimberNetReharvestBiomass1","TotalBiomass1","TotalBiomass0","rain.mm","min_distExclosures","boma_density","Total.cumulative.biomass")]
-nsSpp3<-left_join(nsSpp2,nsreharvest3b, by=c("Transect","Treatment","Block","Trt.name","Season","Replicate","Boma.density","plot_code"),drop=F)
+nsSpp3<-merge(nsSpp2,nsreharvest3b, by=c("Transect","Treatment","Block","Trt.name","Season","Replicate","Boma.density","plot_code"),all.x=T)
+
 
 # Block as a factor
 nsSpp3$fBlock<-as.factor(nsSpp3$Block)
@@ -101,20 +103,20 @@ names(nsSpp3C[11:39])
 
 # USE NMDS
 names(nsSpp3)
-names(nsSpp3[,11:75]) # 65 species # Rosett?
+names(nsSpp3[,12:76]) # 65 species # Rosett?
 
 # Dim checks
 #library(goeveg)
-#dimcheckMDS(nsSpp3[,11:75]) # Between 2 and 3 OK - 4 is best!
+#dimcheckMDS(nsSpp3[,12:76]) # Between 2 and 3 OK - 4 is best!
 #NMDS
-mdsNS<-metaMDS(nsSpp3[,11:75], k = 2,trymax=100, trace =F) 
+mdsNS<-metaMDS(nsSpp3[,12:76], k = 2,trymax=100, trace =F) 
 mdsNS
 #Stress:   0.2912475 # K2 Not good - not believable ties = random!
 #Stress:     0.2145169 # k3
 #Stress:     0.1690075  # k4
 
 # Hellinger transformation
-covers13.log <- log(nsSpp3[,11:75] + 1)
+covers13.log <- log(nsSpp3[,12:76] + 1)
 covers13.hel <- vegan::decostand(covers13.log, method = "hellinger")
 mdsNS.hel<-metaMDS(covers13.hel, k=3, trymax=100,trace =F) 
 mdsNS.hel #0.1968121
@@ -163,7 +165,7 @@ meta_table$Bomadensity<-as.numeric(meta_table$Bomadensity)
 meta_table$Treatment<-as.numeric(meta_table$Treatment)
 meta_table$Season<-as.numeric(meta_table$Season)
 
-names(nsSpp3[,11:75])
+names(nsSpp3[,12:76])
 veg.dist <- vegdist(covers13.hel) # Bray-Curtis
 env.dist <- vegdist(scale(meta_table$Bomadensity), "euclid") # But these are not scaled on Bray-Curtis!
 mantel(veg.dist, env.dist)
@@ -193,15 +195,15 @@ AbbrSpp<-read.csv("VegSppAbbr.csv",header=T,sep=",")
 AbbrSpp$Abbr<-as.factor(AbbrSpp$Abbr)
 
 # Rename column names with abbreviations
-colnames(nsSpp3)[11:75]<-levels(AbbrSpp$Abbr)
+colnames(nsSpp3)[12:76]<-levels(AbbrSpp$Abbr)
 
 # REMOVE SPECIES IF ONLY FOUND IN ONE PLOT....
 # Presences for each species
-dim(nsSpp3[,11:75]) # 65 species
+dim(nsSpp3[,12:76]) # 65 species
 (270/100)*5 # 13.5 
-apply(nsSpp3[,11:75]>=.5,2,sum) # Some species have zero occurence!
-uniquelength <- apply(nsSpp3[,11:75]>=.5,2,sum)
-covers13<-droplevels(subset(nsSpp3[,11:75], select=uniquelength>.5)) # REMOVING SPECIES WITH ZEROS
+apply(nsSpp3[,12:76]>=.5,2,sum) # Some species have zero occurence!
+uniquelength <- apply(nsSpp3[,12:76]>=.5,2,sum)
+covers13<-droplevels(subset(nsSpp3[,12:76], select=uniquelength>.5)) # REMOVING SPECIES WITH ZEROS
 covers13
 apply(covers13,2,function(c)sum(c!=0))
 dim(covers13) #  57 species
@@ -664,8 +666,8 @@ PredDiff2
 # CONTRAST WITHIN PERMANOVA - OVERALL COMMUNITY
 #https://thebiobucket.blogspot.com/2011/08/two-way-permanova-adonis-with-custom.html#more
 # 1st factor = treatment:
-nsSpp3$Livestockdensity<- factor(nsSpp3$Livestockdensity, levels(nsSpp3$Livestockdensity)[c(2,3,1)])
-nsSpp3$Treatment<- factor(nsSpp3$Treatment, levels(nsSpp3$Treatment)[c(2,1)])
+#nsSpp3$Livestockdensity<- factor(as.factor(nsSpp3$Livestockdensity), levels(nsSpp3$Livestockdensity)[c(2,3,1)])
+#nsSpp3$Treatment<- factor(nsSpp3$Treatment, levels(nsSpp3$Treatment)[c(2,1)])
 treat <- nsSpp3$Livestockdensity
 levels(nsSpp3$Livestockdensity)
 # 2nd factor = impact:
@@ -921,8 +923,9 @@ plot(mdsNS, type="n",xlim=c(-1,1), ylim=c(-1,1),
 plot(ordi, col = "dodgerblue1",lwd=1.5,npoints=6, labcex=.75, add = TRUE)
 
 ###############################################################################################
-# Overall spp most asscoicated with specific tukulsx treatment x season combination
+#### Indicator species ####
 ################################################################################################
+names(nsSpp3)
 
 nsSpp3.env<-nsSpp3[,c("fBlock","Bomadensity","Season","Treatment")]
 nsSpp3I<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
@@ -931,8 +934,9 @@ nsSpp3.envI<-droplevels(nsSpp3.env[nsSpp3.env$Date!="21.10.2012",])
 # Livestock density x treatment as a single factor
 #nsSpp3I$Liv_Trt<-as.factor(with(nsSpp3I, paste(Livestockdensity, sep="_")))
 names(nsSpp3)
-simT <- with(nsSpp3, simper(nsSpp3[,11:75],nsSpp3$Bomadensity),permutations=999)
+simT <- with(nsSpp3, simper(nsSpp3[,12:76],nsSpp3$Bomadensity),permutations=999)
 SimpSum<-summary(simT,ordered = TRUE)
+SimpSum
 #sink("SIMPER.summary.txt")
 #print(SimpSum)
 #                                            average        sd   ratio       ava       avb cumsum
@@ -1003,7 +1007,6 @@ BSimSpLongSD<-melt(BSimSD, id.vars=c("Season","Bomadensity","Treatment" ))
 BSimSpLong$sd<-BSimSpLongSD$value
 plot(BSimSpLong$value~BSimSpLong$sd)
 
-
 # Relabel levels
 levels(BSimSpLong$variable)<-c("Bot.ins","Chr.plu","Cyn.nle","Het.con","Tri.fla",
                                "Tet.vill","Dig.mac","Rhy.min","Lin.nut","Ari.ken")
@@ -1011,26 +1014,27 @@ levels(BSimSpLong$variable)<-c("Bot.ins","Chr.plu","Cyn.nle","Het.con","Tri.fla"
 BSimSpLong$Species<-BSimSpLong$variable
 levels(BSimSpLong$Species)<-c("Bothriochloa insculpta","Chrysopogon plumulosus","Cynodon nlemfuensis","Heteropogon contortus,","Triumfetta flavescens",
                                "Tetrapogon villosus,","Digitaria macroblephara","Rhynchosia minima","Lintonia nutans","Aristida kenyensis")
-
+BSimSpLong$Treatment<-as.factor(BSimSpLong$Treatment)
+BSimSpLong$Season<-as.factor(BSimSpLong$Season)
 levels(BSimSpLong$Treatment)<-c("Grazed","Exclosed")
-levels(BSimSpLong$Season)<-c("Seaon I","Season II", "Season III","Seaon I","Season II", "Season III")
+levels(BSimSpLong$Season)<-c("Season I","Season II", "Season III","Seaon I","Season II", "Season III")
 BSimSpLong$Bomadensity<-as.factor(BSimSpLong$Bomadensity)
 levels(BSimSpLong$Bomadensity)<-c("Near to high density pastoral settlements","Far from high density pastoral settlements")
 
 BSimSpLong$SeasonTukuls<-as.factor(with(BSimSpLong, paste(Bomadensity,Season, sep="_")))
 levels(BSimSpLong$SeasonTukuls)<-c(
-"Far from high density pastoral settlements \n Seaon I",   
+"Far from high density pastoral settlements \n Season I",   
 "                                            \n Season II",
 "                                            \n Season III",
-"Near to high density pastoral settlements \n Seaon I",    
+"Near to high density pastoral settlements \n Season I",    
 "                                          \n Season II",  
 "                                          \n Season III")
 
 BSimSpLong$SeasonTukuls<- factor(BSimSpLong$SeasonTukuls, levels = c(
-  "Near to high density pastoral settlements \n Seaon I",    
+  "Near to high density pastoral settlements \n Season I",    
   "                                          \n Season II",  
   "                                          \n Season III",
-  "Far from high density pastoral settlements \n Seaon I",   
+  "Far from high density pastoral settlements \n Season I",   
   "                                            \n Season II",
   "                                            \n Season III"))
 
@@ -1083,15 +1087,18 @@ SimNechSar<-SimNechSar+guides(colour=F, linetype=F, shape =F,
 
 SimNechSar
 
-ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/SIMPERcover.jpeg",
+ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /SIMPERcover.jpeg",
        width= 37, height = 18,units ="cm",
        dpi = 600, limitsize = TRUE)
 
 #### DOMINANT VS CO-DOMINANT SPECIES ####
+library(lme4)
+library(glmmTMB)
+library(DHARMa)
+
 names(nsSpp3)
 DomGrass<-cbind(nsSpp3$BothriochloainsculptaHochstExARichACamus,nsSpp3$ChrysopogonplumulosusHochst)
 nsSpp3$DomGrass<-rowSums(DomGrass)
-ns
 
 ggplot(nsSpp3, aes(y=TotalBiomass1,x=DomGrass, shape=Treatment))+geom_point(size=3.5)+
   facet_wrap(~Bomadensity)+theme_classic()
@@ -1104,6 +1111,64 @@ DomGrassMod<-lmer(TotalBiomass1~DomGrass+Bomadensity+
 
 anova(DomGrassMod)
 drop1(DomGrassMod,test="Chisq")
+
+
+# BothriochloainsculptaHochstExARichACamus cover...
+nsSpp3$BotIns_beta<-nsSpp3$BothriochloainsculptaHochstExARichACamus/100
+nsSpp3$BotIns_beta[nsSpp3$BotIns_beta==0]<-.01
+nsSpp3$BotIns_beta[nsSpp3$BotIns_beta>.99]<-.99
+
+DomGrassB<-glmmTMB(BotIns_beta~Bomadensity+
+                     Treatment+Season+
+                     (1|fBlock), data=nsSpp3, beta_family())
+summary(DomGrassB)
+drop1(DomGrassB,test="Chisq")
+
+# Residual plot
+res <- simulateResiduals(DomGrassB, plot = T) # KS significant deviation, but others very good
+
+# Update and remove factors # issues with interactions
+DomGrassB1 <- update(DomGrassB, .~. -Season)
+DomGrassB2 <- update(DomGrassB, .~. -Treatment)
+DomGrassB3 <- update(DomGrassB, .~. -Bomadensity)
+
+anova(DomGrassB,DomGrassB1)
+anova(DomGrassB,DomGrassB2)
+anova(DomGrassB,DomGrassB3)
+
+#           Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
+#DomGrassB   7 -407.63 -382.44 210.81  -421.63 7.8662      2    0.01958 * # Season
+#DomGrassB   7 -407.63 -382.44 210.81  -421.63 5.5556      1    0.01842 * # Treatment
+#DomGrassB   7 -407.63 -382.44 210.81  -421.63 1.7175      1       0.19 # Bomadensity
+
+# ChrysopogonplumulosusHochst cover...
+nsSpp3$ChrPlu_beta<-nsSpp3$ChrysopogonplumulosusHochst/100
+nsSpp3$ChrPlu_beta[nsSpp3$ChrPlu_beta==0]<-.01
+nsSpp3$ChrPlu_beta[nsSpp3$ChrPlu_beta>.99]<-.99
+
+DomGrassC<-glmmTMB(ChrPlu_beta~Bomadensity+
+                    Treatment+Season+
+                    (1|fBlock), data=nsSpp3, beta_family())
+summary(DomGrassC)
+
+# Residual plot
+resC <- simulateResiduals(DomGrassC, plot = T) # All good
+
+drop1(DomGrassC,test="Chisq")
+
+# Update and remove factors # issues with interactions
+DomGrassC1 <- update(DomGrassC, .~. -Season)
+DomGrassC2 <- update(DomGrassC, .~. -Treatment)
+DomGrassC3 <- update(DomGrassC, .~. -Bomadensity)
+
+anova(DomGrassC,DomGrassC1)
+anova(DomGrassC,DomGrassC2)
+anova(DomGrassC,DomGrassC3)
+
+#           Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
+#DomGrassC   7 -513.83 -488.65 263.92  -527.83 4.0702      2     0.1307 # Season
+#DomGrassC   7 -513.83 -488.65 263.92  -527.83 1.8972      1     0.1684 # Treatment
+#DomGrassC   7 -513.83 -488.65 263.92  -527.83 6.5062      1    0.01075 * # Bomadensity
 
 #####################################
 # Chr Plu
@@ -1687,7 +1752,7 @@ pop[1] <-fit$aov.tab[1,5]
 #pop[1] <- fit$aov.tab[1, 5]
 
 ## set-up a Control object:
-ctrl <-how(plots=Plots(strata =Block/rep.mes),within = Within(type = "series",,mirror = TRUE))
+ctrl <-how(plots=Plots(strata =Block/rep.mes),within = Within(type = "series",mirror = TRUE))
 
 ## Number of observations
 nobs <- nrow(sp)
@@ -2042,29 +2107,31 @@ egg::ggarrange(CenPlotG+ theme(legend.position="none"),
                CenPlotW+ theme(legend.position="none"), ncol=3) #common.legend = T)
 
 ##########################################################################################
-#### Species richness and evenness ####
+#### Species turnover, species richness and evenness####
 # Paritioning the beta - alpha and gamma
 library(lme4)
 library(betapart)
 ##########################################################################################
 
 # OVERALL GRASSLAND COMMUNITY - SPECIES RICHNESS
+names(nsSpp3)
+names(nsSpp3[,12:76])
 
 # Species richness
 # Presences species at close to and further away tukuls densities
 nsSpp3High<-droplevels(nsSpp3[nsSpp3$Bomadensity=="High",])
 nsSpp3Low<-droplevels(nsSpp3[nsSpp3$Bomadensity=="Low",])
 
-apply(nsSpp3High[,11:75]>=.5,2,sum)
-uniquelength <- apply(nsSpp3High[,11:75]>=.5,2,sum)
-TotalspH<-subset(nsSpp3High[,11:75], select=uniquelength>.5) # REMOVING SPECIES IF ONLY FOUND WITH ONE DATA ENTRY
+apply(nsSpp3High[,12:76]>=.5,2,sum)
+uniquelength <- apply(nsSpp3High[,12:76]>=.5,2,sum)
+TotalspH<-subset(nsSpp3High[,12:76], select=uniquelength>.5) # REMOVING SPECIES IF ONLY FOUND WITH ONE DATA ENTRY
 apply(TotalspH,2,function(c)sum(c!=0))
 dim(TotalspH) # 40 species - close to high densities of tukuls
 TotalspHnames<-colnames(TotalspH)
 
-apply(nsSpp3Low[,11:75]>=.5,2,sum)
-uniquelength <- apply(nsSpp3Low[,11:75]>=.5,2,sum)
-TotalspL<-subset(nsSpp3Low[,11:75], select=uniquelength>.5) # REMOVING SPECIES IF ONLY FOUND WITH ONE DATA ENTRY
+apply(nsSpp3Low[,12:76]>=.5,2,sum)
+uniquelength <- apply(nsSpp3Low[,12:76]>=.5,2,sum)
+TotalspL<-subset(nsSpp3Low[,12:76], select=uniquelength>.5) # REMOVING SPECIES IF ONLY FOUND WITH ONE DATA ENTRY
 apply(TotalspL,2,function(c)sum(c!=0))
 dim(TotalspL) # 50 species - further away from high densities of tukuls
 
@@ -2077,11 +2144,12 @@ TotalspHnames[!TotalspHnames %in% TotalspLnames]
 #[7] "Scramblingherb"  # 2 identifies - 5 known species...
 
 # Shannon index, species richness and Eveness
-nsSpp3$Shannon<-diversity(nsSpp3[,11:75], index = "shannon")
-nsSpp3$Simpson<-diversity(nsSpp3[,11:75], index = "simpson")
-nsSpp3$richness<-specnumber(nsSpp3[,11:75], MARGIN = 1)
+nsSpp3$Shannon<-diversity(nsSpp3[,12:76], index = "shannon")
+nsSpp3$Simpson<-diversity(nsSpp3[,12:76], index = "simpson")
+nsSpp3$richness<-specnumber(nsSpp3[,12:76], MARGIN = 1)
 nsSpp3$eveness<-nsSpp3$Shannon/log(nsSpp3$richness)
 
+names(nsSpp3)
 aggregate(Shannon~Bomadensity+Treatment,nsSpp3,mean)
 aggregate(Simpson~Bomadensity+Treatment,nsSpp3,mean)
 aggregate(eveness~Bomadensity+Treatment,nsSpp3,mean)
@@ -2096,13 +2164,10 @@ nsSpp3eve<-aggregate(eveness~Bomadensity+Season+Treatment,nsSpp3,mean)
 ggplot(nsSpp3sprich, aes(y=Shannon,x=Season,shape=Treatment,colour=Bomadensity))+geom_point()+facet_wrap(~Bomadensity+Treatment)
 ggplot(nsSpp3eve, aes(y=eveness,x=Season,shape=Treatment,colour=Bomadensity))+geom_point()+facet_wrap(~Bomadensity+Treatment)
 
-
-ggplot(nsSpp3i, aes(x=Shannon,y=TotalBiomass1,shape=Treatment,colour=Bomadensity))+geom_point(size=2)+facet_wrap(~Bomadensity+Treatment)
-ggplot(nsSpp3i, aes(x=eveness,y=TotalBiomass1,shape=Treatment,colour=Bomadensity))+geom_point(size=2)+facet_wrap(~Bomadensity+Treatment)
-
-
 # Drop Short I
 nsSpp3i<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
+ggplot(nsSpp3i, aes(x=Shannon,y=TotalBiomass1,shape=Treatment,colour=Bomadensity))+geom_point(size=2)+facet_wrap(~Bomadensity+Treatment)
+ggplot(nsSpp3i, aes(x=eveness,y=TotalBiomass1,shape=Treatment,colour=Bomadensity))+geom_point(size=2)+facet_wrap(~Bomadensity+Treatment)
 
 # Shannon diversity
 ShanTot<-lmer(Shannon~TotalBiomass1+Bomadensity+Treatment+
@@ -2115,17 +2180,8 @@ ShanTot<-lmer(Shannon~TotalBiomass1+Bomadensity+Treatment+
                (1 |fBlock), data=nsSpp3i)
 summary(ShanTot)
 anova(ShanTot) 
-AIC(ShanTot) # 184.9415
-drop1(ShanTot, test="Chi") # Only livestock
-
-#                 Sum Sq Mean Sq NumDF DenDF F value  Pr(>F)  
-#Livestockdensity 1.0024 0.50122     2   177   3.415 0.03506 *
-
-# Update model
-ShanTota <- update(ShanTot, .~. -Livestockdensity)
-anova(ShanTot,ShanTota)
-#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
-#ShanTot   5 172.39 188.35 -81.195   162.39 6.8152      2    0.03312 *
+AIC(ShanTot) # 206.7173
+drop1(ShanTot, test="Chi") # None
 
 # Resid versus fit
 E1 <- resid(ShanTot,type="pearson") 
@@ -2135,23 +2191,14 @@ plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
 
-# lsmeans
-library(multcomp)
-library(multcompView)
-library(lsmeans)
-library(lmerTest)
-library(Hmisc)
-library(pbkrtest)
-boxplot(Shannon~Livestockdensity,nsSpp3i) # High has higher diversity
-summary(glht(ShanTot, mcp(Livestockdensity="Tukey")))  # High has higher diversity - marginally
-
 # Eveness
-EveTot<-lmer(eveness~Livestockdensity+Season+rainmm+#Treatment+
-                #Livestockdensity:Season+Season:Treatment+
-                #Livestockdensity:Treatment+   rainmm:Season+ 
-                #rainmm:Livestockdensity+rainmm:Treatment+
-                #Treatment:Livestockdensity:Season+
-                #Treatment:Livestockdensity:rainmm+
+EveTot<-lmer(eveness~TotalBiomass1+Bomadensity+Treatment+
+               #TotalBiomass1:Bomadensity+
+               #TotalBiomass1:Treatment+
+               #TotalBiomass1:Bomadensity:Treatment+
+               #Livestockdensity:Season+Season:Treatment+
+               #Livestockdensity:Treatment+ 
+               #Treatment:Livestockdensity:Season+
                 (1 |Block), data=nsSpp3i)
 summary(EveTot)
 anova(EveTot) 
@@ -2159,25 +2206,8 @@ AIC(EveTot) # -123.8387
 drop1(EveTot, test="Chi") # ALL NS
 bwplot(eveness~Livestockdensity|Season,nsSpp3)
 
-# Update model
-EveTota <- update(EveTot, .~. -Livestockdensity)
-EveTotb <- update(EveTot, .~. -Season)
-EveTotc <- update(EveTot, .~. -rainmm)
-anova(EveTot,EveTota)
-anova(EveTot,EveTotb)
-anova(EveTot,EveTotc)
-#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq) 
-#EveTot   7 -157.48 -135.13 85.740  -171.48 7.5263      2    0.02321 * # Livestockdensity
-#EveTot   7 -157.48 -135.13 85.740  -171.48 5.171      1    0.02297 * # Season
-#EveTot   7 -157.48 -135.13 85.740  -171.48 5.3941      1     0.0202 * # Rain
 
-# Contrasts within the model
-boxplot(eveness~Livestockdensity,nsSpp3i) # Low livestock has lower eveness...
-boxplot(eveness~Season,nsSpp3i) # Long is more even than the rest
-summary(glht(EveTot, mcp(Livestockdensity="Tukey")))  # Lower evenenss with low livestock 
-summary(glht(EveTot, mcp(Season="Tukey"))) 
-
-#### OVERALL COMMUNITY SPECIES CHANGE ####
+#### SPECIES TURNOVER - BETA PART ####
 # Create a factor to define each plot shared across seasons
 nsSpp3$plot_codeII<-as.factor(with(nsSpp3, paste(Transect,Block,Trtname,Replicate, sep="_")))
 
@@ -2186,9 +2216,9 @@ nsSpp3Low<-droplevels(nsSpp3[nsSpp3$Livestockdensity=="Low",])
 nsSpp3Med<-droplevels(nsSpp3[nsSpp3$Livestockdensity=="Medium",])
 nsSpp3High<-droplevels(nsSpp3[nsSpp3$Livestockdensity=="High",])
 
-OverallPresabsL<-ifelse(nsSpp3Low[,10:74]>0,1,0)
-OverallPresabsM<-ifelse(nsSpp3Med[,10:74]>0,1,0)
-OverallPresabsH<-ifelse(nsSpp3High[,10:74]>0,1,0)
+OverallPresabsL<-ifelse(nsSpp3Low[,12:76]>0,1,0)
+OverallPresabsM<-ifelse(nsSpp3Med[,12:76]>0,1,0)
+OverallPresabsH<-ifelse(nsSpp3High[,12:76]>0,1,0)
 
 beta.sample(OverallPresabsL, index.family="sorensen", sites=nrow(nsSpp3Low), samples = 1)
 beta.sample(OverallPresabsM, index.family="sorensen", sites=nrow(nsSpp3Med), samples = 1)
@@ -2200,12 +2230,12 @@ nsSpp3SeasonII<-droplevels(nsSpp3[nsSpp3$Date=="21.11.2013",])
 nsSpp3SeasonIII<-droplevels(nsSpp3[nsSpp3$Date=="21.6.2013",])
 
 # Presence and absence of species
-names(nsSpp3SeasonI[,10:74])
-names(nsSpp3SeasonII[,10:74])
-names(nsSpp3SeasonIII[,10:74])
-PresabsI<-ifelse(nsSpp3SeasonI[,10:74]>0,1,0)
-PresabsII<-ifelse(nsSpp3SeasonII[,10:74]>0,1,0)
-PresabsIII<-ifelse(nsSpp3SeasonIII[,10:74]>0,1,0)
+names(nsSpp3SeasonI[,12:76])
+names(nsSpp3SeasonII[,12:76])
+names(nsSpp3SeasonIII[,12:76])
+PresabsI<-ifelse(nsSpp3SeasonI[,12:76]>0,1,0)
+PresabsII<-ifelse(nsSpp3SeasonII[,12:76]>0,1,0)
+PresabsIII<-ifelse(nsSpp3SeasonIII[,12:76]>0,1,0)
 
 # Convert to betapart objects
 PresabsI.core <- betapart.core(PresabsI)
@@ -2230,15 +2260,15 @@ betaSeason2_3<-rbind(ObtI,ObtII)
 nsSpp3beta<-cbind(nsSpp3S2_3,betaSeason2_3)
 
 # Analyse Beta diversiy (turnover) - OVERALL COMMUNITY
-turnSor<-lmer(beta.sor~Livestockdensity+Treatment+Season+
-               Livestockdensity:Season+#Season:Treatment+
-               Livestockdensity:Treatment+
-               #Treatment:Livestockdensity:Season+
+turnSor<-lmer(beta.sor~Bomadensity+Treatment+Season+
+               # Bomadensity:Season+Season:Treatment+
+               # Bomadensity:Treatment+ 
+               # Treatment:Bomadensity:Season+
                (1 |Block), data=nsSpp3beta)
 
 summary(turnSor)
 anova(turnSor) 
-AIC(turnSor) #-148.959
+AIC(turnSor) #-120.1458
 drop1(turnSor, test="Chi") 
 
 # Resid versus fit
@@ -2257,7 +2287,6 @@ turnSor3b<- update(turnSor3, .~. -Season)
 turnSor3c <- update(turnSor3, .~. -Treatment)
 turnSor3d <- update(turnSor3, .~. -Livestockdensity)
 
-
 anova(turnSor,turnSora)
 anova(turnSor,turnSorb)
 anova(turnSor3,turnSor3b)
@@ -2270,6 +2299,46 @@ anova(turnSor3,turnSor3d)
 #turnSor3   7 -181.97 -159.62 97.985  -195.97 5.8149      1    0.01589 * #Season
 #turnSor3   7 -181.97 -159.62 97.985  -195.97 7.5699      1   0.005935 ** #Treatment
 #turnSor3   7 -181.97 -159.62 97.985  -195.97 5.3486      2    0.06896 . #Livestockdensity
+
+# Average of Beta diversity
+turnSorMean<-aggregate(beta.sor~Bomadensity+Treatment+Season,nsSpp3beta,mean)
+turnSorSD<-aggregate(beta.sor~Bomadensity+Treatment+Season,nsSpp3beta,sd)
+turnSorMean$sd<-turnSorSD$beta.sor
+turnSorMean$code<-as.factor(with(turnSorMean, paste(Bomadensity, Treatment,sep="_")))
+
+turnSorMean$Bomadensity<-as.factor(turnSorMean$Bomadensity)
+turnSorMean$Treatment<-as.factor(turnSorMean$Treatment)
+turnSorMean$Season<-as.factor(turnSorMean$Season)
+turnSorMean$Bomadensity<- relevel(turnSorMean$Bomadensity, ref = "High")
+levels(turnSorMean$Bomadensity)<-c("Near to high density pastoral settlements","Far from high density pastoral settlements")
+levels(turnSorMean$Treatment)<-c("Grazed","Exclosed")
+levels(turnSorMean$Season)<-c("Season II","Season III")
+
+# Plot Beta diversity
+BetaP<-ggplot(turnSorMean,aes(y=beta.sor, x=Season,fill=Treatment))
+BetaP<-BetaP+geom_errorbar(aes( ymin=beta.sor-sd,ymax=beta.sor+sd),position=position_dodge(width=.65),
+                stat = "identity",linetype="solid",width=.2,show.legend=F)
+BetaP<-BetaP+geom_point(size=4.5,shape=21,stroke=1,position=position_dodge(width=.65))
+BetaP<-BetaP+facet_wrap(~Bomadensity)
+BetaP<-BetaP+ylab((expression(italic(beta)~"- diversity")))+xlab("")
+BetaP<-BetaP+scale_fill_manual("Exclosures",values=c("black","white"))
+BetaP<-BetaP+  theme(panel.background=element_rect(fill="transparent"),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.title=element_text(size=14,color="black"),
+                     axis.text=element_text(size=13,color="black"),
+                     strip.background = element_rect(fill="transparent",colour="black"),
+                     strip.text.x = element_text(size=14,margin = margin(.5,.5,.5,.5, "mm"),hjust = .02),
+                     panel.border = element_rect(colour = "black", fill = NA),
+                     legend.text=element_text(size=12),
+                     legend.title=element_text(size=13),
+                     legend.key=element_rect(colour = NA, fill = NA))
+BetaP
+
+ggsave("NechSarBetaDiversity.png",
+       width= 25, height = 16,units ="cm", bg ="transparent",
+       dpi = 600, limitsize = TRUE)
+
 
 # Analyse turnover component (sim) - OVERALL COMMUNITY
 turnbt<-lmer(beta.sim~Livestockdensity+Treatment+Season+rainmm+
@@ -2357,13 +2426,15 @@ plot(x = F1,  y = E1, xlab = "Fitted values",ylab = "Residuals")
 abline(v = 100, lwd = 2, col = 2) 
 abline(h = 0, lty = 2, col = 1)
 
+##################################################################################################
 #### Graphing Shannon, evenness and species turnover for the overall community
-
+##################################################################################################
 library(betapart)
 
 # Create matrics
-nsSpp3$Shannon<-diversity(nsSpp3[,10:74], index = "shannon")
-nsSpp3$richness<-specnumber(nsSpp3[,10:74], MARGIN = 1)
+names(nsSpp3[,12:76])
+nsSpp3$Shannon<-diversity(nsSpp3[,12:76], index = "shannon")
+nsSpp3$richness<-specnumber(nsSpp3[,12:76], MARGIN = 1)
 nsSpp3$eveness<-nsSpp3$Shannon/log(nsSpp3$richness)
 
 #### Compare diversity through time of overall community ####
@@ -2372,9 +2443,9 @@ nsSpp3SeasonII<-droplevels(nsSpp3[nsSpp3$Date=="21.11.2013",])
 nsSpp3SeasonIII<-droplevels(nsSpp3[nsSpp3$Date=="21.6.2013",])
 
 # Presence and absence of species
-PresabsI<-ifelse(nsSpp3SeasonI[,10:74]>0,1,0)
-PresabsII<-ifelse(nsSpp3SeasonII[,10:74]>0,1,0)
-PresabsIII<-ifelse(nsSpp3SeasonIII[,10:74]>0,1,0)
+PresabsI<-ifelse(nsSpp3SeasonI[,12:76]>0,1,0)
+PresabsII<-ifelse(nsSpp3SeasonII[,12:76]>0,1,0)
+PresabsIII<-ifelse(nsSpp3SeasonIII[,12:76]>0,1,0)
 
 # Assign plot (without season) to each row
 row.names(PresabsI) <- paste(nsSpp3SeasonI$plot_codeII, 1:nrow(PresabsI), sep="")
@@ -2393,9 +2464,10 @@ nsSpp3beta<-cbind(nsSpp3S2_3,betaSeason2_3)
 nsSpp3ii<-droplevels(nsSpp3[nsSpp3$Season!="Short I",])
 
 # Summary
-ShanXsum<-aggregate(Shannon~Livestockdensity,nsSpp3,mean)
-EvenXsum<-aggregate(eveness~Livestockdensity,nsSpp3,mean)
-BetaSXsum<-aggregate(beta.sor~Livestockdensity,nsSpp3beta,mean)
+names(nsSpp3)
+ShanXsum<-aggregate(Shannon~Bomadensity,nsSpp3,mean)
+EvenXsum<-aggregate(eveness~Bomadensity,nsSpp3,mean)
+BetaSXsum<-aggregate(beta.sor~Bomadensity,nsSpp3beta,mean)
 
 # Means + SE Shannon, evenness and species turnover 
 # Means
