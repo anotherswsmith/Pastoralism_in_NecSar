@@ -189,10 +189,10 @@ mantel(veg.dist, env.distT, method="spear")
 ############################################################################################################
 # Draw ordiellipse in ggplot2
 # NEEDS TO CONNECT TO SPP MULTIVARIATE SCRIPT...
-setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
-setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
-AbbrSpp<-read.csv("VegSppAbbr.csv",header=T,sep=",")
-AbbrSpp$Abbr<-as.factor(AbbrSpp$Abbr)
+#setwd("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+#setwd("/Users/anotherswsmith/Documents/AfricanBioServices/Colloborators/Desalegn Wana /Pastoralism_in_NecSar/Pastoralism_in_NecSar/Exclosures_spp_regrowth")
+#AbbrSpp<-read.csv("VegSppAbbr.csv",header=T,sep=",")
+#AbbrSpp$Abbr<-as.factor(AbbrSpp$Abbr)
 
 # Rename column names with abbreviations
 colnames(nsSpp3)[12:76]<-levels(AbbrSpp$Abbr)
@@ -926,7 +926,7 @@ plot(ordi, col = "dodgerblue1",lwd=1.5,npoints=6, labcex=.75, add = TRUE)
 #### Indicator species ####
 ################################################################################################
 names(nsSpp3)
-
+nsSpp3$fBomadensity<-as.factor(nsSpp3$Bomadensity)
 nsSpp3.env<-nsSpp3[,c("fBlock","Bomadensity","Season","Treatment")]
 nsSpp3I<-droplevels(nsSpp3[nsSpp3$Date!="21.10.2012",])
 nsSpp3.envI<-droplevels(nsSpp3.env[nsSpp3.env$Date!="21.10.2012",])
@@ -1012,8 +1012,8 @@ levels(BSimSpLong$variable)<-c("Bot.ins","Chr.plu","Cyn.nle","Het.con","Tri.fla"
                                "Tet.vill","Dig.mac","Rhy.min","Lin.nut","Ari.ken")
 
 BSimSpLong$Species<-BSimSpLong$variable
-levels(BSimSpLong$Species)<-c("Bothriochloa insculpta","Chrysopogon plumulosus","Cynodon nlemfuensis","Heteropogon contortus,","Triumfetta flavescens",
-                               "Tetrapogon villosus,","Digitaria macroblephara","Rhynchosia minima","Lintonia nutans","Aristida kenyensis")
+levels(BSimSpLong$Species)<-c("Bothriochloa insculpta","Chrysopogon plumulosus","Cynodon nlemfuensis","Heteropogon contortus","Triumfetta flavescens",
+                               "Tetrapogon villosus","Digitaria macroblephara","Rhynchosia minima","Lintonia nutans","Aristida kenyensis")
 BSimSpLong$Treatment<-as.factor(BSimSpLong$Treatment)
 BSimSpLong$Season<-as.factor(BSimSpLong$Season)
 levels(BSimSpLong$Treatment)<-c("Grazed","Exclosed")
@@ -1040,17 +1040,25 @@ BSimSpLong$SeasonTukuls<- factor(BSimSpLong$SeasonTukuls, levels = c(
 
 
 #### Publication graph: Simper plant cover ####
+
+# Aggregate mean cover per species distance near to and from bomas
+BSimSpLongMean<-aggregate(value~ Species+Treatment+Bomadensity,BSimSpLong,mean)
+BSimSpLongSD<-aggregate(sd~ Species+Treatment+Bomadensity,BSimSpLong,mean)
+BSimSpLongMean$sd<-BSimSpLongSD$sd
+
 library(lemon)
 pd <- position_dodge(0.65) # Dodge term 
-SimNechSar<-ggplot(BSimSpLong,aes(x=Species, y=value,fill=Treatment))
-SimNechSar<-SimNechSar+geom_errorbar(aes(x =Species, ymin=value-sd,ymax=value+sd),width=.05,lwd=.5,position=pd,stat = "identity",linetype="solid",show.legend=F)
+SimNechSar<-ggplot(BSimSpLongMean,aes(x=reorder(Species,-value), y=value,fill=Treatment))
+SimNechSar<-SimNechSar+geom_errorbar(aes(x =reorder(Species,-value), ymin=value-sd,ymax=value+sd),width=.05,lwd=.5,position=pd,linetype="solid",show.legend=F)
 SimNechSar<-SimNechSar+geom_point(size=3.5,shape=21, colour="black",stroke=1,position=pd)
-SimNechSar<-SimNechSar+facet_rep_wrap(~SeasonTukuls, scales="fixed",repeat.tick.labels='x')
+SimNechSar<-SimNechSar+facet_rep_wrap(~Bomadensity, scales="fixed",repeat.tick.labels='x')
+#SimNechSar<-SimNechSar+facet_rep_wrap(~SeasonTukuls, scales="fixed",repeat.tick.labels='x')
 #SimNechSar<-SimNechSar+facet_wrap(~SeasonTukuls, scale="fixed")#repeat.tick.labels=F)
-SimNechSar<-SimNechSar+ylab("Plant cover (%)")+xlab("Species")
-SimNechSar<-SimNechSar+scale_x_discrete(limits = rev(levels(BSimSpLong$Species)))
+SimNechSar<-SimNechSar+scale_y_continuous(limits=c(-12,69), expand=c(0,0), breaks = c(0,20,40,60), labels = c(0,20,40,60))
+SimNechSar<-SimNechSar+ylab("Plant cover (%)")+xlab("Species") +ggtitle("(a) Dominant plant species cover")
+#SimNechSar<-SimNechSar+scale_x_discrete(limits = rev(levels(BSimSpLong$Species)))
 SimNechSar<-SimNechSar+scale_fill_manual("Exclosures",values=c("black","white"))
-SimNechSar<-SimNechSar+coord_flip()
+#SimNechSar<-SimNechSar+coord_flip()
 SimNechSar<-SimNechSar+theme_classic()
 SimNechSar<-SimNechSar+theme(plot.background = element_blank()
       #,panel.grid.major = element_blank()
@@ -1061,9 +1069,9 @@ SimNechSar<-SimNechSar+theme(plot.background = element_blank()
       ,axis.text=element_text(size=12,color="black")
       ,axis.title.y=element_text(size=13,color="black")
       ,axis.title.x=element_text(size=13,vjust=-.4,color="black")
-      ,axis.text.x = element_text(size=12,color="black", 
+      ,axis.text.y = element_text(size=12,color="black", 
                                   margin=margin(2.5,2.5,2.5,2.5,"mm"))
-      ,axis.text.y = element_text(size=12,color="black", hjust=1, face="italic",
+      ,axis.text.x = element_text(size=12,color="black", hjust=1, face="italic", angle=65,
                                   margin=margin(2.5,2.5,2.5,2.5,"mm"))
       ,legend.text=element_text(size=12,color="black")
       ,axis.ticks.length=unit(-1.5, "mm")
@@ -1071,11 +1079,12 @@ SimNechSar<-SimNechSar+theme(plot.background = element_blank()
       ,axis.line.x = element_line(color="black", size = .5)
       ,plot.margin = unit(c(8,5,5,5), "mm")
       ,strip.background = element_blank()
-      ,strip.text.x = element_text(size = 13, hjust=0.05,colour = "black")
+      ,strip.text.x = element_text(size = 12, hjust=0.05,colour = "black")
       ,legend.title= element_text(size = 13,colour = "black")
+      #,panel.spacing = unit(0, "lines")
       #,legend.text = element_text(size=12,color="black")
       #,legend.key = element_rect(colour = NA, fill = NA)
-      ,panel.spacing.x = unit(c(-10), "lines")
+      ,panel.spacing.x = unit(c(-1), "lines") #-10
       #,plot.margin = unit(c(0,0,0,0), "lines")
       ,legend.position = "right"
       ,legend.justification = "top"
@@ -1087,9 +1096,118 @@ SimNechSar<-SimNechSar+guides(colour=F, linetype=F, shape =F,
 
 SimNechSar
 
-ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /SIMPERcover.jpeg",
-       width= 37, height = 18,units ="cm",
-       dpi = 600, limitsize = TRUE)
+#SimNechSar<- grid.grab()
+
+#ggsave("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /SIMPERcover.jpeg",
+#       width= 37, height = 18,units ="cm",
+#       dpi = 600, limitsize = TRUE)
+
+# Select only dominant species 
+DompSppList<-c("Bothriochloa insculpta","Chrysopogon plumulosus") # "Cynodon nlemfuensis","Heteropogon contortus"
+DomSpLong<-droplevels(BSimSpLong[BSimSpLong$Species %in% DompSppList,])
+names(DomSpLong)
+levels(DomSpLong$Bomadensity)<-c("Near to","Far from")
+
+DomSpLong$SeasonTukuls<-as.factor(with(DomSpLong, paste(Species,Bomadensity,Treatment, sep="_")))
+
+# Manually edit geom_text - requires various 
+names(DomSpLong)
+levels(DomSpLong$Bomadensity)
+ann_textSp <- data.frame(value=66 ,sd=66,
+                        lab = "(c) Chrysopogon plumulosus",
+                        Species=factor("Chrysopogon plumulosus",levels = c("Bothriochloa insculpta","Chrysopogon plumulosus")),
+                        Bomadensity=factor("Near to",levels = c("Near to","Far from")),
+                        Treatment =factor("Grazed",levels = c("Grazed", "Exclosed")),
+                        Season =factor("Season I",levels = c("Season I", "Season II", "Season III")),
+                        SeasonTukuls=factor("Chrysopogon plumulosus_Far from_Exclosed",levels = c( "Bothriochloa insculpta_Far from_Exclosed" ,"Bothriochloa insculpta_Far from_Grazed" , 
+                                                                                                   "Bothriochloa insculpta_Near to_Exclosed"  ,"Bothriochloa insculpta_Near to_Grazed" ,  
+                                                                                                   "Chrysopogon plumulosus_Far from_Exclosed" ,"Chrysopogon plumulosus_Far from_Grazed",
+                                                                                                   "Chrysopogon plumulosus_Near to_Exclosed",  "Chrysopogon plumulosus_Near to_Grazed")))
+                                                                                                   
+ann_textNr <- data.frame(value=65 ,sd=65,
+                         lab = "Near high density pastoral settlements",
+                         Species=factor("Bothriochloa insculpta",levels = c("Bothriochloa insculpta","Chrysopogon plumulosus")),
+                         Bomadensity=factor("Near to",levels = c("Near to","Far from")),
+                         Treatment =factor("Grazed",levels = c("Grazed", "Exclosed")),
+                         Season =factor("Season I",levels = c("Season I", "Season II", "Season III")),
+                         SeasonTukuls=factor("Bothriochloa insculpta_Near to_Exclosed",levels = c( "Bothriochloa insculpta_Far from_Exclosed" ,"Bothriochloa insculpta_Far from_Grazed" , 
+                                                                                                    "Bothriochloa insculpta_Near to_Exclosed"  ,"Bothriochloa insculpta_Near to_Grazed" ,  
+                                                                                                    "Chrysopogon plumulosus_Far from_Exclosed" ,"Chrysopogon plumulosus_Far from_Grazed",
+                                                                                                    "Chrysopogon plumulosus_Near to_Exclosed",  "Chrysopogon plumulosus_Near to_Grazed")))
+ann_textFf <- data.frame(value=65 ,sd=65,
+                         lab = "Far from high density pastoral settlements",
+                         Species=factor("Bothriochloa insculpta",levels = c("Bothriochloa insculpta","Chrysopogon plumulosus")),
+                         Bomadensity=factor("Far from",levels = c("Near to","Far from")),
+                         Treatment =factor("Grazed",levels = c("Grazed", "Exclosed")),
+                         Season =factor("Season I",levels = c("Season I", "Season II", "Season III")),
+                         SeasonTukuls=factor("Bothriochloa insculpta_Far from_Exclosed",levels = c( "Bothriochloa insculpta_Far from_Exclosed" ,"Bothriochloa insculpta_Far from_Grazed" , 
+                                                                                                    "Bothriochloa insculpta_Near to_Exclosed"  ,"Bothriochloa insculpta_Near to_Grazed" ,  
+                                                                                                    "Chrysopogon plumulosus_Far from_Exclosed" ,"Chrysopogon plumulosus_Far from_Grazed",
+                                                                                                    "Chrysopogon plumulosus_Near to_Exclosed",  "Chrysopogon plumulosus_Near to_Grazed")))
+#### Publication graph: Simper plant cover - domintant species only ####
+library(lemon)
+pd <- position_dodge(0.45) # Dodge term 
+SimDomSp<-ggplot(DomSpLong,aes(fill=Treatment, x=Season, y=value,group=SeasonTukuls))
+SimDomSp<-SimDomSp+geom_line(stat = "identity",position=pd, linetype="dashed", colour="black")
+SimDomSp<-SimDomSp+geom_errorbar(stat = "identity", aes(x=Season, ymin=value-sd,ymax=value+sd),width=.05,lwd=.5,position=pd,linetype="solid",show.legend=F) #stat = "identity",
+SimDomSp<-SimDomSp+geom_point(stat = "identity",shape=21,size=3.5, colour="black",stroke=1,position=pd,show.legend = T)
+SimDomSp<-SimDomSp+facet_rep_wrap(~Species+Bomadensity, ncol=2, scales="fixed",repeat.tick.labels='none')   # strip.position = "bottom")
+SimDomSp<-SimDomSp+ylab("Plant cover (%)")+xlab ("Season") + ggtitle(expression(paste("(b)", italic(" Bothriochloa insculpta")))) #"(b) Bothriochloa insculpta")
+SimDomSp<-SimDomSp+geom_text(data = ann_textNr, label =  "Near high density pastoral settlements", size=4.1,color="black",nudge_x = -.55, hjust=0,show.legend = F) #hjust="inward"
+SimDomSp<-SimDomSp+geom_text(data = ann_textFf, label =  "Far from high density pastoral settlements", size=4.1,color="black",nudge_x = -.55, hjust=0,show.legend = F) #hjust="inward"
+SimDomSp<-SimDomSp+geom_text(data = ann_textSp, label =  expression(paste("(c)",italic(" Chrysopogon plumulosus"))), size=4.55,color="black",nudge_x = -.55, hjust=0,show.legend = F) #hjust="inward"
+#xlab("Near to                               Far from                      \n                          Proximity to high density settlements")
+SimDomSp<-SimDomSp+scale_shape_manual("Season",values=c(21,24,22))
+SimDomSp<-SimDomSp+scale_y_continuous(limits=c(-12,69), expand = c(0,0))
+SimDomSp<-SimDomSp+scale_fill_manual("Exclosures",values=c("black","white"))
+SimDomSp<-SimDomSp+theme_classic()
+SimDomSp<-SimDomSp+theme(plot.background = element_blank(),
+                              panel.grid.minor = element_blank(),
+                              panel.border = element_blank(),
+                              panel.grid.major.x = element_blank(),
+                              panel.grid.major.y = element_blank(),
+                              panel.spacing.x = unit(-1, "lines"),
+                              panel.spacing.y = unit(1, "lines"),
+                              strip.text = element_blank(),
+                              strip.background = element_blank(),
+                              strip.placement = "outside",
+                              axis.ticks.length=unit(-1.5, "mm"),
+                              axis.title.y=element_text(size=13,color="black"),
+                              axis.title.x=element_text(size=13,vjust=-.4,color="black"),
+                              axis.text.y = element_text(size=12,color="black", 
+                                                    margin=margin(2.5,2.5,2.5,2.5,"mm")),
+                              axis.text.x = element_text(size=12,color="black", 
+                                                     margin=margin(2.5,2.5,2.5,2.5,"mm")),
+                         legend.text= element_text(size = 12,colour = "black"),
+                         legend.title= element_text(size = 13,colour = "black"),
+                         legend.position = "right",
+                         legend.justification = "center",
+                         legend.direction="vertical")
+#SimDomSp<-SimDomSp+annotate("segment", x=-Inf, xend=Inf, y=-Inf, yend=-Inf, size=.75)
+SimDomSp<-SimDomSp+guides(colour=F, linetype=F, shape =F,
+                              fill= guide_legend("Treatments \n \n Grazing ",override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+SimDomSp
+
+#SimDomSp<- grid.grab()
+#is.grob(SimDomSp)
+
+# Combine plots - cover and change in cover through seasons
+library(grid)
+library(gridExtra)
+library(egg)
+library(ggpubr)
+
+egg::ggarrange(SimNechSar+theme(legend.position="none"), SimDomSp, ncol=2) #common.legend = T)
+
+p5 <- grid.arrange(SimNechSar+theme(legend.position="none"), SimDomSp,ncol=2,heights =c(20),widths=c(40,40)) 
+
+filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /Biotropica_revisions/", "Dominant_spp_cover", "_",Sys.Date(), ".jpeg" )
+jpeg (filename, width=42, height=20, res=400, unit="cm")
+p5 <- grid.arrange(SimNechSar+theme(legend.position="none"), SimDomSp,ncol=2,heights =c(20),widths=c(40,40)) 
+
+dev.off()
+
+
 
 #### DOMINANT VS CO-DOMINANT SPECIES ####
 library(lme4)
@@ -1169,6 +1287,8 @@ anova(DomGrassC,DomGrassC3)
 #DomGrassC   7 -513.83 -488.65 263.92  -527.83 4.0702      2     0.1307 # Season
 #DomGrassC   7 -513.83 -488.65 263.92  -527.83 1.8972      1     0.1684 # Treatment
 #DomGrassC   7 -513.83 -488.65 263.92  -527.83 6.5062      1    0.01075 * # Bomadensity
+
+aggregate(ChrPlu_beta~Bomadensity,nsSpp3,mean)
 
 #####################################
 # Chr Plu
@@ -1409,6 +1529,7 @@ abline(lm(High_Low.average~percent,SimpOccur))
 
 ggplot(SimpOccur, aes(x=percent, y= High_Low.average*100, label=sppAB))+
 geom_text(aes(label=sppAB),hjust=0, vjust=0)
+
 ##########################################################################
 #### Grasses ####
 ##########################################################################

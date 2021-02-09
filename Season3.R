@@ -321,7 +321,7 @@ SettDensity<-SettDensity+geom_jitter(data=xnewGFar2, shape="F",color="black",siz
 SettDensity<-SettDensity+geom_jitter(data=xnewGNear2, shape="N",color="black", size=5,stroke=2)
 SettDensity<-SettDensity+scale_y_continuous(limits=c(0,.66),expand=c(0,0))
 SettDensity<-SettDensity+scale_x_continuous(limits=c(0,51),expand=c(0,0))
-SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Kernel density estimation")
+SettDensity<-SettDensity+xlab(expression(paste("Settlement density (",km^-2,")")))+ylab("Kernel probability density")
 SettDensity<-SettDensity+ggtitle("(c) Interploated settlement densities")
 SettDensity<-SettDensity+
   theme(rect = element_rect(fill ="transparent")
@@ -888,7 +888,6 @@ NSplotpairs<-droplevels(NechSarBiomass[!duplicated(NechSarBiomass$fPlot.pair),])
 
 densityMaxDist<-as.data.frame(cbind(NSplotpairs$boma_density,NSplotpairs$max_distboma))
 cor.test(~V1+V2,data=densityMaxDist, method = "pearson",continuity = FALSE,conf.level = 0.95)
-
 
 # Graph biomass
 BiomassMeans<-aggregate(TotalBiomass~Treatment+Boma.density+Harvest,NechSarBiomass,mean)
@@ -1912,7 +1911,7 @@ BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke
 BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
 BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
 BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
-BioGraph<-BioGraph+ggtitle("(a) Previously unclipped biomass vs regrowth after clipping ")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
+BioGraph<-BioGraph+ggtitle("(a) Biomass vs regrowth")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
 BioGraph<-BioGraph+theme_classic()
 BioGraph<-BioGraph+theme(plot.background = element_blank()
                 #,panel.grid.major = element_blank()
@@ -1981,7 +1980,7 @@ RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
 RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
 RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
 RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
-RegrowGraph<-RegrowGraph+ggtitle("(b) Regrowth minus previously unclipped biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
+RegrowGraph<-RegrowGraph+ggtitle("(b) Regrowth minus biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
 RegrowGraph<-RegrowGraph+theme_classic()
 RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
                          #,panel.grid.major = element_blank()
