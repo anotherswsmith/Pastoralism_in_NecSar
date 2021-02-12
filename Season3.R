@@ -667,7 +667,7 @@ p1<-p1+layer(sp.polygons(ke0c))
 p1<-p1+layer(sp.polygons(dj0c))
 p1<-p1+layer(sp.polygons(EtLakesCrop, fill="dodgerblue"))
 p1<-p1+layer(sp.polygons(NechSarBB , col="black", lwd=2.5))
-p1<-p1+layer(sp.text(coordinates(eth0.Cent), txt = c("Ethiopia","Somalia", "South \n Sundan","Eritrea", "Kenya","Djibouti","Sudan"), scale=.85))
+p1<-p1+layer(sp.text(coordinates(eth0.Cent), txt = c("Ethiopia","Somalia", "South \n Sudan","Eritrea", "Kenya","Djibouti","Sudan"), scale=.85))
 p1
 
 # Colourkey
