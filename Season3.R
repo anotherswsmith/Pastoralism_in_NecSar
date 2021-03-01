@@ -1891,13 +1891,14 @@ BiomassMeansALL<-rbind(BiomassMeans,BiomassMeansG,BiomassMeansF,BiomassMeansW)
 BiomassMeansALL$FxGroup<-as.factor(BiomassMeansALL$FxGroup)
 
 #Relabel levels
-levels(BiomassMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
-BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
+levels(BiomassMeansALL$FxGroup)<-c("Dwarf shrub","Forb","Graminoid","Total")
+BiomassMeansALL$FxGroup<- factor(BiomassMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf shrub"))
+levels(BiomassMeansALL$FxGroup)<-c("(a) Total ", "(b) Graminoid","(c) Forb","(d) Dwarf shrub")
 BiomassMeansALL$Boma.density<-as.factor(BiomassMeansALL$Boma.density)
 levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
 BiomassMeansALL$Treatment<-as.factor(BiomassMeansALL$Treatment)
 levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
-levels(BiomassMeansALL$Harvest)<-c("Unclipped","Single clipped", "Double clipped")
+levels(BiomassMeansALL$Harvest)<-c("Original biomass","First clipping", "Second clipping")
 
 str(BiomassMeansALL)
 
@@ -1911,7 +1912,8 @@ BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke
 BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
 BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
 BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
-BioGraph<-BioGraph+ggtitle("(a) Biomass vs regrowth")+xlab("Proximity to high density settlements") + ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
+BioGraph<-BioGraph+ggtitle("Original biomass vs regrowth")+xlab("Proximity to high density settlements")
+BioGraph<-BioGraph+ylab(expression(paste("Biomass (g/",m^2,")")))  #ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
 BioGraph<-BioGraph+theme_classic()
 BioGraph<-BioGraph+theme(plot.background = element_blank()
                 #,panel.grid.major = element_blank()
@@ -1940,9 +1942,16 @@ BioGraph<-BioGraph+theme(plot.background = element_blank()
                 ,legend.direction="vertical")
                # ,legend.spacing.y = unit(-0.5, "mm"))
 #BioGraph<-BioGraph+annotate(geom = 'segment', y =-10, yend =-10, color = 'black', x = -Inf, xend = Inf, size = .75) 
-BioGraph<-BioGraph+guides(colour=F, linetype=F, shape = guide_legend("Clipping",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("white"),col="black", stroke=1)),
-                          fill= guide_legend("Treatments \n \n Grazing ",order=1,override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
+BioGraph<-BioGraph+guides(colour=F, linetype=F, fill= F, shape = guide_legend(order=1,"Treatments \n \n Grazed",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("black"),col="black", stroke=1)))
+                          #fill= guide_legend("Treatments \n \n Grazing ",order=1,override.aes = list(shape=c(22), size=5,fill=c("black","white"),col="black", stroke=1)))
 BioGraph
+
+BiomassMeansALL2<-BiomassMeansALL
+levels(BiomassMeansALL2$Harvest)
+BioGraph2 <-  BioGraph+ geom_point(data=BiomassMeansALL2, aes(y=Biomass, x=Boma.density,colour=Harvest))
+BioGraph2<-  BioGraph2+guides(linetype=F, fill= F, colour = guide_legend("Exclosed",override.aes = list(shape=c(21,24,22), size=4.5,fill=c("white"),col="black", stroke=1)))
+BioGraph2
+
 
 # Regrowth
 colnames(RegrowMeans)[4]<-"Regrow"
@@ -1957,17 +1966,18 @@ colnames(RegrowMeansW)[6]<-"Biomass"
 RegrowMeans$FxGroup<-"Total"
 RegrowMeansG$FxGroup<-"Graminoid"
 RegrowMeansF$FxGroup<-"Forb"
-RegrowMeansW$FxGroup<-"Dwarf woody"
+RegrowMeansW$FxGroup<-"Dwarf shrub"
 
 #Relabel levels
 RegrowMeansALL<-rbind(RegrowMeans,RegrowMeansG,RegrowMeansF,RegrowMeansW)
 RegrowMeansALL$FxGroup<-as.factor(RegrowMeansALL$FxGroup)
-levels(RegrowMeansALL$FxGroup)<-c("Dwarf woody","Forb","Graminoid","Total")
-RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf woody"))
+levels(RegrowMeansALL$FxGroup)<-c("Dwarf shrub","Forb","Graminoid","Total")
+RegrowMeansALL$FxGroup<- factor(RegrowMeansALL$FxGroup, levels = c("Total", "Graminoid","Forb","Dwarf shrub"))
+levels(RegrowMeansALL$FxGroup)<-c("(e) Total ", "(f) Graminoid","(g) Forb","(h) Dwarf shrub")
 RegrowMeansALL$Boma.density<-as.factor(RegrowMeansALL$Boma.density)
 RegrowMeansALL$Harvest<-as.factor(RegrowMeansALL$Harvest)
 levels(RegrowMeansALL$Boma.density)<-c("Near to","Far from")
-levels(RegrowMeansALL$Harvest)<-c("Single clipped", "Double clipped")
+levels(RegrowMeansALL$Harvest)<-c("First clipping", "Second clipping")
 
 # Difference between biomass and regrowth
 RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest)) #,size=Biomass
@@ -1980,7 +1990,7 @@ RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
 RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
 RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
 RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
-RegrowGraph<-RegrowGraph+ggtitle("(b) Regrowth minus biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,"/season)")))
+RegrowGraph<-RegrowGraph+ggtitle("Regrowth minus original biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,")")))
 RegrowGraph<-RegrowGraph+theme_classic()
 RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
                          #,panel.grid.major = element_blank()
@@ -2019,7 +2029,7 @@ egg::ggarrange(BioGraph,RegrowGraph, ncol = 2) # common.legend = T,legend="right
 grid.arrange(BioGraph,RegrowGraph,ncol=2)
              
 # Extract legend
-mylegendBio<-get_legend(BioGraph)
+mylegendBio<-get_legend(BioGraph2)
 
 filename <- paste0("/Users/stuartsmith/Documents/zAfricanBioServices/Collaborators/Desalegn Wana /", "RegrowGraph3", "_",Sys.Date(), ".jpeg" )
 jpeg (filename, width=31, height=25, res=600, unit="cm")
