@@ -862,7 +862,6 @@ levels(NechSarBiomass$Harvest)
 NechSarBiomass$fBoma.density<-as.factor(NechSarBiomass$Boma.density)
 levels(NechSarBiomass$fBoma.density)<-c("Near to settlements","Far from settlements")
 
-
 library(ggpubr)
 SettMaxD<-ggplot(NechSarBiomass, aes(x=(boma_density*10000000),y=max_distbomas))
 #SettMaxD<-SettMaxD+geom_hline(yintercept=4250, colour="grey")+  geom_hline(yintercept=4450, colour="black")
@@ -908,6 +907,17 @@ levels(NechSarBiomass$Reharvest.date2)<-c("Short I", "Long", "Short II")
 NechSarBiomass$TotalBiomass[NechSarBiomass$TotalBiomass==0]<-0.1 # One zero!
 table(NechSarBiomass$fPlot.name,NechSarBiomass$fPlot.pair) # 6 in each plot
 
+
+
+# Exclosure locations
+NechSarBiomass_proj <-NechSarBiomass
+coordinates(NechSarBiomass_proj)<- ~ X + Y
+proj4string(NechSarBiomass_proj)<-utmproj
+NechSarBiomass_projLAT<-spTransform(NechSarBiomass_proj,latlongproj)
+extent(NechSarBiomass_projLAT)
+write.csv(NechSarBiomass_projLAT,file="NechSarBiomass_projLAT.csv")
+
+names(NechSarBiomass)
 #### Total biomass model ####
 BioRegrow<-glmmadmb(TotalBiomass~fBoma.density+Harvest+Treatment+
                 fBoma.density:Harvest+Harvest:Treatment+

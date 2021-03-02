@@ -24,6 +24,8 @@ names(nsSpp)
 head(nsSpp)
 str(nsSpp)
 
+
+
 nsreharvest3<-read.table("ProductivitySeason3.txt",header=T,sep="\t")
 names(nsreharvest3)
 dim(nsreharvest3) # 24
@@ -103,7 +105,7 @@ names(nsSpp3C[11:39])
 
 # USE NMDS
 names(nsSpp3)
-names(nsSpp3[,12:76]) # 65 species # Rosett?
+names(nsSpp3[,12:76]) # 65 species #
 
 # Dim checks
 #library(goeveg)
