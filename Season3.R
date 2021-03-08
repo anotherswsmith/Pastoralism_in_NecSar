@@ -907,8 +907,6 @@ levels(NechSarBiomass$Reharvest.date2)<-c("Short I", "Long", "Short II")
 NechSarBiomass$TotalBiomass[NechSarBiomass$TotalBiomass==0]<-0.1 # One zero!
 table(NechSarBiomass$fPlot.name,NechSarBiomass$fPlot.pair) # 6 in each plot
 
-
-
 # Exclosure locations
 NechSarBiomass_proj <-NechSarBiomass
 coordinates(NechSarBiomass_proj)<- ~ X + Y
@@ -1803,7 +1801,6 @@ ggplot(BiomassMeans, aes(y=TotalBiomass, x=Boma.density, colour=Harvest, shape=T
 geom_errorbar(aes(ymin=TotalBiomass-sd, ymax=TotalBiomass+sd),width=.1,lwd=1,position=position_dodge(width=.65),show.legend=F)+
 geom_point(size=4.5,position=position_dodge(width=.65))+theme_classic()
 
-
 ##### Grassland regrowth #####
 RegrowMeans<-aggregate(Regrow~Treatment+Boma.density+Harvest,NechSarRegrow,mean)
 RegrowSD<-aggregate(Regrow~Treatment+Boma.density+Harvest,NechSarRegrow,sd)
@@ -1908,7 +1905,7 @@ BiomassMeansALL$Boma.density<-as.factor(BiomassMeansALL$Boma.density)
 levels(BiomassMeansALL$Boma.density)<-c("Near to","Far from")
 BiomassMeansALL$Treatment<-as.factor(BiomassMeansALL$Treatment)
 levels(BiomassMeansALL$Treatment)<-c("Grazed","Exclosed")
-levels(BiomassMeansALL$Harvest)<-c("Original biomass","First clipping", "Second clipping")
+levels(BiomassMeansALL$Harvest)<-c("Original biomass","First regrowth", "Second regrowth")
 
 str(BiomassMeansALL)
 
@@ -1922,7 +1919,7 @@ BioGraph<-BioGraph+geom_point(size=4.5,position=position_dodge(width=.65),stroke
 BioGraph<-BioGraph+scale_colour_manual(values=c("grey75","grey50", "grey25"))
 BioGraph<-BioGraph+scale_shape_manual("Harvest",values=c(21,24,22))
 BioGraph<-BioGraph+scale_fill_manual("Exclosures",values=c("black","white"))
-BioGraph<-BioGraph+ggtitle("Original biomass vs regrowth")+xlab("Proximity to high density settlements")
+BioGraph<-BioGraph+ggtitle("Original biomass vs regrowth")+xlab("Proximity to high density of settlements")
 BioGraph<-BioGraph+ylab(expression(paste("Biomass (g/",m^2,")")))  #ylab(expression(paste("Biomass (g/",m^2,") & regrowth (g/",m^2,"/season)")))
 BioGraph<-BioGraph+theme_classic()
 BioGraph<-BioGraph+theme(plot.background = element_blank()
@@ -1987,7 +1984,7 @@ levels(RegrowMeansALL$FxGroup)<-c("(e) Total ", "(f) Graminoid","(g) Forb","(h) 
 RegrowMeansALL$Boma.density<-as.factor(RegrowMeansALL$Boma.density)
 RegrowMeansALL$Harvest<-as.factor(RegrowMeansALL$Harvest)
 levels(RegrowMeansALL$Boma.density)<-c("Near to","Far from")
-levels(RegrowMeansALL$Harvest)<-c("First clipping", "Second clipping")
+levels(RegrowMeansALL$Harvest)<-c("First regrowth", "Second regrowth")
 
 # Difference between biomass and regrowth
 RegrowGraph<-ggplot(RegrowMeansALL, aes(y=Regrow, x=Boma.density,fill=Treatment,shape=Harvest)) #,size=Biomass
@@ -2000,7 +1997,7 @@ RegrowGraph<-RegrowGraph+scale_shape_manual(values=c(24,22))
 RegrowGraph<-RegrowGraph+scale_fill_manual(values=c("black","white"))
 RegrowGraph<-RegrowGraph+scale_y_continuous(expand=c(0,0))
 RegrowGraph<-RegrowGraph+facet_rep_wrap(~FxGroup, ncol=1, scales="free_y")
-RegrowGraph<-RegrowGraph+ggtitle("Regrowth minus original biomass")+xlab("Proximity to high density settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,")")))
+RegrowGraph<-RegrowGraph+ggtitle("Regrowth minus original biomass")+xlab("Proximity to high density of settlements") + ylab(expression(paste("Regrowth - biomass (g/",m^2,")")))
 RegrowGraph<-RegrowGraph+theme_classic()
 RegrowGraph<-RegrowGraph+theme(plot.background = element_blank()
                          #,panel.grid.major = element_blank()
